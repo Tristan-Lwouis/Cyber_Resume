@@ -1,0 +1,29 @@
+//Variables de couleurs
+:root {
+    --primary-color: #EDE52B;       /* Couleur primaire */
+    --secondary-color: #f44336;     /* Couleur secondaire */
+    --background-color: #000000;    /* Couleur de fond */
+    --text-color: #333;             /* Couleur du texte */
+    --link-color: #2196F3;          /* Couleur des liens */
+}
+
+
+//Modification de la couleur de selection par default
+::selection {
+    background: black;
+    color:yellow;
+    // background: var(--background-color);
+    // color:var(--primary-color);
+  }
+  
+  ::-moz-selection {
+    background: black;
+    color:yellow;
+    // background: var(--background-color);
+    // color:var(--primary-color);
+  }
+
+  * {
+  font-family: 'JetBrains Mono', monospace;
+}
+  
