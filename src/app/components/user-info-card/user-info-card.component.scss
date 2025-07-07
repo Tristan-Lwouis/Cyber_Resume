@@ -1,14 +1,164 @@
-.cv-card {
-  width: 100%;
-  max-width: 600px;
-  margin: 2rem auto;
-  .card-svg {
-    width: 100%;
-    height: auto;
+
+
+//----- SKILLS -----
+.tabLoisirsSkills, svg { //Position de la carte
+  position: relative;
+  width: 600px; /* Largeur fixe pour l'exemple */
+  height: 200px; /* Hauteur fixe */
+
+  /*Test*/
+  //background-color: blueviolet;
+}
+
+svg { // Positionner le SVG par rapport à son parent
+  position: absolute; 
+}
+
+.cv-card { //Taille et la position de la carte
+  width: 100%; /* La carte prend 100% de la largeur dispo */
+  max-width: 700px; /* Mais jamais plus de 600px */
+  height: auto; /* Hauteur s’adapte à son contenu */
+}
+
+#SkillsCard { //Comportenent des élements a l"interieur de la carte
+  /*-----FLEXBOX-----*/
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  //overflow: hidden;
+
+  font-size: 1.5rem;
+
+  /*Test*/
+  //background-color: rgb(0, 255, 0)
+
+  .number { //Couleur des nombres
+    color: #A49F26;
   }
 }
 
-// .card {
-// /*CSS a appliquer sur le forein object*/
-//   // display: flex;
-// }
+//----- LOISIRS -----
+.LoisirCard { //Comportement des icons dans loisirs
+  /*-----FLEXBOX-----*/
+  display: flex;
+  flex-direction: row;
+  //flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-end;
+  
+
+  /*----- POSITION -----*/
+  p{
+    padding: 10px;
+    margin: 0 auto;
+    text-align: center;
+    
+  }
+
+  img{
+      display: block;
+      
+      margin: 0 auto;
+      margin-top: 10px;
+      // display: flex;
+      // flex-direction: column;
+      // justify-content: center;
+  }
+
+
+  /*Test*/
+  // background-color: aqua;
+}
+
+.tabCard { //Comportement dans les onglets
+
+  /*-----FLEXBOX-----*/
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  /*Others*/
+  user-select: none; /* empêche la sélection du texte */
+  height: 100%; /* force le bloc à faire 40px de haut */
+  font-size: 1.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  /*Test*/
+  //background-color: aqua;
+}
+
+.bandeau-onglet{
+  /*----- FLEXBOX -----*/
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  //align-items: center;
+
+  /*----- POSITION -----*/
+  position :absolute;
+  z-index: 3; //Le selector est toujours devant par rapport au carte avec un Z-index 1 et 2
+  left: 10px;
+  top: -12px;
+  //width: 310px;
+
+  /*----- OTHERS -----*/
+  user-select: none; /* empêche la sélection du texte */
+  
+  /*----- TEST -----*/
+  //background-color: rgba(0, 0, 0, 0.3);
+  
+}
+
+#selectorTab1{
+  /*----- FLEXBOX -----*/
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  /*----- POSITION -----*/
+  width: 130px;
+  margin-left: 5px;
+  margin-right: 25px;
+
+  //Test
+  //background-color:rgba(64, 183, 192, 0.5);
+}
+
+#selectorTab2{
+  /*----- FLEXBOX -----*/
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  /*----- POSITION -----*/
+  width: 134px;
+ 
+
+  //Test
+  //background-color: rgba(4, 40, 243, 0.5);
+}
+
+#drag{
+  
+}
+
+#QrDeco{
+  display: flex;
+  justify-content: end;
+  align-items: flex-start;
+
+  /*Test*/
+  // background-color: bisque;
+  width: 30%;
+}
+
+#Loisir{
+  display: flex;
+  flex-direction: row;
+  
+
+  /*Test*/
+  // background-color: greenyellow;
+}

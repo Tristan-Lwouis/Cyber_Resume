@@ -38,6 +38,7 @@ Cyber_Resume.code-workspace
 testem.log
 /typings
 /Commit.txt
+/Old_angular.json
 
 # System files
 .DS_Store
