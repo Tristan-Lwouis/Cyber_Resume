@@ -65,7 +65,6 @@ svg { // Positionner le SVG par rapport à son parent
       // justify-content: center;
   }
 
-
   /*Test*/
   // background-color: aqua;
 }
@@ -107,7 +106,7 @@ svg { // Positionner le SVG par rapport à son parent
   user-select: none; /* empêche la sélection du texte */
   
   /*----- TEST -----*/
-  //background-color: rgba(0, 0, 0, 0.3);
+  // background-color: rgba(0, 0, 0, 0.3);
   
 }
 
@@ -128,6 +127,7 @@ svg { // Positionner le SVG par rapport à son parent
 
 #selectorTab2{
   /*----- FLEXBOX -----*/
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -137,11 +137,14 @@ svg { // Positionner le SVG par rapport à son parent
  
 
   //Test
-  //background-color: rgba(4, 40, 243, 0.5);
+  // background-color: rgba(4, 40, 243, 0.5);
 }
 
-#drag{
-  
+#Handle{
+  margin-left: 15px;
+  width: 240px;
+  height: 40px;
+  // background-color: chocolate;
 }
 
 #QrDeco{

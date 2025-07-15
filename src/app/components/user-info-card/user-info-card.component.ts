@@ -1,11 +1,12 @@
 
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common'; // OBLIGATOIRE pour ngStyle
+import { DragDropModule } from '@angular/cdk/drag-drop'; //Drag and Drop
 
 @Component({
   selector: 'app-user-info-card',
   //standalone: true, // ?? A quoi ca sert ?
-  imports: [CommonModule],
+  imports: [CommonModule, DragDropModule],
   templateUrl: './user-info-card.component.html',
   styleUrl: './user-info-card.component.scss'
 })

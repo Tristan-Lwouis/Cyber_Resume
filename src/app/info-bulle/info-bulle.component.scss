@@ -1,0 +1,35 @@
+.infoBulleSvg{
+    position: relative;
+}
+
+.InfoBulle{
+    /*Flexbox*/
+    display: flex;
+    flex-direction: column;
+    // margin: 0;
+    // align-items: flex-start;
+    
+    /*Text*/
+    font-size: 0.92em;
+
+    /*Test*/
+    // background-color: rgb(218, 219, 160);
+}
+
+p{
+    margin: 0;
+    // margin-bottom: px;
+}
+
+#barCode{
+    font-family: "Libre Barcode 39";
+    font-size: 2.1em;
+
+}
+
+#QrDeco2{
+    position: absolute;
+    width: 50px;
+    top: 215px;
+    left: 253px;
+}

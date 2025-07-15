@@ -1,17 +1,21 @@
-<body class="tabLoisirsSkills">
+<body class="tabLoisirsSkills" cdkDrag>
 
+  <!-- Tab one -->
   <div class="bandeau-onglet">
     <div id="selectorTab1" (click)="showFirstTab()">
       <p>LO1SIRS</p>
       <p>X</p>
     </div>
-    <div id="selectorTab2" (click)="showSecondTab()">
-      <p>SK1LLS</p>
-      <p>X</p>
-    </div>
-    <div>
-      <!-- <p>drag me !</p> -->
-    </div>
+
+  <!-- Tab two -->
+  <div id="selectorTab2" (click)="showSecondTab()">
+    <p>SK1LLS</p>
+    <p>X</p>
+  </div>
+
+  <!-- Handle -->
+  <div id="Handle" cdkDragHandle>
+  </div>
   </div>
 
   <!-- FIRST TAB SKILLS -->
@@ -40,7 +44,7 @@
           <body id="Loisir">
             <!-- Section avec les logos -->
             <div
-            style="width: 70%;">
+              style="width: 70%;">
               <!-- Premiere ligne de logo -->
               <div Class="LoisirCard">
                 <div>
