@@ -1,5 +1,12 @@
 <main class="main">
   <app-user-info-card></app-user-info-card>
   <app-info-bulle></app-info-bulle>
+  <app-rolling-script
+    [code]="monCode"
+    [typingSpeed]="1"
+    width="200px"
+    height="600px">
+  </app-rolling-script>
+
 </main>
 <router-outlet />
