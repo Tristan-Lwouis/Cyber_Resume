@@ -25,5 +25,57 @@
 
   * {
   font-family: 'JetBrains Mono', monospace;
-  background-color: var(--primary-color);
 }  
+
+html, main {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #EDE52B;
+  border: 15px solid black;
+}
+#HG {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 15vw; //10%
+  max-width: 250px; // 200px
+  min-width: 200px;
+  height: auto;
+  pointer-events: none; /* Ignore les événements de la souris */
+}
+#HD {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 15vw; //10%
+  max-width: 80px; // 200px
+  min-width: 40px;
+  height: auto;
+  pointer-events: none; /* Ignore les événements de la souris */
+}
+
+#BD {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 15vw; //10%
+  max-width: 250px; // 200px
+  min-width: 200px;
+  height: auto;
+  pointer-events: none; /* Ignore les événements de la souris */
+}
+
+
+
+#BG {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 15vw; //10%
+  max-width: 80px; // 200px
+  min-width: 40px;
+  height: auto;
+  pointer-events: none; /* Ignore les événements de la souris */
+}
