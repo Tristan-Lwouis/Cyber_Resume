@@ -1,24 +1,22 @@
 //Variables de couleurs
-:root {
-    --primary-color: #EDE52B;       /* Couleur primaire */
-    --secondary-color: #f44336;     /* Couleur secondaire */
-    --background-color: #000000;    /* Couleur de fond */
-    --text-color: #333;             /* Couleur du texte */
-    --link-color: #2196F3;          /* Couleur des liens */
-}
-
+// SCSS variables for colors
+$primary-color: rgba(237, 229, 43, 1);       /* Couleur primaire */
+$secondary-color: #f44336;     /* Couleur secondaire */
+$background-color: #000000;    /* Couleur de fond */
+$text-color: #333;             /* Couleur du texte */
+$link-color: #2196F3;          /* Couleur des liens */
 
 //Modification de la couleur de selection par default
 ::selection {
-    background: black;
-    color:yellow;
+    background: $background-color;
+    color:$primary-color;
     // background: var(--background-color);
     // color:var(--primary-color);
   }
   
   ::-moz-selection {
-    background: black;
-    color:yellow;
+    background: $background-color;
+    color:$primary-color;
     // background: var(--background-color);
     // color:var(--primary-color);
   }
@@ -27,55 +25,123 @@
   font-family: 'JetBrains Mono', monospace;
 }  
 
-html, main {
+main {
   height: 100%;
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
-  background-color: #EDE52B;
+  // background-color: #EDE52B;
+  // background-color: $primary-color;
   border: 15px solid black;
-}
-#HG {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 15vw; //10%
-  max-width: 250px; // 200px
-  min-width: 200px;
-  height: auto;
-  pointer-events: none; /* Ignore les événements de la souris */
-}
-#HD {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 15vw; //10%
-  max-width: 80px; // 200px
-  min-width: 40px;
-  height: auto;
-  pointer-events: none; /* Ignore les événements de la souris */
-}
-
-#BD {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 15vw; //10%
-  max-width: 250px; // 200px
-  min-width: 200px;
-  height: auto;
-  pointer-events: none; /* Ignore les événements de la souris */
-}
 
 
+}
+// Affichage des élements de déco de la page
 
-#BG {
+#BACKGROUND{
   position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 15vw; //10%
-  max-width: 80px; // 200px
-  min-width: 40px;
-  height: auto;
-  pointer-events: none; /* Ignore les événements de la souris */
+  width: 100%;
+  height: 100%;
+  background-color: #EDE52B;
+  z-index: -10;
+}
+  #grid-svg {
+    position: fixed;
+    z-index:-9; /* Pour que les éléments de déco soient derrière le contenu principal */
+    height: auto;
+    pointer-events: none;
+    // z-index: 0;
+  }
+  .deco {
+    position: fixed;
+    z-index: 1;
+    height: auto;
+  }
+  #HG {
+    top: 0;
+    left: 0;
+    width: 15vw; //10%
+    max-width: 250px; // 200px
+    min-width: 200px;
+    pointer-events: none; /* Ignore les événements de la souris */
+  }
+  #HD {
+    top: 0;
+    right: 0;
+    width: 15vw; //10%
+    max-width: 80px; // 200px
+    min-width: 40px;
+    pointer-events: none; /* Ignore les événements de la souris */
+  }
+  #BD {
+    bottom: 0;
+    right: 0;
+    width: 15vw; //10%
+    max-width: 250px; // 200px
+    min-width: 200px;
+    pointer-events: none; /* Ignore les événements de la souris */
+  }
+  #BG {
+    bottom: 0;
+    left: 0;
+    width: 15vw; //10%
+    max-width: 80px; // 200px
+    min-width: 40px;
+    pointer-events: none; /* Ignore les événements de la souris */
+  }
+
+// Positionnement des composants principaux
+#infoBulle {
+  width: 30%; //Taille de l'info bulle en fonction de la taille de l'écran
+  position: absolute;
+  top: 60%;
+  left: 20%;
+}
+
+#rollingScript {
+  // width: 30%; //On affecte la largeur dans le composant
+  position: absolute;
+  top: 40%;
+  left: 70%;
+}
+
+#button_HG{
+  height: 100%;
+  display: flex;
+  flex-direction : row;
+  align-items: center;
+  }
+
+#contact {
+  // z-index: 1; /* Pour que le bouton soit au-dessus des éléments de déco */
+  background-color: $primary-color;
+  border-radius: 50px;
+  padding: 10px 20px;
+  margin: 5%;
+  height: 40%;
+  font-size: 1.5em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight:bold ;
+}
+
+#linkedin{
+  background-color: $primary-color;
+  // background-color: aquamarine;
+  // padding: 5px;
+  border-radius: 30px;
+  padding: 3%;
+  width: 10%;
+  height: 40%;
+
+  img{
+    width: 100%;
+    // height: 10%;
+
+  }
+
+}
+
+foreignobject{
+  // background-color: red;
 }
