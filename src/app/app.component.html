@@ -1,53 +1,9 @@
 <main class="main">
 
-  <div id="BACKGROUND">
-
-  </div>
-
-  <svg id="grid-svg" width="4000" height="2000" xmlns="http://www.w3.org/2000/svg">
-    <!-- Lignes verticales -->
-    <g stroke="#cccccc" stroke-width="1">
-      <!-- Répétition de lignes verticales tous les 50px -->
-      <!-- De 0 à 4000 -->
-      <defs>
-        <!-- Ici reglage du motif et de la couleur de la grille -->
-        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-          <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#afa91f" stroke-width="2" />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#grid)" />
-    </g>
-  </svg>
-
-  <svg class="deco" id="HG" width="286" height="69" viewBox="0 0 286 69" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M286 0L244.505 69L0.000199388 69L0 0L286 0Z" fill="black" />
-    <foreignObject x="0" y="0" width="100%" height="100%">
-      <section id="button_HG">
-        <div id="contact">
-          <a href="https://www.google.com">CONTACT</a>
-        </div>
-        <div id="linkedin">
-          <img src="assets/media/icons/Linkedin.png" alt="Logo Linkedin">
-        </div>
-      </section>
-    </foreignObject>
-  </svg>
-
-  <svg class="deco" id="HD" width="93" height="93" viewBox="0 0 93 93" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M5.00924e-07 -8.13032e-06L93 93L93 0L5.00924e-07 -8.13032e-06Z" fill="black" />
-  </svg>
-
-  <svg class="deco" id="BD" width="286" height="69" viewBox="0 0 286 69" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0 69L41.4955 1.51292e-06L286 2.28882e-05L286 69L0 69Z" fill="black" />
-  </svg>
-
-  <svg class="deco" id="BG" width="93" height="93" viewBox="0 0 93 93" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M93 93L0 0L0 93L93 93Z" fill="black" />
-  </svg>
-
   <app-user-info-card></app-user-info-card>
   <app-info-bulle id="infoBulle"></app-info-bulle>
-  <app-rolling-script id="rollingScript" [code]="monCode" [typingSpeed]="1" width="200px" height="400px"></app-rolling-script>
+  <!-- <app-rolling-script id="rollingScript" [code]="monCode" [typingSpeed]="1" width="200px" height="400px"></app-rolling-script> -->
+  <app-deco></app-deco>
 
 </main>
 <router-outlet />

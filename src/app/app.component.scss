@@ -1,24 +1,14 @@
-//Variables de couleurs
-// SCSS variables for colors
-$primary-color: rgba(237, 229, 43, 1);       /* Couleur primaire */
-$secondary-color: #f44336;     /* Couleur secondaire */
-$background-color: #000000;    /* Couleur de fond */
-$text-color: #333;             /* Couleur du texte */
-$link-color: #2196F3;          /* Couleur des liens */
+@use 'variables' as *;
 
 //Modification de la couleur de selection par default
 ::selection {
     background: $background-color;
     color:$primary-color;
-    // background: var(--background-color);
-    // color:var(--primary-color);
   }
   
   ::-moz-selection {
     background: $background-color;
     color:$primary-color;
-    // background: var(--background-color);
-    // color:var(--primary-color);
   }
 
   * {
@@ -31,62 +21,10 @@ main {
   // background-color: #EDE52B;
   // background-color: $primary-color;
   border: 15px solid black;
-
-
 }
+
 // Affichage des élements de déco de la page
 
-#BACKGROUND{
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background-color: #EDE52B;
-  z-index: -10;
-}
-  #grid-svg {
-    position: fixed;
-    z-index:-9; /* Pour que les éléments de déco soient derrière le contenu principal */
-    height: auto;
-    pointer-events: none;
-    // z-index: 0;
-  }
-  .deco {
-    position: fixed;
-    z-index: 1;
-    height: auto;
-  }
-  #HG {
-    top: 0;
-    left: 0;
-    width: 15vw; //10%
-    max-width: 250px; // 200px
-    min-width: 200px;
-    pointer-events: none; /* Ignore les événements de la souris */
-  }
-  #HD {
-    top: 0;
-    right: 0;
-    width: 15vw; //10%
-    max-width: 80px; // 200px
-    min-width: 40px;
-    pointer-events: none; /* Ignore les événements de la souris */
-  }
-  #BD {
-    bottom: 0;
-    right: 0;
-    width: 15vw; //10%
-    max-width: 250px; // 200px
-    min-width: 200px;
-    pointer-events: none; /* Ignore les événements de la souris */
-  }
-  #BG {
-    bottom: 0;
-    left: 0;
-    width: 15vw; //10%
-    max-width: 80px; // 200px
-    min-width: 40px;
-    pointer-events: none; /* Ignore les événements de la souris */
-  }
 
 // Positionnement des composants principaux
 #infoBulle {
@@ -110,38 +48,33 @@ main {
   align-items: center;
   }
 
-#contact {
+// #contact {
   // z-index: 1; /* Pour que le bouton soit au-dessus des éléments de déco */
-  background-color: $primary-color;
-  border-radius: 50px;
-  padding: 10px 20px;
-  margin: 5%;
-  height: 40%;
-  font-size: 1.5em;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight:bold ;
-}
+//   background-color: $primary-color;
+//   border-radius: 50px;
+//   padding: 10px 20px;
+//   margin: 5%;
+//   height: 40%;
+//   font-size: 1.5em;
+//   cursor: pointer;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   font-weight:bold ;
+// }
 
-#linkedin{
-  background-color: $primary-color;
-  // background-color: aquamarine;
-  // padding: 5px;
-  border-radius: 30px;
-  padding: 3%;
-  width: 10%;
-  height: 40%;
+// #linkedin{
+//   background-color: $primary-color;
+//   // background-color: aquamarine;
+//   // padding: 5px;
+//   border-radius: 30px;
+//   padding: 3%;
+//   width: 10%;
+//   height: 40%;
 
-  img{
-    width: 100%;
-    // height: 10%;
+//   img{
+//     width: 100%;
+//     // height: 10%;
 
-  }
-
-}
-
-foreignobject{
-  // background-color: red;
-}
+//   }
+// }
