@@ -5,6 +5,7 @@ import { RouterOutlet } from '@angular/router';
 import { UserInfoCardComponent } from './components/user-info-card/user-info-card.component';
 import { InfoBulleComponent } from "./components/info-bulle/info-bulle.component";
 import { RollingScriptComponent } from "./components/rolling-script/rolling-script.component";
+import { DecoComponent } from "./components/deco/deco.component";
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ import { RollingScriptComponent } from "./components/rolling-script/rolling-scri
     UserInfoCardComponent,
     InfoBulleComponent,
     RollingScriptComponent,
+    DecoComponent
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

@@ -5,8 +5,6 @@
   position: relative;
   width: 30%; //Taille de la carte
   min-width: 500px;
-  // width: 600px; /* Largeur fixe pour l'exemple */
-  // height: 200px; /* Hauteur fixe */
 
   /*Test*/
   //background-color: blueviolet;
@@ -29,7 +27,7 @@ svg { // Positionner le SVG par rapport à son parent
   justify-content: space-between;
   //overflow: hidden;
 
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 
   /*Test*/
   //background-color: rgb(0, 255, 0)

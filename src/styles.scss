@@ -6,51 +6,8 @@ img {
 html, body {
   height: 100%;
   margin: 0;
-  padding: 0;
-  // box-sizing: border-box;
-  // border: 8px solid black;
 }
 
-// #BD {
-//   position: fixed;
-//   bottom: 0;
-//   right: 0;
-//   width: 15vw; //10%
-//   max-width: 250px; // 200px
-//   min-width: 200px;
-//   height: auto;
-//   pointer-events: none; /* Ignore les événements de la souris */
-// }
-
-// #HD {
-//   position: fixed;
-//   top: 0;
-//   right: 0;
-//   width: 15vw; //10%
-//   max-width: 80px; // 200px
-//   min-width: 50px;
-//   height: auto;
-//   pointer-events: none; /* Ignore les événements de la souris */
-// }
-
-// #HG {
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   width: 15vw; //10%
-//   max-width: 250px; // 200px
-//   min-width: 200px;
-//   height: auto;
-//   pointer-events: none; /* Ignore les événements de la souris */
-// }
-
-// #BG {
-//   position: fixed;
-//   bottom: 0;
-//   left: 0;
-//   width: 15vw; //10%
-//   max-width: 80px; // 200px
-//   min-width: 50px;
-//   height: auto;
-//   pointer-events: none; /* Ignore les événements de la souris */
-// }
+a {
+  text-decoration: none;
+}
