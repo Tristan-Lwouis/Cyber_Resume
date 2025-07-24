@@ -1,81 +1,40 @@
-//Variables de couleurs
-:root {
-    --primary-color: #EDE52B;       /* Couleur primaire */
-    --secondary-color: #f44336;     /* Couleur secondaire */
-    --background-color: #000000;    /* Couleur de fond */
-    --text-color: #333;             /* Couleur du texte */
-    --link-color: #2196F3;          /* Couleur des liens */
-}
-
+@use 'variables' as *;
 
 //Modification de la couleur de selection par default
 ::selection {
-    background: black;
-    color:yellow;
-    // background: var(--background-color);
-    // color:var(--primary-color);
+    background: $background-color;
+    color:$primary-color;
   }
   
-  ::-moz-selection {
-    background: black;
-    color:yellow;
-    // background: var(--background-color);
-    // color:var(--primary-color);
+::-moz-selection {
+    background: $background-color;
+    color:$primary-color;
   }
 
   * {
   font-family: 'JetBrains Mono', monospace;
-}  
+} 
 
-html, main {
+main {
   height: 100%;
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
-  background-color: #EDE52B;
+  // background-color: #EDE52B;
+  // background-color: $primary-color;
   border: 15px solid black;
 }
-#HG {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 15vw; //10%
-  max-width: 250px; // 200px
-  min-width: 200px;
-  height: auto;
-  pointer-events: none; /* Ignore les événements de la souris */
-}
-#HD {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 15vw; //10%
-  max-width: 80px; // 200px
-  min-width: 40px;
-  height: auto;
-  pointer-events: none; /* Ignore les événements de la souris */
+
+// Positionnement des composants principaux
+#infoBulle {
+  width: 30%; //Taille de l'info bulle en fonction de la taille de l'écran
+  min-width: 300px;
+  position: absolute;
+  top: 60%;
+  left: 20%;
 }
 
-#BD {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 15vw; //10%
-  max-width: 250px; // 200px
-  min-width: 200px;
-  height: auto;
-  pointer-events: none; /* Ignore les événements de la souris */
-}
-
-
-
-#BG {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 15vw; //10%
-  max-width: 80px; // 200px
-  min-width: 40px;
-  height: auto;
-  pointer-events: none; /* Ignore les événements de la souris */
+#rollingScript {
+  // width: 30%; //On affecte la largeur dans le composant
+  position: absolute;
+  top: 40%;
+  left: 70%;
 }

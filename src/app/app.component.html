@@ -1,29 +1,9 @@
 <main class="main">
 
-     <svg id="HG" width="286" height="69" viewBox="0 0 286 69" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M286 0L244.505 69L0.000199388 69L0 0L286 0Z" fill="black"/>
-    </svg>
-
-    <svg id="HD" width="93" height="93" viewBox="0 0 93 93" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M5.00924e-07 -8.13032e-06L93 93L93 0L5.00924e-07 -8.13032e-06Z" fill="black"/>
-    </svg>
-
-    <svg id="BD" width="286" height="69" viewBox="0 0 286 69" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 69L41.4955 1.51292e-06L286 2.28882e-05L286 69L0 69Z" fill="black"/>
-    </svg>
-
-    <svg id="BG" width="93" height="93" viewBox="0 0 93 93" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M93 93L0 0L0 93L93 93Z" fill="black"/>
-    </svg>
-    
-  <app-user-info-card></app-user-info-card>
-  <app-info-bulle></app-info-bulle>
-  <app-rolling-script
-    [code]="monCode"
-    [typingSpeed]="1"
-    width="200px"
-    height="400px">
-  </app-rolling-script>
+  <!-- <app-user-info-card></app-user-info-card> -->
+  <app-info-bulle id="infoBulle"></app-info-bulle>
+  <!-- <app-rolling-script id="rollingScript" [code]="monCode" [typingSpeed]="1" width="200px" height="400px"></app-rolling-script> -->
+  <app-deco></app-deco>
 
 </main>
 <router-outlet />
