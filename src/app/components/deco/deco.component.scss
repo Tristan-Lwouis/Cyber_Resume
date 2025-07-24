@@ -15,10 +15,13 @@
     // z-index: 0;
   }
 
+  a{
+    color : $background-color;
+  }
 
 .deco {
     position: fixed;
-    z-index: 1;
+    z-index: 10;
     height: auto;
 }
 
@@ -62,6 +65,13 @@
     /* Ignore les événements de la souris */
 }
 
+#button_HG{
+  height: 100%;
+  display: flex;
+  flex-direction : row;
+  align-items: center;
+  margin-left: 5%;
+  }
 
 #contact {
   // z-index: 1; /* Pour que le bouton soit au-dessus des éléments de déco */
