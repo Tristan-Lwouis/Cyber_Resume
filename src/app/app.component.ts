@@ -6,6 +6,7 @@ import { UserInfoCardComponent } from './components/user-info-card/user-info-car
 import { InfoBulleComponent } from "./components/info-bulle/info-bulle.component";
 import { RollingScriptComponent } from "./components/rolling-script/rolling-script.component";
 import { DecoComponent } from "./components/deco/deco.component";
+import { AvatarComponent } from "./components/avatar/avatar.component";
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ import { DecoComponent } from "./components/deco/deco.component";
     UserInfoCardComponent,
     InfoBulleComponent,
     RollingScriptComponent,
-    DecoComponent
+    DecoComponent,
+    AvatarComponent
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
