@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
 })
 export class RollingScriptComponent implements AfterViewInit {
   @Input() code: string = '';
-  @Input() typingSpeed: number = 20;
+  @Input() typingSpeed: number = 15;
   @Input() width: string = '600px';
   @Input() height: string = '300px';
 
