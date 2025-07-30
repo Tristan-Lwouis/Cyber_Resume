@@ -32,12 +32,12 @@ export class AvatarComponent implements AfterViewInit {
     // === Caméra ===
     // FOV (champ de vision), ratio largeur/hauteur, near/far (profondeur de vue)
     this.camera = new THREE.PerspectiveCamera(
-      50, // FOV : plus grand = plus "grand angle"
+      60, // FOV : plus grand = plus "grand angle"
       canvas.clientWidth / canvas.clientHeight, // ratio
       0.1, // near : distance minimale visible
       1000 // far : distance maximale visible
     );
-    this.camera.position.set(0, 1, 3); // Position de la caméra (x, y, z)
+    this.camera.position.set(0, 1, 2.3); // Position de la caméra (x, y, z)
 
     // === Renderer ===
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -49,18 +49,18 @@ export class AvatarComponent implements AfterViewInit {
 
     // === Lumière ambiante ===
     // Eclaire toute la scène de façon uniforme (pas d'ombre portée)
-    const ambientLight = new THREE.AmbientLight('rgb(255, 254, 252)', 2); // couleur et intensité
+    const ambientLight = new THREE.AmbientLight('rgb(255, 254, 252)', 1.5); // couleur et intensité
     this.scene.add(ambientLight);
 
     // === Lumière directionnelle (type soleil) ===
     // Simule le soleil : direction, couleur, intensité, ombres
-    const sunLight = new THREE.DirectionalLight('rgb(255, 236, 198)', 3); // couleur chaude, intensité
-    sunLight.position.set(3, 10, 5); // position du soleil (x, y, z)
+    const sunLight = new THREE.DirectionalLight('rgb(255, 236, 198)', 7); // couleur chaude, intensité
+    sunLight.position.set(8, 10, 5); // position du soleil (x, y, z)
     // Plus y est grand, plus la lumière vient d'en haut
     // x/z contrôlent la direction latérale
     sunLight.castShadow = true; // active les ombres
-    sunLight.shadow.mapSize.width = 500; // qualité des ombres
-    sunLight.shadow.mapSize.height = 500;
+    sunLight.shadow.mapSize.width = 250; // qualité des ombres
+    sunLight.shadow.mapSize.height = 250;
     sunLight.shadow.camera.near = 0.5;
     sunLight.shadow.camera.far = 50;
     this.scene.add(sunLight);
@@ -98,6 +98,9 @@ export class AvatarComponent implements AfterViewInit {
       (gltf: any) => {
         this.model = gltf.scene;
         this.scene.add(this.model!);
+        if (this.model) {
+          this.model.rotation.set(0, Math.PI / 9, 0); // rotation initiale du modèle
+        }
 
         // Debug : log les lumières importées
         this.model!.traverse((obj: any) => {
