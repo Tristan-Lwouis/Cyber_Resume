@@ -1,17 +1,16 @@
-
+@use 'variables' as *;
 
 //----- SKILLS -----
 .tabLoisirsSkills { //Position de la carte
-  position: relative;
-  width: 30%; //Taille de la carte
-  min-width: 500px;
+  position: absolute;
+  width: 100%; //Taille de la carte
 
   /*Test*/
   //background-color: blueviolet;
 }
 
 svg { // Positionner le SVG par rapport à son parent
-  position: absolute; 
+  position: absolute;
 }
 
 .cv-card { //Taille et la position de la carte
@@ -110,6 +109,7 @@ svg { // Positionner le SVG par rapport à son parent
 }
 
 #selectorTab1{
+  cursor: pointer;
   /*----- FLEXBOX -----*/
   display: flex;
   flex-direction: row;
@@ -125,8 +125,8 @@ svg { // Positionner le SVG par rapport à son parent
 }
 
 #selectorTab2{
-  /*----- FLEXBOX -----*/
   cursor: pointer;
+  /*----- FLEXBOX -----*/
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -138,9 +138,13 @@ svg { // Positionner le SVG par rapport à son parent
 }
 
 #Handle{
+  cursor : grab;
   margin-left: 15px;
+  margin-top: 15px;
   width: 40%;
-  height: 40px;
+  height: 20px;
+
+  //Test
   // background-color: chocolate;
 }
 
@@ -159,7 +163,6 @@ svg { // Positionner le SVG par rapport à son parent
   display: flex;
   flex-direction: row;
   
-
   /*Test*/
   // background-color: greenyellow;
 }

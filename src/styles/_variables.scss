@@ -1,8 +1,6 @@
-
-
 $primary-color: rgba(237, 229, 43, 1);       /* Couleur primaire */
-$secondary-color: #f44336;     /* Couleur secondaire */
+$secondary-color: rgba(red($primary-color), green($primary-color), blue($primary-color), 0.5); 
+// $secondary-color: #f44336;     /* Couleur secondaire */
 $background-color: #000000;    /* Couleur de fond */
 $text-color: #333;             /* Couleur du texte */
-$link-color: #2196F3;          /* Couleur des liens */
-
+$link-color: #2196F3;  

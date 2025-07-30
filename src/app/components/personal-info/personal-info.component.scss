@@ -1,0 +1,58 @@
+@use 'variables' as *;
+
+.svg-container {
+  aspect-ratio: 600 / 693;
+  // width: 100%;
+  // max-width: 600px;
+  background-color: aquamarine;
+}
+
+.text-container{
+    height: 100%;
+    // padding : 3%;
+    overflow-y: scroll;
+    padding : 0 2%
+}
+
+.scrollable {
+    scrollbar-width: auto;
+    scrollbar-color: $primary-color $background-color;
+    // scrollbar-: aqua;
+  
+    /* Webkit-based browsers */
+    &::-webkit-scrollbar {width: 15px;}
+  
+    &::-webkit-scrollbar-track {
+      background: $background-color;
+      border-radius: 10px;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background-color: $primary-color;
+      border-radius: 10px;
+      border: 2px solid $background-color;
+    }
+  }
+  
+
+#onglet{
+  
+  /*FLEXBOX*/
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  
+  /*Position*/
+    position: relative;
+    top: 8%;
+    padding:0.5% 3%;
+    width : 38%;
+    height :7%;
+
+  /*Font*/
+  font-size: 2.3vw;
+
+  /*Test*/
+  background-color: $link-color;
+}

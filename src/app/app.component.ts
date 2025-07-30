@@ -7,6 +7,7 @@ import { InfoBulleComponent } from "./components/info-bulle/info-bulle.component
 import { RollingScriptComponent } from "./components/rolling-script/rolling-script.component";
 import { DecoComponent } from "./components/deco/deco.component";
 import { AvatarComponent } from "./components/avatar/avatar.component";
+import { PersonalInfoComponent } from "./components/personal-info/personal-info.component";
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,8 @@ import { AvatarComponent } from "./components/avatar/avatar.component";
     InfoBulleComponent,
     RollingScriptComponent,
     DecoComponent,
-    AvatarComponent
+    AvatarComponent,
+    PersonalInfoComponent
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

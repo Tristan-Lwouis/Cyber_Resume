@@ -11,30 +11,81 @@
     color:$primary-color;
   }
 
+// Style de la police
   * {
   font-family: 'JetBrains Mono', monospace;
-} 
+}
+
+
 
 main {
   height: 100%;
   box-sizing: border-box;
-  // background-color: #EDE52B;
-  // background-color: $primary-color;
-  border: 15px solid black;
+  border: 15px solid $background-color;
+}
+
+.mainHeader {
+  /*Position*/
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%,0);
+  text-align: center;
+  /*Flexbox*/
+  display: flex;
+  flex-direction: column;
+  /*General titre*/
+  h1,h2,h3 {
+    margin: 0;
+    padding: 0;
+    color: $background-color;
+  }
+
+  h1{
+    font-size: 2.5vw;
+    letter-spacing:1.5vw;
+    font-weight:900;
+  }
+  
+  h3{
+    font-family: "Libre Barcode 39";
+    font-size: 2.5vw;
+    font-weight: 100;
+  }
+  
+  h2{
+    position: relative;
+    top: -0.8vw; //Pour que le titre soit plus centré
+    font-size: 1vw;
+    letter-spacing: 0.55vw;
+  }
+  /*Test*/
+  // background-color: chartreuse;
 }
 
 // Positionnement des composants principaux
-#infoBulle {
-  width: 30%; //Taille de l'info bulle en fonction de la taille de l'écran
-  min-width: 300px;
+#userInfoCard{
   position: absolute;
+  width: 30%;
+  min-width: 500px;
   top: 60%;
-  left: 20%;
+  left: 60%;
 }
-
+#infoBulle {
+  width: 17%; //Taille de l'info bulle en fonction de la taille de l'écran
+  min-width: 200px;
+  position: absolute;
+  top: 25%;
+  left: 28%;
+}
 #rollingScript {
   // width: 30%; //On affecte la largeur dans le composant
   position: absolute;
-  top: 40%;
-  left: 70%;
+  top: 56%;
+  left: 1.5%;
+}
+#personalInfo {
+  width: 20%; //On affecte la largeur dans le composant
+  position: absolute;
+  top: 10%;
+  left: 10%;
 }
