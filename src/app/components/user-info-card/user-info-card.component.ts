@@ -15,8 +15,8 @@ export class UserInfoCardComponent {
     @Input() title: string = '';
     @Input() titleClass: string = '';
 
-  firstTabZ = 2;
-  secondTabZ = 1;
+  firstTabZ = 1;
+  secondTabZ = 2;
 
   showFirstTab() {
     this.firstTabZ = 2; // 2 pour être au-dessus de l'autre

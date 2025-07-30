@@ -9,13 +9,6 @@
 	  background-size: 40px 40px;
     z-index: -10;
 }
-  // #grid-svg {
-  //   position: fixed;
-  //   z-index:-9; /* Pour que les éléments de déco soient derrière le contenu principal */
-  //   height: auto;
-  //   pointer-events: none;
-  //   // z-index: 0;
-  // }
 
   a{
     color : $background-color;
@@ -33,8 +26,7 @@
     width: 15vw; //10%
     max-width: 250px; // 200px
     min-width: 200px;
-    // pointer-events: none;
-    /* Ignore les événements de la souris */
+
 }
 
 #HD {
@@ -43,8 +35,7 @@
     width: 15vw; //10%
     max-width: 80px; // 200px
     min-width: 40px;
-    // pointer-events: none;
-    /* Ignore les événements de la souris */
+
 }
 
 #BD {
@@ -53,8 +44,7 @@
     width: 15vw; //10%
     max-width: 250px; // 200px
     min-width: 200px;
-    // pointer-events: none;
-    /* Ignore les événements de la souris */
+
 }
 
 #BG {
@@ -63,8 +53,7 @@
     width: 15vw; //10%
     max-width: 80px; // 200px
     min-width: 40px;
-    // pointer-events: none;
-    /* Ignore les événements de la souris */
+
 }
 
 #button_HG{
@@ -76,7 +65,6 @@
   }
 
 #contact {
-  // z-index: 1; /* Pour que le bouton soit au-dessus des éléments de déco */
   background-color: $primary-color;
   border-radius: 50px;
   padding: 10px 20px;
@@ -93,7 +81,7 @@
 #linkedin{
   background-color: $primary-color;
   // background-color: aquamarine;
-  // padding: 5px;
+
   border-radius: 30px;
   padding: 3%;
   width: 10%;
@@ -101,12 +89,13 @@
 
   img{
     width: 100%;
-    // height: 10%;
-
   }
 
 }
 
-foreignobject{
-  // background-color: red;
+#techFrameCorner{
+  position : fixed;
+  width: 20vw;
+  right: 0%;
+  top: 0px;
 }

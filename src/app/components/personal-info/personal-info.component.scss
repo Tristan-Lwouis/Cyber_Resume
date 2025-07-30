@@ -4,7 +4,7 @@
   aspect-ratio: 600 / 693;
   // width: 100%;
   // max-width: 600px;
-  background-color: aquamarine;
+  // background-color: aquamarine;
 }
 
 .text-container{
@@ -34,6 +34,23 @@
     }
   }
   
+#Handle{
+  position: absolute;
+  top: 2.3vw;
+  left: 9vw;
+  width: 9vw;
+  height: 20px;
+  cursor : grab;
+  /*Test*/
+  // background-color: rgba(165, 42, 42, 0.295);
+}
+
+#svgHandle{
+  z-index: -1;
+  position: absolute;
+  top: 2.2vw;
+  left: 1vw;
+}
 
 #onglet{
   
@@ -51,8 +68,9 @@
     height :7%;
 
   /*Font*/
-  font-size: 2.3vw;
+  font-size: 1vw;
+  user-select: none; /* empêche la sélection du texte */
 
   /*Test*/
-  background-color: $link-color;
+  // background-color: $link-color;
 }
