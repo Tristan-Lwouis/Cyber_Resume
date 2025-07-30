@@ -8,6 +8,7 @@ import { RollingScriptComponent } from "./components/rolling-script/rolling-scri
 import { DecoComponent } from "./components/deco/deco.component";
 import { AvatarComponent } from "./components/avatar/avatar.component";
 import { PersonalInfoComponent } from "./components/personal-info/personal-info.component";
+import { CursorComponent } from './components/cursor/cursor.component';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +19,9 @@ import { PersonalInfoComponent } from "./components/personal-info/personal-info.
     RollingScriptComponent,
     DecoComponent,
     AvatarComponent,
-    PersonalInfoComponent
-],
+    PersonalInfoComponent,
+    CursorComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
