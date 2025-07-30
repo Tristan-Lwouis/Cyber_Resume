@@ -9,6 +9,7 @@ import { DecoComponent } from "./components/deco/deco.component";
 import { AvatarComponent } from "./components/avatar/avatar.component";
 import { PersonalInfoComponent } from "./components/personal-info/personal-info.component";
 import { CursorComponent } from './components/cursor/cursor.component';
+import { MenuComponent } from './components/menu/menu.component';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,8 @@ import { CursorComponent } from './components/cursor/cursor.component';
     DecoComponent,
     AvatarComponent,
     PersonalInfoComponent,
-    CursorComponent
+    CursorComponent,
+    MenuComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

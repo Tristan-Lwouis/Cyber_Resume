@@ -1,0 +1,57 @@
+@use 'variables' as *;
+
+a{
+    text-decoration: none;
+    // color: #ff0000;
+    color: $primary-color;
+    font-weight: bold;
+    font-size: 1.1vw;
+    z-index: 2;
+}
+
+li{
+    list-style: none;
+}
+
+svg {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        transform: scale(1.02);
+    }
+}
+
+// Style pour s'assurer que le stroke est visible
+path {
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+// Classes pour les états du menu
+.menu-active {
+    fill: $background-color;
+    stroke: $primary-color;
+}
+
+.menu-inactive {
+    fill: $primary-color;
+    stroke: $background-color;
+}
+
+.link-active {
+    color: $primary-color !important;
+}
+
+.link-inactive {
+    color: $background-color !important;
+}
+
+.menuItem{
+    /*Position*/
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
