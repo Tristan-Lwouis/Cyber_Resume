@@ -20,23 +20,60 @@
 .line {
   position: absolute;
   background: $background-color;
-//   border-radius: 2px;
+  transition: all 0.2s ease-out;
 }
 
-.horizontal {
+.top {
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 15px;
+  transform: translateX(-50%);
+}
+
+.right {
   top: 50%;
-  left: 0;
-  width: 40px;
+  right: 0;
+  width: 15px;
   height: 2px;
   transform: translateY(-50%);
 }
 
-.vertical {
+.bottom {
+  bottom: 0;
   left: 50%;
-  top: 0;
   width: 2px;
-  height: 40px;
+  height: 15px;
   transform: translateX(-50%);
+}
+
+.left {
+  top: 50%;
+  left: 0;
+  width: 15px;
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+// Animation au clic - les lignes se rejoignent
+.cross.clicked .top {
+  transform: translateX(-50%) translateY(5px);
+  height: 20px;
+}
+
+.cross.clicked .right {
+  transform: translateY(-50%) translateX(-5px);
+  width: 20px;
+}
+
+.cross.clicked .bottom {
+  transform: translateX(-50%) translateY(-5px);
+  height: 20px;
+}
+
+.cross.clicked .left {
+  transform: translateY(-50%) translateX(5px);
+  width: 20px;
 }
 
 .coords {

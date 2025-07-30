@@ -1,7 +1,9 @@
 <div class="custom-cursor" [ngStyle]="{'left.px': x, 'top.px': y}">
-  <div class="cross">
-    <div class="line horizontal"></div>
-    <div class="line vertical"></div>
+  <div class="cross" [ngClass]="{'clicked': isClicked}">
+    <div class="line top"></div>
+    <div class="line right"></div>
+    <div class="line bottom"></div>
+    <div class="line left"></div>
     <span class="coords">{{ x }}, {{ y }}</span>
   </div>
 </div>
