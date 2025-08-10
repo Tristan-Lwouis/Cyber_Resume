@@ -58,13 +58,12 @@ main {
   /*Test*/
   // background-color: chartreuse;
 }
-
 // Positionnement des composants principaux
-#userInfoCard{
+#userInfoCard{ //Skills ou Loisirs
   position: absolute;
   width: 30%;
   // min-width: 500px;
-  top: 60%;
+  bottom: 35%;
   left: 60%;
 }
 #infoBulle {
@@ -77,21 +76,30 @@ main {
 #rollingScript {
   // width: 30%; //On affecte la largeur dans le composant
   position: absolute;
-  top: 56%;
+  top: 60%;
   left: 1.5%;
 }
-#personalInfo {
+#personalInfo { //Experience
   width: 20%; //On affecte la largeur dans le composant
   position: absolute;
-  top: 10%;
-  left: 10%;
+  top: 8%;
+  right: 5%;
 }
-
 #menu {
   position: absolute;
-  top: 31%;
+  top: 35%;
   left: 1.5%;
   width: 9%;
   // min-width: 200px;
   // background-color: rgba(210, 105, 30, 0.801);
+}
+
+#userInformations {
+  position: absolute;
+  top: 5vh;
+  left: 1.5vw;
+  // top: 50%;
+  // left: 50%;
+  width: 19%;
+  // min-width: 200px;
 }

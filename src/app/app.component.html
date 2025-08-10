@@ -8,11 +8,12 @@
   <!-- COMPOSANTS -->
   <app-deco></app-deco>
   <!-- <app-avatar id="avatar"></app-avatar> -->
-  <app-user-info-card id="userInfoCard"></app-user-info-card>
+  <app-user-informations id="userInformations"></app-user-informations>
+  <app-loisir-skills id="userInfoCard" *ngIf="showUserInfoCard" [skillsZIndex]="skillsZIndex" [loisirsZIndex]="loisirsZIndex" (tabToggle)="onTabToggle($event)"></app-loisir-skills>
   <app-info-bulle id="infoBulle"></app-info-bulle>
   <app-rolling-script id="rollingScript" [code]="monCode" [typingSpeed]="10" width="11vw" height="13.5vw"></app-rolling-script>
   <app-personal-info id="personalInfo" *ngIf="showExperience"></app-personal-info>
   <app-cursor></app-cursor>
-  <app-menu id="menu" (menuToggle)="onMenuToggle($event)"></app-menu>
+  <app-menu id="menu" [menuStates]="menuStates" (menuToggle)="onMenuToggle($event)"></app-menu>
 </main>
-<router-outlet />
+<router-outlet/>

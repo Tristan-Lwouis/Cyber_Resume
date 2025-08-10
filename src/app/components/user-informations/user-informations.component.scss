@@ -1,0 +1,41 @@
+svg {
+    width: 100%;
+    // height: auto;
+    // max-width: 450px;
+  }
+
+.user-informations {
+
+    padding: 5%;
+
+    /*Flexbox*/
+        display: flex;
+        flex-direction: column;
+        // align-items: center;
+        // justify-content: center;
+
+    /*Test*/
+        background-color: rgba(255, 0, 0, 0.4);
+}
+
+#onglet{
+    /*FLEXBOX*/
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+    /*Position*/
+        position: absolute;
+        // top: 8%;
+        padding:0.5% 3%;
+        width : 38%;
+        height :7%;
+
+    /*Font*/
+        font-size: 1vw;
+        user-select: none; /* empêche la sélection du texte */
+
+    /*Test*/
+        background-color: rgba(42, 130, 165, 0.451);
+}

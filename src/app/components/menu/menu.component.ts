@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
   selector: 'app-menu',
@@ -8,18 +8,22 @@ import { Component, OnDestroy, ChangeDetectionStrategy, Output, EventEmitter } f
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenuComponent implements OnDestroy {
-  // État de chaque menu (false = off, true = on)
-  menuStates: boolean[] = [true, false, false, false, false];
+  
+  //#region PROPRIÉTÉS
+  // État de chaque menu reçu depuis le composant parent
+  @Input() menuStates: boolean[] = [true, false, false, false, false];
   
   // Taille du stroke (contour)
   strokeWidth: number = 7;
+  //#endregion
   
-  //----- COULEURS -----
-  
+  //#region COULEURS
   // Couleurs (utilisant les variables CSS)
   primaryColor: string = 'rgba(237, 229, 43, 1)'; // Valeur de --primary-color
   backgroundColor: string = '#2196F3'; // Valeur de --link-color
-
+  //#endregion
+  
+  //#region MÉTHODES DE COULEUR
   // Méthode pour changer la couleur primaire
   setPrimaryColor(color: string): void {
     this.primaryColor = color;
@@ -41,20 +45,21 @@ export class MenuComponent implements OnDestroy {
   getBackgroundColor(): string {
     return getComputedStyle(document.documentElement).getPropertyValue('--background-color').trim();
   }
-  //----- FIN COULEURS -----
-  
+  //#endregion
+
+  //#region OUTPUTS
   // EventEmitter pour communiquer avec le composant parent
   @Output() menuToggle = new EventEmitter<{index: number, isActive: boolean}>();
+  //#endregion
   
+  //#region MÉTHODES DE MENU
   // Méthode pour basculer l'état d'un menu
   toggleMenu(index: number): void {
     if (index >= 0 && index < this.menuStates.length) {
-      this.menuStates[index] = !this.menuStates[index];
-      
-      // Émettre l'événement avec l'index et l'état
+      // Émettre l'événement avec l'index et l'état inverse
       this.menuToggle.emit({
         index: index,
-        isActive: this.menuStates[index]
+        isActive: !this.menuStates[index]
       });
     }
   }
@@ -74,7 +79,9 @@ export class MenuComponent implements OnDestroy {
     }
     return 'link-inactive';
   }
+  //#endregion
   
+  //#region MÉTHODES DE STROKE
   // Méthode pour obtenir la taille du stroke
   getStrokeWidth(): string {
     return this.strokeWidth.toString();
@@ -86,12 +93,14 @@ export class MenuComponent implements OnDestroy {
       this.strokeWidth = width;
     }
   }
+  //#endregion
   
-
+  //#region LIFECYCLE
   // Nettoyage des ressources
   ngOnDestroy(): void {
     // Réinitialiser les états
     this.menuStates = [];
     this.strokeWidth = 0;
   }
+  //#endregion
 }

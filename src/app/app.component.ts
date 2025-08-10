@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { NgIf } from '@angular/common';
 
 // Importer les composants nécessaires pour l'application
-import { UserInfoCardComponent } from './components/user-info-card/user-info-card.component';
+import { LoisirSkillsComponent } from './components/loisir-skills/loisir-skills.component';
 import { InfoBulleComponent } from "./components/info-bulle/info-bulle.component";
 import { RollingScriptComponent } from "./components/rolling-script/rolling-script.component";
 import { DecoComponent } from "./components/deco/deco.component";
@@ -11,20 +11,22 @@ import { AvatarComponent } from "./components/avatar/avatar.component";
 import { PersonalInfoComponent } from "./components/personal-info/personal-info.component";
 import { CursorComponent } from './components/cursor/cursor.component';
 import { MenuComponent } from './components/menu/menu.component';
+import { UserInformationsComponent } from './components/user-informations/user-informations.component';
 
 @Component({
   selector: 'app-root',
   imports: [
     RouterOutlet,
     NgIf,
-    UserInfoCardComponent,
+    LoisirSkillsComponent,
     InfoBulleComponent,
     RollingScriptComponent,
     DecoComponent,
     AvatarComponent,
     PersonalInfoComponent,
     CursorComponent,
-    MenuComponent
+    MenuComponent,
+    UserInformationsComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -33,31 +35,82 @@ export class AppComponent {
   title = 'Cyber_Resume';
   
   // Propriétés pour contrôler l'affichage des composants
-  showExperience: boolean = true; // Par défaut, l'expérience est visible
-  showCompetences: boolean = false;
-  showSkills: boolean = false;
-  showLoisirs: boolean = false;
-  showPortfolio: boolean = false;
+  // État centralisé de tous les menus
+  menuStates: boolean[] = [true, false, false, false, false]; // [Experience, Competences, Skills, Loisirs, Portfolio]
+  
+  // Gestion du z-index pour l'effet d'onglet entre Skills et Loisirs
+  skillsZIndex: number = 1;
+  loisirsZIndex: number = 2;
+  
+  // Getters pour faciliter l'accès aux états individuels
+  get showExperience(): boolean { return this.menuStates[0]; }
+  get showCompetences(): boolean { return this.menuStates[1]; }
+  get showSkills(): boolean { return this.menuStates[2]; }
+  get showLoisirs(): boolean { return this.menuStates[3]; }
+  get showPortfolio(): boolean { return this.menuStates[4]; }
+  
+  // Getter pour afficher le loisir-skills (visible si Skills OU Loisirs est actif)
+  get showUserInfoCard(): boolean { 
+    return this.menuStates[2] || this.menuStates[3]; // Skills OU Loisirs
+  }
   
   // Méthode pour gérer les événements du menu
   onMenuToggle(event: {index: number, isActive: boolean}): void {
-    switch(event.index) {
-      case 0: // EXPER1ENCES
-        this.showExperience = event.isActive;
-        break;
-      case 1: // COMP3TANCES
-        this.showCompetences = event.isActive;
-        break;
-      case 2: // SK1LLS
-        this.showSkills = event.isActive;
-        break;
-      case 3: // LOISIRS
-        this.showLoisirs = event.isActive;
-        break;
-      case 4: // PORTFOL1O
-        this.showPortfolio = event.isActive;
-        break;
+    if (event.index >= 0 && event.index < this.menuStates.length) {
+      
+      // Logique spéciale pour Skills (index 2) et Loisirs (index 3)
+      if (event.index === 2 || event.index === 3) {
+        this.handleSkillsLoisirsToggle(event.index, event.isActive);
+      } else {
+        // Comportement normal pour les autres onglets
+        this.menuStates[event.index] = event.isActive;
+      }
     }
+  }
+  
+  // Méthode pour gérer le toggle exclusif entre Skills et Loisirs
+  private handleSkillsLoisirsToggle(index: number, isActive: boolean): void {
+    if (isActive) {
+      // Activer l'onglet cliqué et désactiver l'autre
+      this.menuStates[2] = (index === 2); // Skills
+      this.menuStates[3] = (index === 3); // Loisirs
+      
+      // Gérer le z-index
+      if (index === 2) { // Skills actif
+        this.skillsZIndex = 2;
+        this.loisirsZIndex = 1;
+      } else { // Loisirs actif
+        this.skillsZIndex = 1;
+        this.loisirsZIndex = 2;
+      }
+    } else {
+      // Désactiver les deux onglets
+      this.menuStates[2] = false;
+      this.menuStates[3] = false;
+      // Les z-index restent inchangés car le composant sera caché
+    }
+  }
+  
+  // Méthode pour gérer les événements des onglets du loisir-skills
+  onTabToggle(event: {tab: 'skills' | 'loisirs', isActive: boolean}): void {
+    if (event.tab === 'skills') {
+      // Si Skills est déjà actif, on le désactive (toggle)
+      // Sinon on active Skills et on désactive Loisirs
+      const currentSkillsState = this.menuStates[2];
+      this.handleSkillsLoisirsToggle(2, !currentSkillsState);
+    } else if (event.tab === 'loisirs') {
+      // Si Loisirs est déjà actif, on le désactive (toggle)
+      // Sinon on active Loisirs et on désactive Skills
+      const currentLoisirsState = this.menuStates[3];
+      this.handleSkillsLoisirsToggle(3, !currentLoisirsState);
+    }
+  }
+  
+  // Méthode pour forcer la mise à jour de l'état du menu (pour synchroniser avec les onglets)
+  private updateMenuState(): void {
+    // Cette méthode sera appelée après chaque changement d'état pour s'assurer
+    // que le menu reflète l'état actuel
+    // Le menu se mettra automatiquement à jour grâce au binding [menuStates]="menuStates"
   }
   
   //Pour le composant rollingScript
