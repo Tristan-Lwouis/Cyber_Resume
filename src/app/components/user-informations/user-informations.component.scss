@@ -7,6 +7,19 @@ svg {
 .user-informations {
 
     padding: 5%;
+    font-size: 1vw;
+    color: var(--background-color); // Utilise la couleur de fond comme couleur de texte
+
+    span{
+        margin-top: 0.5vh;
+    }
+
+    .barCode{
+        font-family: "Libre Barcode 39";
+        font-size: 3vw;
+        margin-top: 2vh;
+        color: var(--background-color); // Utilise la couleur de fond pour le code-barres
+    }
 
     /*Flexbox*/
         display: flex;
@@ -15,7 +28,7 @@ svg {
         // justify-content: center;
 
     /*Test*/
-        background-color: rgba(255, 0, 0, 0.4);
+        // background-color: rgba(255, 0, 0, 0.4);
 }
 
 #onglet{
@@ -35,7 +48,32 @@ svg {
     /*Font*/
         font-size: 1vw;
         user-select: none; /* empêche la sélection du texte */
+        color: var(--background-color); // Utilise la couleur de fond pour le texte de l'onglet
 
     /*Test*/
-        background-color: rgba(42, 130, 165, 0.451);
+        // background-color: rgba(42, 130, 165, 0.451);
 }
+
+.contact-info {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--background-color); // Utilise la couleur de fond pour les informations de contact
+  
+  &:hover {
+    // color: #007bff;
+    text-decoration: underline;
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+#QrDeco2{
+    position: absolute;
+    width: 100px;
+    top: 130px;
+    right: 22px;
+}
+
+
