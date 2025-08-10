@@ -1,14 +1,13 @@
-@use 'variables' as *;
 
 //Modification de la couleur de selection par default
 ::selection {
-    background: $background-color;
-    color:$primary-color;
+    background: var(--background-color);
+    color: var(--primary-color);
   }
   
 ::-moz-selection {
-    background: $background-color;
-    color:$primary-color;
+    background: var(--background-color);
+    color: var(--primary-color);
   }
 
 // Style de la police
@@ -16,12 +15,10 @@
   font-family: 'JetBrains Mono', monospace;
 }
 
-
-
 main {
   height: 100%;
   box-sizing: border-box;
-  border: 15px solid $background-color;
+  border: 15px solid var(--background-color);
 }
 
 .mainHeader {
@@ -37,7 +34,7 @@ main {
   h1,h2,h3 {
     margin: 0;
     padding: 0;
-    color: $background-color;
+    color: var(--background-color);
   }
 
   h1{
@@ -92,8 +89,9 @@ main {
 
 #menu {
   position: absolute;
-  top: 10%;
-  right: 10%;
-  width: 20%;
-  min-width: 200px;
+  top: 31%;
+  left: 1.5%;
+  width: 9%;
+  // min-width: 200px;
+  // background-color: rgba(210, 105, 30, 0.801);
 }

@@ -1,4 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Variables CSS root - remplacement des variables SCSS */
+// Il faut que la secondary color soit la même que la primary color mais avec une opacité de 0.5 dynamiquement
+:root {
+  --primary-color: rgba(237, 229, 43, 1);
+  --secondary-color: rgba(237, 229, 43, 0.5);
+  --background-color: #000000;
+  --text-color: #333;
+  --link-color: #2196F3;
+}
+
 img {
   -webkit-user-drag: none; /* Pas d'image draggable */
 }

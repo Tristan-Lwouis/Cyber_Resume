@@ -1,7 +1,6 @@
 .terminal {
-   color: #000000;
-   background-color: #EDE52B;
-   pointer-events: none;
+  background-color: var(--primary-color);
+  pointer-events: none;
   //background-color: red;
 
   border: 1px solid;

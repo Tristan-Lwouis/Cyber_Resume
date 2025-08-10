@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 // Importer les composants nécessaires pour l'application
 import { UserInfoCardComponent } from './components/user-info-card/user-info-card.component';
@@ -15,6 +16,7 @@ import { MenuComponent } from './components/menu/menu.component';
   selector: 'app-root',
   imports: [
     RouterOutlet,
+    NgIf,
     UserInfoCardComponent,
     InfoBulleComponent,
     RollingScriptComponent,
@@ -29,6 +31,35 @@ import { MenuComponent } from './components/menu/menu.component';
 })
 export class AppComponent {
   title = 'Cyber_Resume';
+  
+  // Propriétés pour contrôler l'affichage des composants
+  showExperience: boolean = true; // Par défaut, l'expérience est visible
+  showCompetences: boolean = false;
+  showSkills: boolean = false;
+  showLoisirs: boolean = false;
+  showPortfolio: boolean = false;
+  
+  // Méthode pour gérer les événements du menu
+  onMenuToggle(event: {index: number, isActive: boolean}): void {
+    switch(event.index) {
+      case 0: // EXPER1ENCES
+        this.showExperience = event.isActive;
+        break;
+      case 1: // COMP3TANCES
+        this.showCompetences = event.isActive;
+        break;
+      case 2: // SK1LLS
+        this.showSkills = event.isActive;
+        break;
+      case 3: // LOISIRS
+        this.showLoisirs = event.isActive;
+        break;
+      case 4: // PORTFOL1O
+        this.showPortfolio = event.isActive;
+        break;
+    }
+  }
+  
   //Pour le composant rollingScript
   monCode : string = ` 
 > Initialisation du système...

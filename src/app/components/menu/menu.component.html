@@ -1,4 +1,4 @@
-<nav>
+<div class="menuContainer">
     <ul>
         <li>
             <svg width="217" height="49" viewBox="0 0 217 49" fill="none" xmlns="http://www.w3.org/2000/svg" (click)="toggleMenu(0)">
@@ -61,4 +61,14 @@
             </svg>
         </li>
     </ul>
-</nav>
+    
+    <!-- A transferer dans le composant colorSelector -->
+    <!-- Boutons de test pour le changement dynamique des couleurs -->
+    <div class="color-controls" style="position: fixed; top: 10px; right: 10px; z-index: 1000; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 5px;">
+        <h4 style="color: white; margin: 0 0 10px 0;">Test Couleurs</h4>
+        <button (click)="setPrimaryColor('#ff0000')" style="background: #ff0000; color: white; border: none; padding: 5px 10px; margin: 2px; border-radius: 3px;">Rouge</button>
+        <button (click)="setPrimaryColor('#00ff00')" style="background: #00ff00; color: black; border: none; padding: 5px 10px; margin: 2px; border-radius: 3px;">Vert</button>
+        <button (click)="setPrimaryColor('#0000ff')" style="background: #0000ff; color: white; border: none; padding: 5px 10px; margin: 2px; border-radius: 3px;">Bleu</button>
+        <button (click)="setPrimaryColor('rgba(237, 229, 43, 1)')" style="background: rgba(237, 229, 43, 1); color: black; border: none; padding: 5px 10px; margin: 2px; border-radius: 3px;">Original</button>
+    </div>
+</div>
