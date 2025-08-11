@@ -46,7 +46,8 @@ svg {
         height :7%;
 
     /*Font*/
-        font-size: 1vw;
+        font-size: 1.2vw;
+        font-weight: 600;
         user-select: none; /* empêche la sélection du texte */
         color: var(--background-color); // Utilise la couleur de fond pour le texte de l'onglet
 

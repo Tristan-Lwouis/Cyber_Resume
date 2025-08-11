@@ -1,14 +1,10 @@
 
 .svg-container {
   aspect-ratio: 600 / 693;
-  // width: 100%;
-  // max-width: 600px;
-  // background-color: aquamarine;
 }
 
 .text-container{
     height: 100%;
-    // padding : 3%;
     overflow-y: scroll;
     padding : 0 2%
 }
@@ -41,7 +37,7 @@
   height: 20px;
   // cursor : grab;
   /*Test*/
-  // background-color: rgba(165, 42, 42, 0.295);
+  background-color: rgba(165, 42, 42, 0.295);
 }
 
 #svgHandle{
@@ -68,6 +64,7 @@
 
   /*Font*/
   font-size: 1vw;
+  font-weight: 600;
   user-select: none; /* empêche la sélection du texte */
 
   /*Test*/

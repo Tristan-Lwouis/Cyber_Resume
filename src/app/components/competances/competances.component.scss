@@ -1,0 +1,65 @@
+.svg-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+}
+
+#onglet {
+
+    /*FLEXBOX*/
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    /*Position*/
+    position: relative;
+    top: 8%;
+    padding: 0.5% 3%;
+    width: 36%;
+    height: 7%;
+
+    /*Font*/
+    font-size: 1.1em;
+    font-weight: 600;
+    user-select: none;
+    /* empêche la sélection du texte */
+
+    /*Test*/
+    // background-color: rgba(137, 43, 226, 0.649);
+}
+
+#Handle {
+    position: absolute;
+    top: 3%;
+    left: 40%;
+    width: 55%;
+    height: 10%;
+    color: var(--primary-color);
+
+    /*Font*/
+    font-size: 0.8em;
+    font-weight: 100;
+    user-select: none;
+    text-align: center;
+
+    /*Centrage vertical*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /*Test*/
+    // background-color: rgba(16, 171, 255, 0.602);
+}
+
+#text-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}

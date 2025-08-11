@@ -1,89 +1,24 @@
-<section class="tabLoisirsSkills" cdkDrag>
+<section class="svg-container" cdkDrag>
 
-  <!-- Tab one -->
-  <div class="bandeau-onglet">
+  <!-- TAB SELECTOR AND HANDLE -->
+  <div class="bandeau-onglet clickable">
     <div id="selectorTab1" (click)="showFirstTab()">
-      <p>LO1SIRS</p>
-      <p>X</p>
+      <span>LO1SIRS</span>
+      <span>X</span>
     </div>
     <!-- Tab two -->
     <div id="selectorTab2" (click)="showSecondTab()">
-      <p>SK1LLS</p>
-      <p>X</p>
+      <span>SK1LLS</span>
+      <span>X</span>
     </div>
     <!-- Handle -->
     <div id="Handle" cdkDragHandle>
+      <span>´</span>
     </div>
   </div>
 
-  <!-- FIRST TAB SKILLS -->
-  <svg class="cv-card" id="first-tab" [ngStyle]="{'z-index': loisirsZIndex}" width="853" height="284" viewBox="0 0 853 284"
-    fill="none" xmlns="http://www.w3.org/2000/svg">
-
-    <path d="M822.5 281H3V35V3H209.5L226.5 37.0061H850V253.5L822.5 281Z" fill="var(--primary-color)" stroke="black"
-      stroke-width="5" />
-
-    <!-- Intérieur de la carte -->
-    <foreignObject x="8" y="40" width="840" height="250">
-      <!--  
-        x : Décale le forein vers la droite
-        y : Décale le forein vers le bas
-        width : Largeur du forein
-        height : Hauteur du forein 
-        -->
-      <section id="Loisir">
-        <!-- Section avec les logos -->
-        <div style="width: 70%;">
-          <!-- Premiere ligne de logo -->
-          <div Class="LoisirCard">
-            <div>
-              <img src="/assets/media/icons/Hiking.png" alt="">
-              <p>Hiking</p>
-            </div>
-            <div>
-              <img src="/assets/media/icons/Shooting.png" alt="">
-              <p>Shooting</p>
-            </div>
-            <div>
-              <img src="/assets/media/icons/CyberSec.png" alt="">
-              <p>CyberSec</p>
-            </div>
-            <div>
-              <img src="/assets/media/icons/Guitar.png" alt="">
-              <p>Guitar</p>
-            </div>
-          </div>
-          <!-- Deuxieme ligne de logos -->
-          <div class="LoisirCard">
-            <div>
-              <img src="/assets/media/icons/Boxing.png" alt="">
-              <p>Boxing</p>
-            </div>
-            <div>
-              <img src="/assets/media/icons/Axe.png" alt="">
-              <p>Forging</p>
-            </div>
-            <div>
-              <img src="/assets/media/icons/Graphism.png" alt="">
-              <p>Graphism</p>
-            </div>
-            <div>
-              <img src="/assets/media/icons/3D.png" alt="">
-              <p>3D</p>
-            </div>
-          </div>
-        </div>
-        <!-- Section avec le Qr code de déco -->
-        <div id="QrDeco">
-          <img src="/assets/media/icons/QR-Icon.png" alt="">
-        </div>
-      </section>
-    </foreignObject>
-
-  </svg>
-
-  <!-- SECOND TAB -->
-  <svg class="cv-card" id="second-tab" [ngStyle]="{'z-index': skillsZIndex}" width="853" height="284"
+  <!-- FIRST TAB LOISIRS -->
+  <svg class="carte" [ngStyle]="{'z-index': skillsZIndex}" width="853" height="284"
     viewBox="0 0 853 284" fill="none" xmlns="http://www.w3.org/2000/svg">
 
     <path d="M781.501 14.7576H301.001V48.7576H791.001V24.9134L781.501 14.7576Z" fill="black" stroke="black"
@@ -156,6 +91,59 @@
         </div>
       </section>
     </foreignObject>
+  </svg>
+
+  <!-- SECOND TAB SKILLS -->
+  <svg class="carte" [ngStyle]="{'z-index': loisirsZIndex}" width="853" height="284" viewBox="0 0 853 284"
+    fill="none" xmlns="http://www.w3.org/2000/svg">
+
+    <path d="M822.5 281H3V35V3H209.5L226.5 37.0061H850V253.5L822.5 281Z" fill="var(--primary-color)" stroke="black"
+      stroke-width="5" />
+
+    <!-- Intérieur de la carte -->
+    <foreignObject id="test" x="8" y="40" width="100%" height="100%">
+      <section id="Loisir">
+          <!-- Premiere ligne de logo -->
+         
+            <div class="LoisirIcon">
+              <img src="/assets/media/icons/Hiking.png" alt="">
+              <p>Hiking</p>
+            </div>
+            <div class="LoisirIcon">
+              <img src="/assets/media/icons/CyberSec.png" alt="">
+              <p>CyberSec</p>
+            </div>
+            <div class="LoisirIcon">
+              <img src="/assets/media/icons/Boxing.png" alt="">
+              <p>Boxing</p>
+            </div>
+            <div class="LoisirIcon">
+              <img src="/assets/media/icons/Shooting.png" alt="">
+              <p>Shooting</p>
+            </div>
+            <div class="LoisirIcon">
+              <img src="/assets/media/icons/Axe.png" alt="">
+              <p>Forging</p>
+            </div>
+            <div class="LoisirIcon">
+              <img src="/assets/media/icons/Graphism.png" alt="">
+              <p>Graphism</p>
+            </div>
+            <div class="LoisirIcon">
+              <img src="/assets/media/icons/3D.png" alt="">
+              <p>3D</p>
+            </div>
+            <div class="LoisirIcon">
+              <img src="/assets/media/icons/Guitar.png" alt="">
+              <p>Guitar</p>
+            </div>
+          </section>
+      <!-- Section avec le Qr code de déco -->
+      <div id="QrDeco">
+        <img src="/assets/media/icons/QR-Icon.png" alt="">
+      </div>
+    </foreignObject>
+
   </svg>
 
 </section>

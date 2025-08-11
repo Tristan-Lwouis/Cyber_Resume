@@ -59,7 +59,7 @@ main {
   // background-color: chartreuse;
 }
 // Positionnement des composants principaux
-#userInfoCard{ //Skills ou Loisirs
+#loisirSkills{ //Skills ou Loisirs
   position: absolute;
   width: 30%;
   // min-width: 500px;
@@ -106,9 +106,11 @@ main {
 
 #competances {
   position: absolute;
-  // top: 5vh;
-  // left: 1.5vw;
-  top: 50%;
-  left: 50%;
-  width: 19%;
+  bottom: 5vh;
+  left: 15vw;
+  // top: 50%;
+  // left: 50%;
+  width: 25%;
+  // min-width: 300px;
+  // max-width: 400px;
 }
