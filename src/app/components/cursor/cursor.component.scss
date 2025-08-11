@@ -1,3 +1,12 @@
+// Masquer le curseur par défaut du navigateur
+* {
+  cursor: none !important;
+}
+
+// Exception pour les éléments qui ne doivent pas avoir de curseur personnalisé
+input, textarea, select, button, a, [role="button"], [tabindex] {
+  cursor: none !important;
+}
 
 .custom-cursor {
   position: fixed;
@@ -20,6 +29,7 @@
   position: absolute;
   background: var(--background-color);
   transition: all 0.2s ease-out;
+  box-shadow: 0 0 0 1px var(--primary-color);
 }
 
 .top {
@@ -28,6 +38,7 @@
   width: 2px;
   height: 15px;
   transform: translateX(-50%);
+  box-shadow: 0 0 0 1px var(--primary-color);
 }
 
 .right {
@@ -36,6 +47,7 @@
   width: 15px;
   height: 2px;
   transform: translateY(-50%);
+  box-shadow: 0 0 0 1px var(--primary-color);
 }
 
 .bottom {
@@ -44,6 +56,7 @@
   width: 2px;
   height: 15px;
   transform: translateX(-50%);
+  box-shadow: 0 0 0 1px var(--primary-color);
 }
 
 .left {
@@ -52,27 +65,28 @@
   width: 15px;
   height: 2px;
   transform: translateY(-50%);
+  box-shadow: 0 0 0 1px var(--primary-color);
 }
 
-// Animation au clic - les lignes se rejoignent
+// Animation au clic - les lignes se rapprochent sans se toucher
 .cross.clicked .top {
   transform: translateX(-50%) translateY(5px);
-  height: 20px;
+  height: 12px;
 }
 
 .cross.clicked .right {
   transform: translateY(-50%) translateX(-5px);
-  width: 20px;
+  width: 12px;
 }
 
 .cross.clicked .bottom {
   transform: translateX(-50%) translateY(-5px);
-  height: 20px;
+  height: 12px;
 }
 
 .cross.clicked .left {
   transform: translateY(-50%) translateX(5px);
-  width: 20px;
+  width: 12px;
 }
 
 .coords {
@@ -85,4 +99,28 @@
   color: #222;
   user-select: none;
   white-space: nowrap;
+}
+
+.pointer-circle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--background-color);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: all 0.3s ease-out;
+  pointer-events: none;
+  box-shadow: 0 0 0 1px var(--primary-color);
+}
+
+.pointer-circle.visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.pointer-circle:not(.visible) {
+  transform: translate(-50%, -50%) scale(0.8);
 }

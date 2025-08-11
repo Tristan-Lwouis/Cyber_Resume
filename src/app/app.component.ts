@@ -12,6 +12,7 @@ import { PersonalInfoComponent } from "./components/personal-info/personal-info.
 import { CursorComponent } from './components/cursor/cursor.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { UserInformationsComponent } from './components/user-informations/user-informations.component';
+import { CompetancesComponent } from './components/competances/competances.component';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,8 @@ import { UserInformationsComponent } from './components/user-informations/user-i
     PersonalInfoComponent,
     CursorComponent,
     MenuComponent,
-    UserInformationsComponent
+    UserInformationsComponent,
+    CompetancesComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
