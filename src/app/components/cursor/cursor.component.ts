@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -6,7 +6,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './cursor.component.html',
-  styleUrls: ['./cursor.component.scss']
+  styleUrls: ['./cursor.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CursorComponent {
   x = 0;

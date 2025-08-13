@@ -21,6 +21,12 @@ html, body {
   margin: 0;
   cursor: none !important;
   overflow: hidden;
+  /* Optimisations de performance */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* Réduire les reflows */
+  will-change: auto;
 }
 
 a {

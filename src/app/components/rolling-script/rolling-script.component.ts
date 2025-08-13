@@ -2,6 +2,7 @@ import {
   Component,
   Input,
   AfterViewInit,
+  OnDestroy,
   ViewChild,
   ElementRef
 } from '@angular/core';
@@ -14,7 +15,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './rolling-script.component.html',
   styleUrls: ['./rolling-script.component.scss']
 })
-export class RollingScriptComponent implements AfterViewInit {
+export class RollingScriptComponent implements AfterViewInit, OnDestroy {
   @Input() code: string = '';
   @Input() typingSpeed: number = 15;
   @Input() width: string = '600px';
@@ -29,6 +30,13 @@ export class RollingScriptComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.startTyping();
+  }
+
+  ngOnDestroy(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
   }
 
   private startTyping() {

@@ -27,12 +27,15 @@ export class InfoBulleComponent implements OnInit, OnDestroy, OnChanges {
   ngOnDestroy() {
     if (this.typingInterval) {
       clearInterval(this.typingInterval);
+      this.typingInterval = null;
     }
     if (this.hideTimer) {
       clearTimeout(this.hideTimer);
+      this.hideTimer = null;
     }
     if (this.fadeTimer) {
       clearTimeout(this.fadeTimer);
+      this.fadeTimer = null;
     }
   }
 

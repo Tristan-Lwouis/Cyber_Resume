@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NgIf } from '@angular/common';
 
@@ -13,6 +13,7 @@ import { CursorComponent } from './components/cursor/cursor.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { UserInformationsComponent } from './components/user-informations/user-informations.component';
 import { CompetancesComponent } from './components/competances/competances.component';
+import { MemoryMonitorService } from './services/memory-monitor.service';
 
 @Component({
   selector: 'app-root',
@@ -33,8 +34,10 @@ import { CompetancesComponent } from './components/competances/competances.compo
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
   title = 'Cyber_Resume';
+  
+  constructor(private memoryMonitor: MemoryMonitorService) {}
   
   // Propriété pour communiquer avec l'info-bulle
   avatarClickedState: boolean = false;
@@ -122,6 +125,10 @@ export class AppComponent {
     // Cette méthode sera appelée après chaque changement d'état pour s'assurer
     // que le menu reflète l'état actuel
     // Le menu se mettra automatiquement à jour grâce au binding [menuStates]="menuStates"
+  }
+  
+  ngOnDestroy(): void {
+    this.memoryMonitor.stopMonitoring();
   }
   
   //Pour le composant rollingScript

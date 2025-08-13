@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import * as THREE from 'three';
 
 @Component({
@@ -6,7 +6,7 @@ import * as THREE from 'three';
   templateUrl: './avatar.component.html',
   styleUrl: './avatar.component.scss'
 })
-export class AvatarComponent implements AfterViewInit {
+export class AvatarComponent implements AfterViewInit, OnDestroy {
   @ViewChild('avatarCanvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
   @Output() avatarClicked = new EventEmitter<void>();
 
@@ -19,13 +19,67 @@ export class AvatarComponent implements AfterViewInit {
   private mixer?: THREE.AnimationMixer; // Pour les animations du modèle
   private raycaster = new THREE.Raycaster(); // Pour détecter les clics sur les objets 3D
   private mouse = new THREE.Vector2(); // Position de la souris
+  private animationId: number | null = null; // ID de l'animation pour requestAnimationFrame
+  private resizeHandler: (() => void) | null = null; // Handler pour le resize
 
   async ngAfterViewInit(): Promise<void> {
     await this.initThree();
     await this.loadModel();
     this.animate();
     this.setupClickDetection();
-    window.addEventListener('resize', () => this.onResize());
+    this.resizeHandler = () => this.onResize();
+    window.addEventListener('resize', this.resizeHandler);
+  }
+
+  ngOnDestroy(): void {
+    // Arrêter l'animation
+    if (this.animationId !== null) {
+      cancelAnimationFrame(this.animationId);
+      this.animationId = null;
+    }
+
+    // Nettoyer l'event listener
+    if (this.resizeHandler) {
+      window.removeEventListener('resize', this.resizeHandler);
+      this.resizeHandler = null;
+    }
+
+    // Nettoyer les contrôles
+    if (this.controls) {
+      this.controls.dispose();
+    }
+
+    // Nettoyer le mixer d'animation
+    if (this.mixer) {
+      this.mixer.stopAllAction();
+      this.mixer.uncacheRoot(this.model!);
+    }
+
+    // Nettoyer le renderer
+    if (this.renderer) {
+      this.renderer.dispose();
+    }
+
+    // Nettoyer la scène
+    if (this.scene) {
+      this.scene.clear();
+    }
+
+    // Nettoyer le modèle
+    if (this.model) {
+      this.model.traverse((child: any) => {
+        if (child.geometry) {
+          child.geometry.dispose();
+        }
+        if (child.material) {
+          if (Array.isArray(child.material)) {
+            child.material.forEach((material: any) => material.dispose());
+          } else {
+            child.material.dispose();
+          }
+        }
+      });
+    }
   }
 
   private setupClickDetection() {
@@ -161,7 +215,7 @@ export class AvatarComponent implements AfterViewInit {
   // === Boucle d'animation ===
   // Appelée à chaque frame pour mettre à jour la scène
   private animate = () => {
-    requestAnimationFrame(this.animate);
+    this.animationId = requestAnimationFrame(this.animate);
     if (this.controls) this.controls.update(); // met à jour les contrôles caméra
     if (this.mixer) this.mixer.update(1 / 60); // met à jour les animations (si présentes)
     this.renderer.render(this.scene, this.camera); // dessine la scène
