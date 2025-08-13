@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import * as THREE from 'three';
 
 @Component({
@@ -8,6 +8,7 @@ import * as THREE from 'three';
 })
 export class AvatarComponent implements AfterViewInit {
   @ViewChild('avatarCanvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
+  @Output() avatarClicked = new EventEmitter<void>();
 
   // === Paramètres principaux de la scène ===
   private renderer!: THREE.WebGLRenderer; // Gère le rendu WebGL
@@ -16,12 +17,40 @@ export class AvatarComponent implements AfterViewInit {
   private controls!: any; // Contrôles de la caméra (OrbitControls)
   private model: THREE.Group | undefined; // Le modèle 3D chargé (GLTF)
   private mixer?: THREE.AnimationMixer; // Pour les animations du modèle
+  private raycaster = new THREE.Raycaster(); // Pour détecter les clics sur les objets 3D
+  private mouse = new THREE.Vector2(); // Position de la souris
 
   async ngAfterViewInit(): Promise<void> {
     await this.initThree();
     await this.loadModel();
     this.animate();
+    this.setupClickDetection();
     window.addEventListener('resize', () => this.onResize());
+  }
+
+  private setupClickDetection() {
+    const canvas = this.canvasRef.nativeElement;
+    
+    canvas.addEventListener('click', (event) => {
+      // Calculer la position de la souris en coordonnées normalisées (-1 à +1)
+      const rect = canvas.getBoundingClientRect();
+      this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+      // Lancer un rayon depuis la caméra vers la position de la souris
+      this.raycaster.setFromCamera(this.mouse, this.camera);
+
+      // Vérifier les intersections avec les objets de la scène
+      if (this.model) {
+        const intersects = this.raycaster.intersectObjects(this.model.children, true);
+        
+        // Si le rayon intersecte avec le modèle, émettre l'événement
+        if (intersects.length > 0) {
+          console.log('Clic détecté sur le modèle 3D!');
+          this.avatarClicked.emit();
+        }
+      }
+    });
   }
 
   private async initThree() {
@@ -68,7 +97,7 @@ export class AvatarComponent implements AfterViewInit {
     // === Sol invisible pour recevoir les ombres ===
     // Le matériau ShadowMaterial rend le sol invisible mais affiche les ombres
     const planeGeometry = new THREE.PlaneGeometry(20, 20); // taille du sol
-    const planeMaterial = new THREE.ShadowMaterial({ opacity: 0.2 }); // intensité de l’ombre
+    const planeMaterial = new THREE.ShadowMaterial({ opacity: 0.2 }); // intensité de l'ombre
     const plane = new THREE.Mesh(planeGeometry, planeMaterial);
     plane.rotation.x = -Math.PI / 2; // à plat (horizontal)
     plane.position.y = 0; // hauteur du sol

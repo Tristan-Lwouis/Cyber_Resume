@@ -20,11 +20,11 @@ interface Language {
 export class CompetancesComponent {
   // Données des langages - facilement modifiables et extensibles
   languages: Language[] = [
-    {
+    { //JAVASCRIPT
       id: 'javascript',
       name: 'JAVASCRIPT',
       icon: '/assets/media/icons/LANG_logo-javascript.svg',
-      progressWidth: 85, // 85% de largeur
+      progressWidth: 60, // 85% de largeur
       skills: [
         'Programmation modulaire',
         'Gestion des structures',
@@ -33,7 +33,7 @@ export class CompetancesComponent {
         'Frameworks modernes'
       ]
     },
-    {
+    { //HTML
       id: 'html',
       name: 'HTML',
       icon: '/assets/media/icons/LANG_html-5.svg',
@@ -44,7 +44,7 @@ export class CompetancesComponent {
         'Formulaires et validation'
       ]
     },
-    {
+    { //CSS
       id: 'css',
       name: 'CSS',
       icon: '/assets/media/icons/LANG_css.svg',
@@ -56,7 +56,7 @@ export class CompetancesComponent {
         'Préprocesseurs (Sass)'
       ]
     },
-    {
+    { //PYTHON
       id: 'python',
       name: 'PYTHON',
       icon: '/assets/media/icons/LANG_python.svg',
@@ -107,7 +107,7 @@ export class CompetancesComponent {
 
   // Méthode pour mettre à jour la hauteur du path
   updatePathHeight() {
-    // Si au moins une flèche est ouverte, garder la hauteur à 600
+    // Si au moins une flèche est ouverte, garder la hauteur à 600 sinon 330
     const hasAnyOpen = Object.values(this.open).some(isOpen => isOpen);
     this.pathHeight = hasAnyOpen ? 600 : 330;
   }
@@ -127,8 +127,8 @@ export class CompetancesComponent {
     // Vérifier si au moins une flèche est ouverte
     const hasAnyOpen = Object.values(this.open).some(isOpen => isOpen);
     
-    // Si aucune flèche n'est ouverte, hauteur = 40%
-    // Sinon, hauteur = 88% pour laisser de la place aux descriptions
+    // Si aucune flèche n'est ouverte, hauteur = 43%
+    // Sinon, hauteur = 87% pour laisser de la place aux descriptions
     return hasAnyOpen ? '87%' : '43%';
   }
 

@@ -1,3 +1,27 @@
+.info-bulle-wrapper {
+  transition: all 0.5s ease-in-out;
+  opacity: 1;
+  transform: scale(1);
+  animation: fadeIn 0.8s ease-in-out; // Animation d'apparition
+}
+
+.info-bulle-wrapper.fade-out {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+// Animation fade-in pour l'apparition
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 .infoBulleSvg, svg{
     position: relative;
     width: 100%;
@@ -27,7 +51,6 @@ p{
 #barCode{
     font-family: "Libre Barcode 39";
     font-size: 2.1em;
-
 }
 
 #QrDeco2{
@@ -35,4 +58,33 @@ p{
     width: 50px;
     top: 215px;
     left: 253px;
+}
+
+// Styles pour l'effet machine à écrire
+.typing-container {
+    min-height: 80px; // Hauteur minimale pour éviter le saut de contenu
+}
+
+.typing-text {
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.cursor {
+    color: var(--primary-color);
+    font-weight: bold;
+    animation: blink 1s infinite;
+}
+
+.cursor.blink {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% {
+        opacity: 1;
+    }
+    51%, 100% {
+        opacity: 0;
+    }
 }

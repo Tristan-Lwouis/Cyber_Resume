@@ -68,9 +68,9 @@
                         <path d="M364 31L357 31L357 8L364 8" stroke="#B2AD20" />
                         <rect x="363.5" y="20.5" width="4" height="2" transform="rotate(-180 363.5 20.5)"
                             stroke="#B2AD20" />
-                        <foreignObject x="0" y="0" width="100%" height="100%">
+                        <foreignObject x="0" y="0" width="100%" height="100%" >
                             <div class="test">
-                                <div class="progress-bar">
+                                <div class="progress-bar" [style.width]="getProgressBarWidth(language)">
                                     <span>{{ language.name }}</span>
                                 </div>
                             </div>

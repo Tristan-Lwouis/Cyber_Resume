@@ -36,6 +36,9 @@ import { CompetancesComponent } from './components/competances/competances.compo
 export class AppComponent {
   title = 'Cyber_Resume';
   
+  // Propriété pour communiquer avec l'info-bulle
+  avatarClickedState: boolean = false;
+  
   // Propriétés pour contrôler l'affichage des composants
   // État centralisé de tous les menus
   menuStates: boolean[] = [true, false, false, false, false]; // [Experience, Competences, Skills, Loisirs, Portfolio]
@@ -54,6 +57,12 @@ export class AppComponent {
   // Getter pour afficher le loisir-skills (visible si Skills OU Loisirs est actif)
   get showUserInfoCard(): boolean { 
     return this.menuStates[2] || this.menuStates[3]; // Skills OU Loisirs
+  }
+  
+  // Méthode appelée quand l'avatar est cliqué
+  onAvatarClicked(): void {
+    console.log('Avatar cliqué - Communication avec info-bulle');
+    this.avatarClickedState = !this.avatarClickedState; // Toggle pour déclencher la détection
   }
   
   // Méthode pour gérer les événements du menu
