@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnDestroy, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, ElementRef, ViewChild, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import * as THREE from 'three';
 
 @Component({
@@ -6,9 +6,10 @@ import * as THREE from 'three';
   templateUrl: './avatar.component.html',
   styleUrl: './avatar.component.scss'
 })
-export class AvatarComponent implements AfterViewInit, OnDestroy {
+export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
   @ViewChild('avatarCanvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
   @Output() avatarClicked = new EventEmitter<void>();
+  @Input() isVisible: boolean = true;
 
   // === Paramètres principaux de la scène ===
   private renderer!: THREE.WebGLRenderer; // Gère le rendu WebGL
@@ -22,6 +23,10 @@ export class AvatarComponent implements AfterViewInit, OnDestroy {
   private animationId: number | null = null; // ID de l'animation pour requestAnimationFrame
   private resizeHandler: (() => void) | null = null; // Handler pour le resize
 
+  /**
+   * Méthode appelée après l'initialisation de la vue du composant
+   * Initialise la scène 3D, charge le modèle, démarre l'animation et configure les événements
+   */
   async ngAfterViewInit(): Promise<void> {
     await this.initThree();
     await this.loadModel();
@@ -31,6 +36,34 @@ export class AvatarComponent implements AfterViewInit, OnDestroy {
     window.addEventListener('resize', this.resizeHandler);
   }
 
+  /**
+   * Méthode appelée quand les propriétés d'entrée du composant changent
+   * Gère la visibilité de l'avatar en masquant/affichant le canvas et en contrôlant l'animation
+   */
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['isVisible'] && this.canvasRef) {
+      const canvas = this.canvasRef.nativeElement;
+      if (this.isVisible) {
+        canvas.style.display = 'block';
+        // Redémarrer l'animation si nécessaire
+        if (this.animationId === null) {
+          this.animate();
+        }
+      } else {
+        canvas.style.display = 'none';
+        // Arrêter l'animation pour économiser les ressources
+        if (this.animationId !== null) {
+          cancelAnimationFrame(this.animationId);
+          this.animationId = null;
+        }
+      }
+    }
+  }
+
+  /**
+   * Méthode appelée lors de la destruction du composant
+   * Nettoie toutes les ressources 3D, arrête l'animation et supprime les event listeners
+   */
   ngOnDestroy(): void {
     // Arrêter l'animation
     if (this.animationId !== null) {
@@ -82,6 +115,10 @@ export class AvatarComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+   * Configure la détection des clics sur le modèle 3D
+   * Utilise un raycaster pour détecter si l'utilisateur clique sur le modèle et émet un événement
+   */
   private setupClickDetection() {
     const canvas = this.canvasRef.nativeElement;
     
@@ -107,6 +144,10 @@ export class AvatarComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  /**
+   * Initialise la scène 3D Three.js avec la caméra, le renderer, les lumières et les contrôles
+   * Configure l'environnement 3D complet pour l'affichage du modèle
+   */
   private async initThree() {
     const canvas = this.canvasRef.nativeElement;
     this.scene = new THREE.Scene();
@@ -120,7 +161,7 @@ export class AvatarComponent implements AfterViewInit, OnDestroy {
       0.1, // near : distance minimale visible
       1000 // far : distance maximale visible
     );
-    this.camera.position.set(0, 1, 2.3); // Position de la caméra (x, y, z)
+    this.camera.position.set(0.5, 1.5, 2.1); // Position de la caméra (x, y, z)
 
     // === Renderer ===
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -168,10 +209,14 @@ export class AvatarComponent implements AfterViewInit, OnDestroy {
     this.controls.target.set(0, 1, 0); // point autour duquel la caméra tourne (x, y, z)
     // Pour limiter le zoom ou la rotation, tu peux utiliser :
     this.controls.minDistance = 1;
-    this.controls.maxDistance = 10;
+    this.controls.maxDistance = 8;
     this.controls.maxPolarAngle = Math.PI / 2; // limite l'angle vertical
   }
 
+  /**
+   * Charge le modèle 3D GLTF depuis le fichier assets/3D/model.glb
+   * Configure les ombres et les animations du modèle chargé
+   */
   private async loadModel() {
     // @ts-ignore
     const { GLTFLoader } = await import('three/examples/jsm/loaders/GLTFLoader');
@@ -212,16 +257,21 @@ export class AvatarComponent implements AfterViewInit, OnDestroy {
     );
   }
 
-  // === Boucle d'animation ===
-  // Appelée à chaque frame pour mettre à jour la scène
+  /**
+   * Boucle d'animation principale appelée à chaque frame
+   * Met à jour les contrôles de caméra, les animations du modèle et rend la scène
+   */
   private animate = () => {
     this.animationId = requestAnimationFrame(this.animate);
     if (this.controls) this.controls.update(); // met à jour les contrôles caméra
-    if (this.mixer) this.mixer.update(1 / 60); // met à jour les animations (si présentes)
+    if (this.mixer) this.mixer.update(1 / 80); // met à jour les animations (si présentes) + controle de vitesse de l'animation
     this.renderer.render(this.scene, this.camera); // dessine la scène
   };
 
-  // === Gestion du redimensionnement de la fenêtre ===
+  /**
+   * Gère le redimensionnement de la fenêtre
+   * Met à jour la caméra et le renderer pour s'adapter à la nouvelle taille du canvas
+   */
   private onResize() {
     const canvas = this.canvasRef.nativeElement;
     const width = canvas.clientWidth;

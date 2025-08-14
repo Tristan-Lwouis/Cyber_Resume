@@ -11,12 +11,14 @@ export class MenuComponent implements OnDestroy {
   
   //#region PROPRIÉTÉS
   // État de chaque menu reçu depuis le composant parent
-  @Input() menuStates: boolean[] = [true, false, false, false, false];
+  // Gestion depuis app.component.ts
+  @Input() menuStates: boolean[] = [true, true, true, false, false]; 
   
   // Taille du stroke (contour)
   strokeWidth: number = 7;
   //#endregion
   
+  // ⚠️ A deplacer dans le composant colorSelector ⚠️
   //#region COULEURS
   // Couleurs (utilisant les variables CSS)
   primaryColor: string = 'rgba(237, 229, 43, 1)'; // Valeur de --primary-color

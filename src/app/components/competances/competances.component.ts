@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop'; //Drag and Drop
+import { AudioEventsService } from '../../services/audio-events.service';
 
 // Interface pour définir la structure d'un langage
 interface Language {
@@ -13,7 +14,7 @@ interface Language {
 
 @Component({
   selector: 'app-competances',
-  imports: [CommonModule,DragDropModule],
+  imports: [CommonModule, DragDropModule],
   templateUrl: './competances.component.html',
   styleUrl: './competances.component.scss'
 })
@@ -78,7 +79,7 @@ export class CompetancesComponent {
   // Propriété pour la hauteur du path SVG
   pathHeight: number = 330;
 
-  constructor() {
+  constructor(private audioEventsService: AudioEventsService) {
     // Initialiser les états pour chaque langage
     this.languages.forEach(lang => {
       this.arrowRotation[lang.id] = 0;
@@ -95,9 +96,13 @@ export class CompetancesComponent {
     if (this.arrowRotation[language] > 90) {
       this.arrowRotation[language] = 0;
       this.open[language] = false;
+      // Jouer le son de fermeture
+      this.audioEventsService.playCloseSound();
       // console.log("close")
     } else {
       this.open[language] = true;
+      // Jouer le son d'ouverture
+      this.audioEventsService.playOpenSound();
       // console.log("open")
     }
     

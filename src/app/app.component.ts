@@ -13,7 +13,9 @@ import { CursorComponent } from './components/cursor/cursor.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { UserInformationsComponent } from './components/user-informations/user-informations.component';
 import { CompetancesComponent } from './components/competances/competances.component';
+import { PortfolioComponent } from './components/portfolio/portfolio.component';
 import { MemoryMonitorService } from './services/memory-monitor.service';
+import { AudioEventsService } from './services/audio-events.service';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +31,8 @@ import { MemoryMonitorService } from './services/memory-monitor.service';
     CursorComponent,
     MenuComponent,
     UserInformationsComponent,
-    CompetancesComponent
+    CompetancesComponent,
+    PortfolioComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -37,14 +40,21 @@ import { MemoryMonitorService } from './services/memory-monitor.service';
 export class AppComponent implements OnDestroy {
   title = 'Cyber_Resume';
   
-  constructor(private memoryMonitor: MemoryMonitorService) {}
+  constructor(
+    private memoryMonitor: MemoryMonitorService,
+    private audioEventsService: AudioEventsService
+  ) {}
   
   // Propriété pour communiquer avec l'info-bulle
   avatarClickedState: boolean = false;
   
+  // Propriété pour contrôler l'affichage de l'avatar
+  showAvatar: boolean = true;
+  wasAvatarHidden: boolean = false;
+  
   // Propriétés pour contrôler l'affichage des composants
   // État centralisé de tous les menus
-  menuStates: boolean[] = [true, false, false, false, false]; // [Experience, Competences, Skills, Loisirs, Portfolio]
+  menuStates: boolean[] = [true, true, true, false, false]; // [Experience, Competences, Skills, Loisirs, Portfolio]
   
   // Gestion du z-index pour l'effet d'onglet entre Skills et Loisirs
   skillsZIndex: number = 1;
@@ -62,18 +72,38 @@ export class AppComponent implements OnDestroy {
     return this.menuStates[2] || this.menuStates[3]; // Skills OU Loisirs
   }
   
-  // Méthode appelée quand l'avatar est cliqué
+  /**
+   * Méthode appelée quand l'avatar est cliqué
+   * Bascule l'état de l'info-bulle et joue les sons appropriés
+   */
   onAvatarClicked(): void {
     console.log('Avatar cliqué - Communication avec info-bulle');
     this.avatarClickedState = !this.avatarClickedState; // Toggle pour déclencher la détection
+    
+    // Jouer le son d'ouverture quand l'info-bulle s'affiche
+    if (this.avatarClickedState) {
+      this.audioEventsService.playOpenSound();
+    } else {
+      this.audioEventsService.playCloseSound();
+    }
   }
   
-  // Méthode pour gérer les événements du menu
+  /**
+   * Méthode pour gérer les événements du menu principal
+   * Distribue les événements selon le type d'onglet et joue les sons appropriés
+   */
   onMenuToggle(event: {index: number, isActive: boolean}): void {
     if (event.index >= 0 && event.index < this.menuStates.length) {
       
+      // Jouer le son approprié selon l'action
+      this.audioEventsService.playToggleSound(event.isActive);
+      
+      // Logique spéciale pour Portfolio (index 4)
+      if (event.index === 4) {
+        this.handlePortfolioToggle(event.isActive);
+      }
       // Logique spéciale pour Skills (index 2) et Loisirs (index 3)
-      if (event.index === 2 || event.index === 3) {
+      else if (event.index === 2 || event.index === 3) {
         this.handleSkillsLoisirsToggle(event.index, event.isActive);
       } else {
         // Comportement normal pour les autres onglets
@@ -82,7 +112,10 @@ export class AppComponent implements OnDestroy {
     }
   }
   
-  // Méthode pour gérer le toggle exclusif entre Skills et Loisirs
+  /**
+   * Méthode pour gérer le toggle exclusif entre Skills et Loisirs
+   * Gère l'état mutuellement exclusif des onglets et les z-index pour l'effet de superposition
+   */
   private handleSkillsLoisirsToggle(index: number, isActive: boolean): void {
     if (isActive) {
       // Activer l'onglet cliqué et désactiver l'autre
@@ -104,29 +137,69 @@ export class AppComponent implements OnDestroy {
       // Les z-index restent inchangés car le composant sera caché
     }
   }
+
+  /**
+   * Méthode pour gérer le toggle du Portfolio
+   * Active/désactive le portfolio en masquant l'avatar et l'info-bulle, et gère l'état des autres onglets
+   */
+  private handlePortfolioToggle(isActive: boolean): void {
+    if (isActive) {
+      // Activer Portfolio et désactiver tous les autres
+      this.menuStates[4] = true; // Portfolio
+      this.menuStates[0] = false; // Experience
+      this.menuStates[1] = false; // Competences
+      this.menuStates[2] = false; // Skills
+      this.menuStates[3] = false; // Loisirs
+      this.wasAvatarHidden = true; // Masquer l'avatar
+      this.showAvatar = false; // Masquer l'avatar
+      this.avatarClickedState = false; // Masquer l'info-bulle
+    } else {
+      // Désactiver Portfolio et réactiver Experience par défaut
+      this.menuStates[4] = false; // Portfolio
+      
+      // Réinitialiser le flag AVANT de réafficher l'avatar pour permettre l'animation
+      this.wasAvatarHidden = false;
+      // Réafficher l'avatar avec animation
+      this.showAvatar = true;
+    }
+  }
   
-  // Méthode pour gérer les événements des onglets du loisir-skills
+  /**
+   * Méthode pour gérer les événements des onglets du composant loisir-skills
+   * Gère le toggle entre les onglets Skills et Loisirs avec les sons appropriés
+   */
   onTabToggle(event: {tab: 'skills' | 'loisirs', isActive: boolean}): void {
     if (event.tab === 'skills') {
       // Si Skills est déjà actif, on le désactive (toggle)
       // Sinon on active Skills et on désactive Loisirs
       const currentSkillsState = this.menuStates[2];
-      this.handleSkillsLoisirsToggle(2, !currentSkillsState);
+      const newState = !currentSkillsState;
+      this.audioEventsService.playToggleSound(newState);
+      this.handleSkillsLoisirsToggle(2, newState);
     } else if (event.tab === 'loisirs') {
       // Si Loisirs est déjà actif, on le désactive (toggle)
       // Sinon on active Loisirs et on désactive Skills
       const currentLoisirsState = this.menuStates[3];
-      this.handleSkillsLoisirsToggle(3, !currentLoisirsState);
+      const newState = !currentLoisirsState;
+      this.audioEventsService.playToggleSound(newState);
+      this.handleSkillsLoisirsToggle(3, newState);
     }
   }
   
-  // Méthode pour forcer la mise à jour de l'état du menu (pour synchroniser avec les onglets)
+  /**
+   * Méthode pour forcer la mise à jour de l'état du menu
+   * Permet de synchroniser l'état du menu avec les onglets (méthode préparée pour usage futur)
+   */
   private updateMenuState(): void {
     // Cette méthode sera appelée après chaque changement d'état pour s'assurer
     // que le menu reflète l'état actuel
     // Le menu se mettra automatiquement à jour grâce au binding [menuStates]="menuStates"
   }
   
+  /**
+   * Méthode appelée lors de la destruction du composant
+   * Arrête le monitoring de la mémoire pour éviter les fuites
+   */
   ngOnDestroy(): void {
     this.memoryMonitor.stopMonitoring();
   }

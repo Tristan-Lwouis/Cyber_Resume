@@ -7,14 +7,20 @@
   </header>
   <!-- COMPOSANTS -->
   <app-deco></app-deco>
-  <app-avatar id="avatar" (avatarClicked)="onAvatarClicked()"></app-avatar>
+  <app-avatar 
+    [isVisible]="showAvatar"
+    [class.avatar-appear]="showAvatar && !wasAvatarHidden"
+    [class.avatar-visible]="showAvatar" 
+    [class.avatar-hidden]="!showAvatar"
+    (avatarClicked)="onAvatarClicked()"></app-avatar>
   <app-user-informations id="userInformations"></app-user-informations>
   <app-loisir-skills id="loisirSkills" *ngIf="showUserInfoCard" [skillsZIndex]="skillsZIndex" [loisirsZIndex]="loisirsZIndex" (tabToggle)="onTabToggle($event)"></app-loisir-skills>
   <app-info-bulle id="infoBulle" [avatarClicked]="avatarClickedState"></app-info-bulle>
   <app-rolling-script id="rollingScript" [code]="monCode" [typingSpeed]="10" width="11vw" height="13.5vw"></app-rolling-script>
   <app-personal-info id="personalInfo" *ngIf="showExperience"></app-personal-info>
-  <app-cursor></app-cursor>
+  <app-cursor #cursorComponent></app-cursor>
   <app-menu id="menu" [menuStates]="menuStates" (menuToggle)="onMenuToggle($event)"></app-menu>
   <app-competances id="competances" *ngIf="showCompetences"></app-competances>
+  <app-portfolio id="portfolio" *ngIf="showPortfolio"></app-portfolio>
 </main>
 <router-outlet/>
