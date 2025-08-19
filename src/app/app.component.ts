@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NgIf } from '@angular/common';
 
@@ -38,29 +38,76 @@ import { AudioEventsService } from './services/audio-events.service';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnDestroy {
+  
+  // ========================================
+  // PROPRIÉTÉS GLOBALES
+  // ========================================
   title = 'Cyber_Resume';
   
-  constructor(
-    private memoryMonitor: MemoryMonitorService,
-    private audioEventsService: AudioEventsService
-  ) {}
-  
-  // Propriété pour communiquer avec l'info-bulle
-  avatarClickedState: boolean = false;
-  
-  // Propriété pour contrôler l'affichage de l'avatar
-  showAvatar: boolean = true;
-  wasAvatarHidden: boolean = false;
-  
-  // Propriétés pour contrôler l'affichage des composants
-  // État centralisé de tous les menus
-  menuStates: boolean[] = [true, true, true, false, false]; // [Experience, Competences, Skills, Loisirs, Portfolio]
+  // ========================================
+  // PROPRIÉTÉS DU MENU PRINCIPAL
+  // ========================================
+  // État centralisé de tous les menus [Experience, Competences, Skills, Loisirs, Portfolio]
+  menuStates: boolean[] = [true, true, true, false, false];
   
   // Gestion du z-index pour l'effet d'onglet entre Skills et Loisirs
-  skillsZIndex: number = 1;
-  loisirsZIndex: number = 2;
+  skillsZIndex: number = 2;
+  loisirsZIndex: number = 1;
   
-  // Getters pour faciliter l'accès aux états individuels
+  // ========================================
+  // PROPRIÉTÉS DE L'AVATAR
+  // ========================================
+  showAvatar: boolean = true;
+  wasAvatarHidden: boolean = false;
+  avatarClickedState: boolean = false;
+  
+  // ========================================
+  // PROPRIÉTÉS DU ROLLING SCRIPT
+  // ========================================
+  monCode: string = ` 
+> Initialisation du système...
+> Scan des ports...
+> Connexion à www.tristan.dev réussie.
+> Lecture des logs...
+> [OK] Expérience confirmée : developpement
+> [OK] Reconversion en développement : validée
+> [OK] Framework Angular détecté
+> Ready to code.
+
+> Routines hebdo détectées : 
+> - Apprentissage (cours, veille tech)
+> - Codage projet perso
+
+printf("Chargement du profil développeur...\n");
+printf("Bienvenue dans le portfolio de Tristan.\n");
+printf("Chargement des compétences : HTML... OK\n");
+printf("Chargement des compétences : CSS... OK\n");
+printf("Chargement des compétences : JavaScript... OK\n");
+printf("Chargement des compétences : Angular... EN COURS\n");
+printf("Chargement des compétences : JAVA... OK\n");
+printf("Chargement des compétences : JSE && J2E... OK\n");
+printf("Chargement des compétences : ANDROID... OK\n");
+printf("Connexion établie.\n");
+
+while (challenge) {
+  learn();
+  build();
+  repeat();
+}
+`;
+
+  // ========================================
+  // CONSTRUCTEUR
+  // ========================================
+  constructor(
+    private memoryMonitor: MemoryMonitorService,
+    private audioEventsService: AudioEventsService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  // ========================================
+  // GETTERS POUR L'AFFICHAGE DES COMPOSANTS
+  // ========================================
   get showExperience(): boolean { return this.menuStates[0]; }
   get showCompetences(): boolean { return this.menuStates[1]; }
   get showSkills(): boolean { return this.menuStates[2]; }
@@ -71,7 +118,10 @@ export class AppComponent implements OnDestroy {
   get showUserInfoCard(): boolean { 
     return this.menuStates[2] || this.menuStates[3]; // Skills OU Loisirs
   }
-  
+
+  // ========================================
+  // MÉTHODES DE L'AVATAR
+  // ========================================
   /**
    * Méthode appelée quand l'avatar est cliqué
    * Bascule l'état de l'info-bulle et joue les sons appropriés
@@ -87,7 +137,10 @@ export class AppComponent implements OnDestroy {
       this.audioEventsService.playCloseSound();
     }
   }
-  
+
+  // ========================================
+  // MÉTHODES DU MENU PRINCIPAL
+  // ========================================
   /**
    * Méthode pour gérer les événements du menu principal
    * Distribue les événements selon le type d'onglet et joue les sons appropriés
@@ -111,7 +164,7 @@ export class AppComponent implements OnDestroy {
       }
     }
   }
-  
+
   /**
    * Méthode pour gérer le toggle exclusif entre Skills et Loisirs
    * Gère l'état mutuellement exclusif des onglets et les z-index pour l'effet de superposition
@@ -163,29 +216,33 @@ export class AppComponent implements OnDestroy {
       this.showAvatar = true;
     }
   }
-  
+
+  // ========================================
+  // MÉTHODES DU COMPOSANT LOISIR-SKILLS
+  // ========================================
   /**
    * Méthode pour gérer les événements des onglets du composant loisir-skills
-   * Gère le toggle entre les onglets Skills et Loisirs avec les sons appropriés
+   * Gère le basculement entre les onglets Skills et Loisirs avec les sons appropriés
    */
   onTabToggle(event: {tab: 'skills' | 'loisirs', isActive: boolean}): void {
     if (event.tab === 'skills') {
-      // Si Skills est déjà actif, on le désactive (toggle)
-      // Sinon on active Skills et on désactive Loisirs
-      const currentSkillsState = this.menuStates[2];
-      const newState = !currentSkillsState;
-      this.audioEventsService.playToggleSound(newState);
-      this.handleSkillsLoisirsToggle(2, newState);
+      // Activer Skills et désactiver Loisirs
+      this.audioEventsService.playToggleSound(true);
+      this.handleSkillsLoisirsToggle(2, true);
+      // Forcer la mise à jour du menu en créant une nouvelle référence
+      this.menuStates = [...this.menuStates];
     } else if (event.tab === 'loisirs') {
-      // Si Loisirs est déjà actif, on le désactive (toggle)
-      // Sinon on active Loisirs et on désactive Skills
-      const currentLoisirsState = this.menuStates[3];
-      const newState = !currentLoisirsState;
-      this.audioEventsService.playToggleSound(newState);
-      this.handleSkillsLoisirsToggle(3, newState);
+      // Activer Loisirs et désactiver Skills
+      this.audioEventsService.playToggleSound(true);
+      this.handleSkillsLoisirsToggle(3, true);
+      // Forcer la mise à jour du menu en créant une nouvelle référence
+      this.menuStates = [...this.menuStates];
     }
   }
-  
+
+  // ========================================
+  // MÉTHODES UTILITAIRES
+  // ========================================
   /**
    * Méthode pour forcer la mise à jour de l'état du menu
    * Permet de synchroniser l'état du menu avec les onglets (méthode préparée pour usage futur)
@@ -195,7 +252,10 @@ export class AppComponent implements OnDestroy {
     // que le menu reflète l'état actuel
     // Le menu se mettra automatiquement à jour grâce au binding [menuStates]="menuStates"
   }
-  
+
+  // ========================================
+  // LIFECYCLE
+  // ========================================
   /**
    * Méthode appelée lors de la destruction du composant
    * Arrête le monitoring de la mémoire pour éviter les fuites
@@ -203,37 +263,4 @@ export class AppComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.memoryMonitor.stopMonitoring();
   }
-  
-  //Pour le composant rollingScript
-  monCode : string = ` 
-> Initialisation du système...
-> Scan des ports...
-> Connexion à www.tristan.dev réussie.
-> Lecture des logs...
-> [OK] Expérience confirmée : developpement
-> [OK] Reconversion en développement : validée
-> [OK] Framework Angular détecté
-> Ready to code.
-
-> Routines hebdo détectées : 
-> - Apprentissage (cours, veille tech)
-> - Codage projet perso
-
-printf("Chargement du profil développeur...\n");
-printf("Bienvenue dans le portfolio de Tristan.\n");
-printf("Chargement des compétences : HTML... OK\n");
-printf("Chargement des compétences : CSS... OK\n");
-printf("Chargement des compétences : JavaScript... OK\n");
-printf("Chargement des compétences : Angular... EN COURS\n");
-printf("Chargement des compétences : JAVA... OK\n");
-printf("Chargement des compétences : JSE && J2E... OK\n");
-printf("Chargement des compétences : ANDROID... OK\n");
-printf("Connexion établie.\n");
-
-while (challenge) {
-  learn();
-  build();
-  repeat();
-}
-`;
 }

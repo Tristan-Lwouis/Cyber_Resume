@@ -15,7 +15,7 @@
     (avatarClicked)="onAvatarClicked()"></app-avatar>
   <app-user-informations id="userInformations"></app-user-informations>
   <app-loisir-skills id="loisirSkills" *ngIf="showUserInfoCard" [skillsZIndex]="skillsZIndex" [loisirsZIndex]="loisirsZIndex" (tabToggle)="onTabToggle($event)"></app-loisir-skills>
-  <app-info-bulle id="infoBulle" [avatarClicked]="avatarClickedState"></app-info-bulle>
+  <app-info-bulle id="infoBulle" [avatarClicked]="avatarClickedState" [portfolioOpen]="showPortfolio"></app-info-bulle>
   <app-rolling-script id="rollingScript" [code]="monCode" [typingSpeed]="10" width="11vw" height="13.5vw"></app-rolling-script>
   <app-personal-info id="personalInfo" *ngIf="showExperience"></app-personal-info>
   <app-cursor #cursorComponent></app-cursor>
