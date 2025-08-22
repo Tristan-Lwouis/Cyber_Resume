@@ -96,7 +96,8 @@
   top: 10%;
   left: 0.25%;
   /*unité de la police a revoir pas responsive*/
-  font-size: 1.5vh;
+  font-size: 1.6vh;
+  font-weight: 900;
   z-index: 3; //Le selector est toujours devant par rapport au carte avec un Z-index 1 et 2
 
   /*----- FLEXBOX -----*/

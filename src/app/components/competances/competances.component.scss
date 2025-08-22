@@ -72,60 +72,38 @@
 // Zone des langages avec scrollbar
 .languages-container {
     height: 100%;
-    overflow-y: auto; // Active le scroll vertical quand le contenu dépasse
-    
-    // Scrollbar personnalisée pour la zone des langages
-    &::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    &::-webkit-scrollbar-track {
-        background: var(--background-color);
-        border-radius: 3px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: var(--primary-color);
-        border-radius: 3px;
-        transition: background 0.3s ease;
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-        background: rgba(0, 0, 0, 0.7);
-    }
-
-    // Pour Firefox
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary-color) rgba(0, 0, 0, 0.7);
+    overflow-y: auto;    
+    scrollbar-color: var(--background-color) var(--primary-color);
 }
 
 // Scrollbar pour le foreignObject SVG
 svg foreignObject {
+
+    //⚠️⚠️⚠️ A REVOIR ⚠️⚠️⚠️
+    // overflow-y: auto;    
+    // scrollbar-color: var(--background-color) var(--primary-color);
+    // scrollbar-width: thin;
+
     overflow-y: auto;
-    
     // Scrollbar personnalisée pour le foreignObject
     &::-webkit-scrollbar {
-        width: 8px;
+        width: 10px;
     }
-
     &::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.8);
+        background: var(--background-color);
         border-radius: 4px;
     }
-
     &::-webkit-scrollbar-thumb {
         background: var(--primary-color);
         border-radius: 4px;
         transition: background 0.3s ease;
     }
-
     &::-webkit-scrollbar-thumb:hover {
-        background: rgba(0, 0, 0, 0.8);
+        background: var(--background-color);
     }
-
     // Pour Firefox
     scrollbar-width: thin;
-    scrollbar-color: var(--primary-color) rgba(0, 0, 0, 0.8);
+    scrollbar-color: var(--primary-color) var(--background-color);
 }
 
 .language-item {

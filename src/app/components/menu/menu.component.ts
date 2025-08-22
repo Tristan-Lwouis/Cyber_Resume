@@ -12,7 +12,8 @@ export class MenuComponent implements OnDestroy {
   //#region PROPRIÉTÉS
   // État de chaque menu reçu depuis le composant parent
   // Gestion depuis app.component.ts
-  @Input() menuStates: boolean[] = [true, true, true, false, false]; 
+  // Structure: [Experience, Formation, Competences, Skills, Loisirs, Portfolio]
+  @Input() menuStates: boolean[] = [true, true, true, false, false, false]; 
   
   // Taille du stroke (contour)
   strokeWidth: number = 7;

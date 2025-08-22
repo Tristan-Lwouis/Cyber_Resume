@@ -1,12 +1,15 @@
 
 .svg-container {
   aspect-ratio: 600 / 693;
+    filter: drop-shadow(4px 4px 4px var(--secondary-color));
+  /* Appliquer le filtre au conteneur parent pour une meilleure compatibilité */
 }
+
 
 .text-container{
     height: 100%;
     overflow-y: scroll;
-    padding : 0 2%
+    padding : 0 2%;
 }
 
 .scrollable {

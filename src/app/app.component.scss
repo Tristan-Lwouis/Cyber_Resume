@@ -61,7 +61,7 @@ main {
 // Positionnement des composants principaux
 #loisirSkills{ //Skills ou Loisirs
   position: absolute;
-  width: 30%;
+  width: 32%;
   // min-width: 500px;
   bottom: 35%;
   left: 60%;
@@ -73,12 +73,25 @@ main {
   top: 22%;
   left: 31%;
 }
-#rollingScript {
+#rollingScript1 {
   // width: 30%; //On affecte la largeur dans le composant
   position: absolute;
-  top: 60%;
+  top: 63%;
   left: 1.5%;
+  // width: 11vw;
+  // height: 13.5vw;
 }
+
+// #rollingScript2 {
+//   // width: 30%; //On affecte la largeur dans le composant
+//   position: absolute;
+//   top: 20%;
+//   left: 42.5%;
+//   z-index: -1;
+//   // width: 1vw;
+//   // height: 13.5vh;
+// }
+
 #personalInfo { //Experience
   width: 20%; //On affecte la largeur dans le composant
   position: absolute;
@@ -87,7 +100,7 @@ main {
 }
 #menu {
   position: absolute;
-  top: 35%;
+  top: 33%;
   left: 1.5%;
   width: 9%;
   // min-width: 200px;
@@ -96,11 +109,11 @@ main {
 
 #userInformations {
   position: absolute;
-  top: 5vh;
+  top: 4.5vh;
   left: 1.5vw;
   // top: 50%;
   // left: 50%;
-  width: 19%;
+  width: 17%;
   // min-width: 200px;
 }
 

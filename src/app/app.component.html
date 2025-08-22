@@ -7,20 +7,22 @@
   </header>
   <!-- COMPOSANTS -->
   <app-deco></app-deco>
-  <app-avatar 
-    [isVisible]="showAvatar"
+  <!-- <app-avatar  -->
+    <!-- [isVisible]="showAvatar"
     [class.avatar-appear]="showAvatar && !wasAvatarHidden"
     [class.avatar-visible]="showAvatar" 
-    [class.avatar-hidden]="!showAvatar"
-    (avatarClicked)="onAvatarClicked()"></app-avatar>
+    [class.avatar-hidden]="!showAvatar" -->
+    <!-- (avatarClicked)="onAvatarClicked()"></app-avatar> -->
   <app-user-informations id="userInformations"></app-user-informations>
   <app-loisir-skills id="loisirSkills" *ngIf="showUserInfoCard" [skillsZIndex]="skillsZIndex" [loisirsZIndex]="loisirsZIndex" (tabToggle)="onTabToggle($event)"></app-loisir-skills>
   <app-info-bulle id="infoBulle" [avatarClicked]="avatarClickedState" [portfolioOpen]="showPortfolio"></app-info-bulle>
-  <app-rolling-script id="rollingScript" [code]="monCode" [typingSpeed]="10" width="11vw" height="13.5vw"></app-rolling-script>
-  <app-personal-info id="personalInfo" *ngIf="showExperience"></app-personal-info>
+  <app-rolling-script id="rollingScript1" [code]="monCode" [typingSpeed]="10" width="12vw" height="13.5vw"></app-rolling-script>
+  <!-- <app-rolling-script id="rollingScript2" [code]="monCode" [typingSpeed]="10" width="13vw" height="60vh"></app-rolling-script> -->
+  <app-personal-info id="personalInfo" tabTitle="EXPER1ENCE" *ngIf="showExperience"></app-personal-info>
+  <app-personal-info id="personalInfo" tabTitle="FORMATIONS" *ngIf="showFormation"></app-personal-info>
   <app-cursor #cursorComponent></app-cursor>
   <app-menu id="menu" [menuStates]="menuStates" (menuToggle)="onMenuToggle($event)"></app-menu>
   <app-competances id="competances" *ngIf="showCompetences"></app-competances>
-  <app-portfolio id="portfolio" *ngIf="showPortfolio"></app-portfolio>
+  <app-portfolio id="portfolio" *ngIf="showPortfolio" (closePortfolio)="onPortfolioClose()"></app-portfolio>
 </main>
 <router-outlet/>

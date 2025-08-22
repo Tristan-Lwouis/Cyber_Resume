@@ -1,6 +1,6 @@
 <section class="svg-container" cdkDrag>
     <div id="onglet" >
-        <span >EXPER1ENCE</span>
+        <span>{{ tabTitle }}</span>
         <span >X</span>
     </div >
     <!-- Handle -->
@@ -9,24 +9,10 @@
     <svg width="329" height="46" viewBox="0 0 329 46" fill="none" xmlns="http://www.w3.org/2000/svg" id="svgHandle" >
         <path d="M310.719 3H3V43.3765H326V15.0605L310.719 3Z" fill="black" stroke="black" stroke-width="5"/>
     </svg>
-    <svg width="100%" height="100%" viewBox="0 0 600 693" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg id="svg" width="100%" height="100%" viewBox="0 0 600 693" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M3 690V3H248.5L306 36.0275H597V690H3Z" fill="var(--primary-color)" stroke="var(--background-color)" stroke-width="5"/>
         <foreignObject x="20" y="60" width="94%" height="88%">
-            <div class="text-container scrollable">
-                <h2>2025 → &lt;/now&gt; Formation LDNR :</h2>
-                <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</span>
-                <br>
-                <span>----------</span>
-
-                <h2>2020 → 2025 Dessinateur en bureau d'étude :</h2>
-                <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</span>
-                <br>
-                <span>----------</span>
-
-                <h2>2020 → 2025 Dessinateur en bureau d'étude :</h2>
-                <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</span>
-                <br>
-                <span>----------</span>
+            <div class="text-container scrollable" [innerHTML]="content">
             </div>
         </foreignObject>
     </svg>        
