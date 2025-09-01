@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, OnDestroy, ElementRef, ViewChild, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import * as THREE from 'three';
+import { AvatarMemoryMonitorService } from '../../services/avatar-memory-monitor.service';
 
 @Component({
   selector: 'app-avatar',
@@ -22,13 +23,19 @@ export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
   private mouse = new THREE.Vector2();
   private animationId: number | null = null;
   private resizeHandler: (() => void) | null = null;
+  private clickHandler: ((event: MouseEvent) => void) | null = null;
   private pixelRatio: number; // Cache le pixel ratio pour éviter les recalculs
+  private instanceId: string; // Identifiant unique pour le monitoring
 
-  constructor() {
+  constructor(private avatarMemoryMonitor: AvatarMemoryMonitorService) {
     this.pixelRatio = Math.min(window.devicePixelRatio, 2); // Limite à 2 pour les performances
+    this.instanceId = `avatar-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 
   async ngAfterViewInit(): Promise<void> {
+    // Enregistrer l'instance pour le monitoring
+    this.avatarMemoryMonitor.registerAvatar(this.instanceId, this);
+    
     await this.initThree();
     await this.loadModel();
     this.animate();
@@ -42,28 +49,40 @@ export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
       const canvas = this.canvasRef.nativeElement;
       if (this.isVisible) {
         canvas.style.display = 'block';
-        if (this.animationId === null) {
+        if (this.animationId === null && this.renderer && this.scene && this.camera) {
           this.animate();
         }
       } else {
         canvas.style.display = 'none';
-        if (this.animationId !== null) {
-          cancelAnimationFrame(this.animationId);
-          this.animationId = null;
-        }
+        this.stopAnimation();
       }
     }
   }
 
-  ngOnDestroy(): void {
+  private stopAnimation(): void {
     if (this.animationId !== null) {
       cancelAnimationFrame(this.animationId);
       this.animationId = null;
     }
+  }
 
+  ngOnDestroy(): void {
+    // Désenregistrer l'instance du monitoring
+    this.avatarMemoryMonitor.unregisterAvatar(this.instanceId);
+    
+    // Arrêter la boucle d'animation
+    this.stopAnimation();
+
+    // Supprimer les event listeners
     if (this.resizeHandler) {
       window.removeEventListener('resize', this.resizeHandler);
       this.resizeHandler = null;
+    }
+
+    if (this.clickHandler && this.canvasRef) {
+      const canvas = this.canvasRef.nativeElement;
+      canvas.removeEventListener('click', this.clickHandler);
+      this.clickHandler = null;
     }
 
     // Nettoyage optimisé des ressources
@@ -71,23 +90,22 @@ export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
   }
 
   private cleanupResources(): void {
+    // Nettoyer les contrôles
     if (this.controls) {
       this.controls.dispose();
+      this.controls = null;
     }
 
-    if (this.mixer && this.model) {
+    // Nettoyer le mixer d'animation
+    if (this.mixer) {
       this.mixer.stopAllAction();
-      this.mixer.uncacheRoot(this.model);
+      if (this.model) {
+        this.mixer.uncacheRoot(this.model);
+      }
+      this.mixer = undefined;
     }
 
-    if (this.renderer) {
-      this.renderer.dispose();
-    }
-
-    if (this.scene) {
-      this.scene.clear();
-    }
-
+    // Nettoyer le modèle 3D
     if (this.model) {
       this.model.traverse((child: any) => {
         if (child.geometry) {
@@ -101,13 +119,54 @@ export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
           }
         }
       });
+      this.model = undefined;
     }
+
+    // Nettoyer la scène
+    if (this.scene) {
+      this.scene.clear();
+      this.scene = undefined as any;
+    }
+
+    // Nettoyer le renderer
+    if (this.renderer) {
+      this.renderer.dispose();
+      this.renderer = undefined as any;
+    }
+
+    // Nettoyer la caméra
+    if (this.camera) {
+      this.camera = undefined as any;
+    }
+
+    // Nettoyer les objets utilitaires
+    this.raycaster = new THREE.Raycaster();
+    this.mouse = new THREE.Vector2();
+  }
+
+  /**
+   * Méthode de nettoyage forcé appelée par le service de monitoring
+   * en cas de détection de fuite mémoire
+   */
+  forceCleanup(): void {
+    console.log(`🧹 Nettoyage forcé de l'avatar ${this.instanceId}`);
+    
+    // Arrêter l'animation immédiatement
+    this.stopAnimation();
+    
+    // Forcer le garbage collection si disponible
+    if (window.gc) {
+      window.gc();
+    }
+    
+    // Nettoyer les ressources
+    this.cleanupResources();
   }
 
   private setupClickDetection(): void {
     const canvas = this.canvasRef.nativeElement;
     
-    canvas.addEventListener('click', (event) => {
+    this.clickHandler = (event: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -121,7 +180,9 @@ export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
           this.avatarClicked.emit();
         }
       }
-    });
+    };
+    
+    canvas.addEventListener('click', this.clickHandler);
   }
 
   private async initThree(): Promise<void> {
@@ -228,6 +289,11 @@ export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
   }
 
   private animate = (): void => {
+    // Vérifier si le composant est toujours valide avant de continuer
+    if (!this.renderer || !this.scene || !this.camera) {
+      return;
+    }
+    
     this.animationId = requestAnimationFrame(this.animate);
     
     if (this.controls) {
