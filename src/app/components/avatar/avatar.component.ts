@@ -12,21 +12,22 @@ export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
   @Input() isVisible: boolean = true;
 
   // === Paramètres principaux de la scène ===
-  private renderer!: THREE.WebGLRenderer; // Gère le rendu WebGL
-  private scene!: THREE.Scene; // Contient tous les objets 3D
-  private camera!: THREE.PerspectiveCamera; // Caméra de perspective (FOV, position, ...)
-  private controls!: any; // Contrôles de la caméra (OrbitControls)
-  private model: THREE.Group | undefined; // Le modèle 3D chargé (GLTF)
-  private mixer?: THREE.AnimationMixer; // Pour les animations du modèle
-  private raycaster = new THREE.Raycaster(); // Pour détecter les clics sur les objets 3D
-  private mouse = new THREE.Vector2(); // Position de la souris
-  private animationId: number | null = null; // ID de l'animation pour requestAnimationFrame
-  private resizeHandler: (() => void) | null = null; // Handler pour le resize
+  private renderer!: THREE.WebGLRenderer;
+  private scene!: THREE.Scene;
+  private camera!: THREE.PerspectiveCamera;
+  private controls!: any;
+  private model: THREE.Group | undefined;
+  private mixer?: THREE.AnimationMixer;
+  private raycaster = new THREE.Raycaster();
+  private mouse = new THREE.Vector2();
+  private animationId: number | null = null;
+  private resizeHandler: (() => void) | null = null;
+  private pixelRatio: number; // Cache le pixel ratio pour éviter les recalculs
 
-  /**
-   * Méthode appelée après l'initialisation de la vue du composant
-   * Initialise la scène 3D, charge le modèle, démarre l'animation et configure les événements
-   */
+  constructor() {
+    this.pixelRatio = Math.min(window.devicePixelRatio, 2); // Limite à 2 pour les performances
+  }
+
   async ngAfterViewInit(): Promise<void> {
     await this.initThree();
     await this.loadModel();
@@ -36,22 +37,16 @@ export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
     window.addEventListener('resize', this.resizeHandler);
   }
 
-  /**
-   * Méthode appelée quand les propriétés d'entrée du composant changent
-   * Gère la visibilité de l'avatar en masquant/affichant le canvas et en contrôlant l'animation
-   */
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['isVisible'] && this.canvasRef) {
       const canvas = this.canvasRef.nativeElement;
       if (this.isVisible) {
         canvas.style.display = 'block';
-        // Redémarrer l'animation si nécessaire
         if (this.animationId === null) {
           this.animate();
         }
       } else {
         canvas.style.display = 'none';
-        // Arrêter l'animation pour économiser les ressources
         if (this.animationId !== null) {
           cancelAnimationFrame(this.animationId);
           this.animationId = null;
@@ -60,45 +55,39 @@ export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
     }
   }
 
-  /**
-   * Méthode appelée lors de la destruction du composant
-   * Nettoie toutes les ressources 3D, arrête l'animation et supprime les event listeners
-   */
   ngOnDestroy(): void {
-    // Arrêter l'animation
     if (this.animationId !== null) {
       cancelAnimationFrame(this.animationId);
       this.animationId = null;
     }
 
-    // Nettoyer l'event listener
     if (this.resizeHandler) {
       window.removeEventListener('resize', this.resizeHandler);
       this.resizeHandler = null;
     }
 
-    // Nettoyer les contrôles
+    // Nettoyage optimisé des ressources
+    this.cleanupResources();
+  }
+
+  private cleanupResources(): void {
     if (this.controls) {
       this.controls.dispose();
     }
 
-    // Nettoyer le mixer d'animation
-    if (this.mixer) {
+    if (this.mixer && this.model) {
       this.mixer.stopAllAction();
-      this.mixer.uncacheRoot(this.model!);
+      this.mixer.uncacheRoot(this.model);
     }
 
-    // Nettoyer le renderer
     if (this.renderer) {
       this.renderer.dispose();
     }
 
-    // Nettoyer la scène
     if (this.scene) {
       this.scene.clear();
     }
 
-    // Nettoyer le modèle
     if (this.model) {
       this.model.traverse((child: any) => {
         if (child.geometry) {
@@ -115,134 +104,115 @@ export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
     }
   }
 
-  /**
-   * Configure la détection des clics sur le modèle 3D
-   * Utilise un raycaster pour détecter si l'utilisateur clique sur le modèle et émet un événement
-   */
-  private setupClickDetection() {
+  private setupClickDetection(): void {
     const canvas = this.canvasRef.nativeElement;
     
     canvas.addEventListener('click', (event) => {
-      // Calculer la position de la souris en coordonnées normalisées (-1 à +1)
       const rect = canvas.getBoundingClientRect();
       this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
-      // Lancer un rayon depuis la caméra vers la position de la souris
       this.raycaster.setFromCamera(this.mouse, this.camera);
 
-      // Vérifier les intersections avec les objets de la scène
       if (this.model) {
         const intersects = this.raycaster.intersectObjects(this.model.children, true);
         
-        // Si le rayon intersecte avec le modèle, émettre l'événement
         if (intersects.length > 0) {
-          console.log('Clic détecté sur le modèle 3D!');
           this.avatarClicked.emit();
         }
       }
     });
   }
 
-  /**
-   * Initialise la scène 3D Three.js avec la caméra, le renderer, les lumières et les contrôles
-   * Configure l'environnement 3D complet pour l'affichage du modèle
-   */
-  private async initThree() {
+  private async initThree(): Promise<void> {
     const canvas = this.canvasRef.nativeElement;
     this.scene = new THREE.Scene();
-    this.scene.background = null; // Fond transparent (tu peux mettre une couleur ou une texture)
+    this.scene.background = null;
 
-    // === Caméra ===
-    // FOV (champ de vision), ratio largeur/hauteur, near/far (profondeur de vue)
+    // Caméra optimisée
     this.camera = new THREE.PerspectiveCamera(
-      60, // FOV : plus grand = plus "grand angle"
-      canvas.clientWidth / canvas.clientHeight, // ratio
-      0.1, // near : distance minimale visible
-      1000 // far : distance maximale visible
+      60,
+      canvas.clientWidth / canvas.clientHeight,
+      0.1,
+      1000
     );
-    this.camera.position.set(0.5, 1.5, 2.1); // Position de la caméra (x, y, z)
+    this.camera.position.set(0.5, 1.5, 2.1);
 
-    // === Renderer ===
-    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    // Renderer optimisé
+    this.renderer = new THREE.WebGLRenderer({ 
+      canvas, 
+      antialias: true, 
+      alpha: true,
+      powerPreference: 'high-performance' // Optimisation GPU
+    });
     this.renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
-    this.renderer.setPixelRatio(window.devicePixelRatio);
-    // Activation des ombres (pour voir les ombres projetées)
+    this.renderer.setPixelRatio(this.pixelRatio);
     this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Type d'ombre (plus doux)
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    // === Lumière ambiante ===
-    // Eclaire toute la scène de façon uniforme (pas d'ombre portée)
-    const ambientLight = new THREE.AmbientLight('rgb(255, 254, 252)', 1.5); // couleur et intensité
+    // Lumières optimisées
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
     this.scene.add(ambientLight);
 
-    // === Lumière directionnelle (type soleil) ===
-    // Simule le soleil : direction, couleur, intensité, ombres
-    const sunLight = new THREE.DirectionalLight('rgb(255, 236, 198)', 7); // couleur chaude, intensité
-    sunLight.position.set(8, 10, 5); // position du soleil (x, y, z)
-    // Plus y est grand, plus la lumière vient d'en haut
-    // x/z contrôlent la direction latérale
-    sunLight.castShadow = true; // active les ombres
-    sunLight.shadow.mapSize.width = 250; // qualité des ombres
-    sunLight.shadow.mapSize.height = 250;
+    const sunLight = new THREE.DirectionalLight(0xfff6c6, 7);
+    sunLight.position.set(8, 10, 5);
+    sunLight.castShadow = true;
+    sunLight.shadow.mapSize.width = 512; // Réduit pour les performances
+    sunLight.shadow.mapSize.height = 512;
     sunLight.shadow.camera.near = 0.5;
     sunLight.shadow.camera.far = 50;
     this.scene.add(sunLight);
 
-    // === Sol invisible pour recevoir les ombres ===
-    // Le matériau ShadowMaterial rend le sol invisible mais affiche les ombres
-    const planeGeometry = new THREE.PlaneGeometry(20, 20); // taille du sol
-    const planeMaterial = new THREE.ShadowMaterial({ opacity: 0.2 }); // intensité de l'ombre
+    // Sol optimisé
+    const planeGeometry = new THREE.PlaneGeometry(20, 20);
+    const planeMaterial = new THREE.ShadowMaterial({ opacity: 0.2 });
     const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-    plane.rotation.x = -Math.PI / 2; // à plat (horizontal)
-    plane.position.y = 0; // hauteur du sol
-    plane.receiveShadow = true; // le sol reçoit les ombres
+    plane.rotation.x = -Math.PI / 2;
+    plane.position.y = 0;
+    plane.receiveShadow = true;
     this.scene.add(plane);
 
-    // === Contrôles de la caméra (OrbitControls) ===
-    // Permet de tourner autour du modèle avec la souris
+    // Contrôles optimisés
     // @ts-ignore
-    const { OrbitControls } = await import('three/examples/jsm/controls/OrbitControls');
+    const { OrbitControls } = await import('three/examples/jsm/controls/OrbitControls.js');
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enableDamping = true; // inertie
-    this.controls.dampingFactor = 0.05; // facteur d'inertie
-    this.controls.target.set(0, 1, 0); // point autour duquel la caméra tourne (x, y, z)
-    // Pour limiter le zoom ou la rotation, tu peux utiliser :
-    this.controls.minDistance = 1;
-    this.controls.maxDistance = 8;
-    this.controls.maxPolarAngle = Math.PI / 2; // limite l'angle vertical
+    this.controls.enableDamping = true;
+    this.controls.dampingFactor = 0.05;
+    this.controls.target.set(0, 1, 0);
+    
+    this.controls.enableZoom = false;
+    this.controls.enablePan = false;
+    this.controls.enableRotate = true;
+    
+    this.controls.minDistance = 2.1;
+    this.controls.maxDistance = 2.1;
+    this.controls.maxPolarAngle = Math.PI / 2;
   }
 
-  /**
-   * Charge le modèle 3D GLTF depuis le fichier assets/3D/model.glb
-   * Configure les ombres et les animations du modèle chargé
-   */
-  private async loadModel() {
+  private async loadModel(): Promise<void> {
     // @ts-ignore
-    const { GLTFLoader } = await import('three/examples/jsm/loaders/GLTFLoader');
+    const { GLTFLoader } = await import('three/examples/jsm/loaders/GLTFLoader.js');
     const loader = new GLTFLoader();
+    
     loader.load(
       'assets/3D/model.glb',
       (gltf: any) => {
         this.model = gltf.scene;
         this.scene.add(this.model!);
+        
         if (this.model) {
-          this.model.rotation.set(0, Math.PI / 9, 0); // rotation initiale du modèle
+          this.model.rotation.set(0, Math.PI / 9, 0);
         }
 
-        // Debug : log les lumières importées
+        // Configuration optimisée des meshes
         this.model!.traverse((obj: any) => {
-          if (obj.isLight) {
-            console.log('Lumière importée du GLB :', obj);
-          }
-          // Activation des ombres sur les meshes du modèle
           if (obj.isMesh) {
-            obj.castShadow = true; // le mesh projette une ombre
-            obj.receiveShadow = true; // le mesh peut recevoir une ombre
+            obj.castShadow = true;
+            obj.receiveShadow = true;
           }
         });
 
-        // === Gestion des animations du modèle (si présentes) ===
+        // Gestion des animations
         if (gltf.animations && gltf.animations.length > 0) {
           this.mixer = new THREE.AnimationMixer(this.model!);
           gltf.animations.forEach((clip: THREE.AnimationClip) => {
@@ -257,25 +227,25 @@ export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
     );
   }
 
-  /**
-   * Boucle d'animation principale appelée à chaque frame
-   * Met à jour les contrôles de caméra, les animations du modèle et rend la scène
-   */
-  private animate = () => {
+  private animate = (): void => {
     this.animationId = requestAnimationFrame(this.animate);
-    if (this.controls) this.controls.update(); // met à jour les contrôles caméra
-    if (this.mixer) this.mixer.update(1 / 80); // met à jour les animations (si présentes) + controle de vitesse de l'animation
-    this.renderer.render(this.scene, this.camera); // dessine la scène
+    
+    if (this.controls) {
+      this.controls.update();
+    }
+    
+    if (this.mixer) {
+      this.mixer.update(1 / 120); // 60 FPS fixe pour la cohérence
+    }
+    
+    this.renderer.render(this.scene, this.camera);
   };
 
-  /**
-   * Gère le redimensionnement de la fenêtre
-   * Met à jour la caméra et le renderer pour s'adapter à la nouvelle taille du canvas
-   */
-  private onResize() {
+  private onResize(): void {
     const canvas = this.canvasRef.nativeElement;
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
+    
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height, false);

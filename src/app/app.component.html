@@ -7,12 +7,12 @@
   </header>
   <!-- COMPOSANTS -->
   <app-deco></app-deco>
-  <!-- <app-avatar  -->
-    <!-- [isVisible]="showAvatar"
+  <app-avatar 
+    [isVisible]="showAvatar"
     [class.avatar-appear]="showAvatar && !wasAvatarHidden"
     [class.avatar-visible]="showAvatar" 
-    [class.avatar-hidden]="!showAvatar" -->
-    <!-- (avatarClicked)="onAvatarClicked()"></app-avatar> -->
+    [class.avatar-hidden]="!showAvatar"
+    (avatarClicked)="onAvatarClicked()"></app-avatar>
   <app-user-informations id="userInformations"></app-user-informations>
   <app-loisir-skills id="loisirSkills" *ngIf="showUserInfoCard" [skillsZIndex]="skillsZIndex" [loisirsZIndex]="loisirsZIndex" (tabToggle)="onTabToggle($event)"></app-loisir-skills>
   <app-info-bulle id="infoBulle" [avatarClicked]="avatarClickedState" [portfolioOpen]="showPortfolio"></app-info-bulle>

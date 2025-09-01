@@ -1,7 +1,7 @@
 
 .svg-container {
   aspect-ratio: 600 / 693;
-    filter: drop-shadow(4px 4px 4px var(--secondary-color));
+  // filter: drop-shadow(4px 4px 4px var(--secondary-color));
   /* Appliquer le filtre au conteneur parent pour une meilleure compatibilité */
 }
 
@@ -13,31 +13,16 @@
 }
 
 .scrollable {
-    scrollbar-width: auto;
-    scrollbar-color: var(--primary-color) var(--background-color);
-    // scrollbar-: aqua;
-  
-    /* Webkit-based browsers */
-    &::-webkit-scrollbar {width: 15px;}
-  
-    &::-webkit-scrollbar-track {
-      background: var(--background-color);
-      border-radius: 10px;
-    }
-  
-    &::-webkit-scrollbar-thumb {
-      background-color: var(--primary-color);
-      border-radius: 10px;
-      border: 2px solid var(--background-color);
-    }
+  overflow-y: auto;    
+  scrollbar-color: var(--background-color) var(--primary-color);
   }
   
 #Handle{
   position: absolute;
-  top: 2.3vw;
-  left: 9vw;
-  width: 9vw;
-  height: 20px;
+  top: 8%;
+  right: 4%;
+  width: 50%;
+  height: 4%;
   // cursor : grab;
   /*Test*/
   // background-color: rgba(165, 42, 42, 0.295);

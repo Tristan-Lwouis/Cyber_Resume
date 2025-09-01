@@ -40,10 +40,19 @@ import { AudioEventsService } from './services/audio-events.service';
 export class AppComponent implements OnDestroy {
   
   // ========================================
+  // CONSTRUCTEUR
+  // ========================================
+  constructor(
+    private memoryMonitor: MemoryMonitorService,
+    private audioEventsService: AudioEventsService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  // ========================================
   // PROPRIÉTÉS GLOBALES
   // ========================================
   title = 'Cyber_Resume';
-  
+
   // ========================================
   // PROPRIÉTÉS DU MENU PRINCIPAL
   // ========================================
@@ -54,14 +63,14 @@ export class AppComponent implements OnDestroy {
   // Gestion du z-index pour l'effet d'onglet entre Skills et Loisirs
   skillsZIndex: number = 2;
   loisirsZIndex: number = 1;
-  
+
   // ========================================
   // PROPRIÉTÉS DE L'AVATAR
   // ========================================
   showAvatar: boolean = true;
   wasAvatarHidden: boolean = false;
   avatarClickedState: boolean = false;
-  
+
   // ========================================
   // PROPRIÉTÉS DU ROLLING SCRIPT
   // ========================================
@@ -98,15 +107,6 @@ while (challenge) {
 `;
 
   // ========================================
-  // CONSTRUCTEUR
-  // ========================================
-  constructor(
-    private memoryMonitor: MemoryMonitorService,
-    private audioEventsService: AudioEventsService,
-    private cdr: ChangeDetectorRef
-  ) {}
-
-  // ========================================
   // GETTERS POUR L'AFFICHAGE DES COMPOSANTS
   // ========================================
   get showExperience(): boolean { return this.menuStates[0]; }  // Index 0
@@ -119,25 +119,6 @@ while (challenge) {
   // Getter pour afficher le loisir-skills (visible si Skills OU Loisirs est actif)
   get showUserInfoCard(): boolean { 
     return this.menuStates[3] || this.menuStates[4]; // Skills OU Loisirs
-  }
-
-  // ========================================
-  // MÉTHODES DE L'AVATAR
-  // ========================================
-  /**
-   * Méthode appelée quand l'avatar est cliqué
-   * Bascule l'état de l'info-bulle et joue les sons appropriés
-   */
-  onAvatarClicked(): void {
-    console.log('Avatar cliqué - Communication avec info-bulle');
-    this.avatarClickedState = !this.avatarClickedState; // Toggle pour déclencher la détection
-    
-    // Jouer le son d'ouverture quand l'info-bulle s'affiche
-    if (this.avatarClickedState) {
-      this.audioEventsService.playOpenSound();
-    } else {
-      this.audioEventsService.playCloseSound();
-    }
   }
 
   // ========================================
@@ -194,6 +175,29 @@ while (challenge) {
   }
 
   /**
+   * Méthode pour gérer les événements des onglets du composant loisir-skills
+   * Gère le basculement entre les onglets Skills et Loisirs avec les sons appropriés
+   */
+  onTabToggle(event: {tab: 'skills' | 'loisirs', isActive: boolean}): void {
+    if (event.tab === 'skills') {
+      // Activer Skills et désactiver Loisirs
+      this.audioEventsService.playToggleSound(true);
+      this.handleSkillsLoisirsToggle(3, true); // Skills (index 3)
+      // Forcer la mise à jour du menu en créant une nouvelle référence
+      this.menuStates = [...this.menuStates];
+    } else if (event.tab === 'loisirs') {
+      // Activer Loisirs et désactiver Skills
+      this.audioEventsService.playToggleSound(true);
+      this.handleSkillsLoisirsToggle(4, true); // Loisirs (index 4)
+      // Forcer la mise à jour du menu en créant une nouvelle référence
+      this.menuStates = [...this.menuStates];
+    }
+  }
+
+  // ========================================
+  // MÉTHODES DU PORTFOLIO
+  // ========================================
+  /**
    * Méthode pour gérer le toggle du Portfolio
    * Active/désactive le portfolio en masquant l'avatar et l'info-bulle, et gère l'état des autres onglets
    */
@@ -210,12 +214,11 @@ while (challenge) {
       this.showAvatar = false; // Masquer l'avatar
       this.avatarClickedState = false; // Masquer l'info-bulle
     } else {
-      // Désactiver Portfolio et réactiver Experience par défaut
+      // Désactiver Portfolio et réactiver les onglets par défaut
       this.menuStates[5] = false; // Portfolio
       this.menuStates[0] = true; // Réactiver Experience par défaut
       this.menuStates[1] = true; // Réactiver Formation par défaut
       this.menuStates[2] = true; // Réactiver Competences par défaut
-
       
       // Réinitialiser le flag AVANT de réafficher l'avatar pour permettre l'animation
       this.wasAvatarHidden = false;
@@ -240,25 +243,21 @@ while (challenge) {
   }
 
   // ========================================
-  // MÉTHODES DU COMPOSANT LOISIR-SKILLS
+  // MÉTHODES DE L'AVATAR
   // ========================================
   /**
-   * Méthode pour gérer les événements des onglets du composant loisir-skills
-   * Gère le basculement entre les onglets Skills et Loisirs avec les sons appropriés
+   * Méthode appelée quand l'avatar est cliqué
+   * Bascule l'état de l'info-bulle et joue les sons appropriés
    */
-  onTabToggle(event: {tab: 'skills' | 'loisirs', isActive: boolean}): void {
-    if (event.tab === 'skills') {
-      // Activer Skills et désactiver Loisirs
-      this.audioEventsService.playToggleSound(true);
-      this.handleSkillsLoisirsToggle(3, true); // Skills (index 3)
-      // Forcer la mise à jour du menu en créant une nouvelle référence
-      this.menuStates = [...this.menuStates];
-    } else if (event.tab === 'loisirs') {
-      // Activer Loisirs et désactiver Skills
-      this.audioEventsService.playToggleSound(true);
-      this.handleSkillsLoisirsToggle(4, true); // Loisirs (index 4)
-      // Forcer la mise à jour du menu en créant une nouvelle référence
-      this.menuStates = [...this.menuStates];
+  onAvatarClicked(): void {
+    console.log('Avatar cliqué - Communication avec info-bulle');
+    this.avatarClickedState = !this.avatarClickedState; // Toggle pour déclencher la détection
+    
+    // Jouer le son d'ouverture quand l'info-bulle s'affiche
+    if (this.avatarClickedState) {
+      this.audioEventsService.playOpenSound();
+    } else {
+      this.audioEventsService.playCloseSound();
     }
   }
 

@@ -6,18 +6,19 @@ svg {
 
 .user-informations {
 
+    
     padding: 5%;
-    font-size: 1vw;
+    font-size: 1.3em;
     color: var(--background-color); // Utilise la couleur de fond comme couleur de texte
 
     span{
-        margin-top: 0.5vh;
+        margin-top: 0.5%;
     }
 
     .barCode{
         font-family: "Libre Barcode 39";
-        font-size: 3vw;
-        margin-top: 2vh;
+        font-size: 2.5em;
+        margin-top: 5%;
         color: var(--background-color); // Utilise la couleur de fond pour le code-barres
     }
 
@@ -28,7 +29,7 @@ svg {
         // justify-content: center;
 
     /*Test*/
-        // background-color: rgba(255, 0, 0, 0.4);
+        background-color: rgba(255, 0, 0, 0.4);
 }
 
 #onglet{
@@ -46,7 +47,7 @@ svg {
         height :7%;
 
     /*Font*/
-        font-size: 1.2vw;
+        font-size: 1.3em;
         font-weight: 600;
         user-select: none; /* empêche la sélection du texte */
         color: var(--background-color); // Utilise la couleur de fond pour le texte de l'onglet
@@ -72,7 +73,7 @@ svg {
 
 #QrDeco2{
     position: absolute;
-    width: 100px;
+    width: 22%;
     top: 130px;
     right: 22px;
 }
