@@ -1,70 +1,93 @@
 // ========================================
-// CONTAINER PRINCIPAL
+// STRUCTURE PRINCIPALE
 // ========================================
+
+// Container principal avec SVG
 .svg-container {
   position: absolute;
   width: 100%;
   height: 100%;
-  // filter: drop-shadow(4px 4px 4px var(--secondary-color));
   
   svg {
     position: absolute;
     width: 100%;
-    // background-color: $test-green; // Test
   }
-  
-  // background-color: $test-purple; // Test
 }
 
-// ========================================
-// CARTE PRINCIPALE
-// ========================================
+// Carte principale
 .carte {
-  width: 100%; // La carte prend 100% de la largeur dispo
-  height: auto; // Hauteur s'adapte à son contenu
+  width: 100%;
+  height: auto;
 }
 
 // ========================================
-// SECTION SKILLS
+// SYSTÈME D'ONGLETS
 // ========================================
-#SkillsCard {
-  // Layout
+
+// Bandeau contenant les onglets
+.bandeau-onglet {
+  position: absolute;
+  top: 0;
+  left: 0.25%;
+  width: 100%;
+  height: auto;
+  z-index: 3;
+  
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  
+  font-size: 0.9em;
+  user-select: none;
+  
+  // Couleur de test - à supprimer en production
+  background-color: rgba(255, 0, 0, 0.172);
+}
+
+// Sélecteurs d'onglets
+#selectorTab1 {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  // overflow: hidden;
-  
-  // Typography
-  font-size: 1.5rem;
-  
-  // background-color: rgb(0, 255, 0); // Test
+  width: 21%;
+  padding: 1% 2.2%;
+}
+
+#selectorTab2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 22%;
+  padding: 1% 2.5%;
+}
+
+// ========================================
+// CONTENU DES ONGLETS
+// ========================================
+
+// Section Skills
+#SkillsCard {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 1.4rem;
   
   .number {
     color: var(--secondary-color);
   }
 }
 
-// ========================================
-// SECTION LOISIRS
-// ========================================
+// Section Loisirs
 #Loisir {
-  // Layout
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-  // align-items: flex-end;
-  
-  // Sizing
   width: 75%;
-  // height: 100%;
-  
-  // Spacing
   padding: 1%;
   
-  // background-color: $test-cyan; // Test
-  
-  // Éléments de texte
+  // Texte des loisirs
   p {
     padding: 10px;
     margin: 0 auto;
@@ -74,7 +97,6 @@
   // Icônes des loisirs
   .LoisirIcon {
     width: 22%;
-    // height: 10%;
     margin: 1%;
   }
   
@@ -85,13 +107,14 @@
     object-fit: contain;
     display: block;
     margin: 0 auto;
-    // margin-top: 10px;
   }
 }
 
 // ========================================
-// DÉCORATION QR CODE
+// ÉLÉMENTS DÉCORATIFS
 // ========================================
+
+// QR Code décoratif
 #QrDeco {
   position: absolute;
   top: 3%;
@@ -99,84 +122,8 @@
   width: 15%;
 }
 
-// ========================================
-// BANDEAU DES ONGLETS
-// ========================================
-.bandeau-onglet {
-  // Layout
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  
-  // Position
-  position: absolute;
-  width: 100%;
-  height: auto;
-  top: 10%;
-  left: 0.25%;
-  z-index: 3; // Le selector est toujours devant par rapport aux cartes avec z-index 1 et 2
-  
-  // Typography
-  font-size: 1.6vh; // Unité de la police à revoir - pas responsive
-  // font-weight: 900;
-  
-  // Interaction
-  user-select: none; // Empêche la sélection du texte
-  
-  // background-color: $test-red; // Test
-}
-
-// ========================================
-// SÉLECTEURS D'ONGLETS
-// ========================================
-#selectorTab1 {
-  // Layout
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  
-  // Sizing
-  width: 21%;
-  padding: 1% 2.2%;
-  // margin-right: 25px;
-  
-  // Interaction
-  // cursor: pointer;
-  
-  // background-color: $test-light-blue; // Test
-}
-
-#selectorTab2 {
-  // Layout
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  
-  // Sizing
-  width: 22%;
-  padding: 1% 2.5%;
-  
-  // Interaction
-  // cursor: pointer;
-  
-  // background-color: $test-blue; // Test
-}
-
-// ========================================
-// POIGNÉE DE DÉPLACEMENT
-// ========================================
+// Poignée de déplacement
 #Handle {
-  // Sizing
   width: 40%;
   height: auto;
-  
-  // Spacing
-  // margin-left: 15px;
-  // margin-top: 15px;
-  
-  // Interaction
-  // cursor: grab;
-  
-  // background-color: $test-light-green; // Test
 }

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectorRef, OnInit, HostListener } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NgIf } from '@angular/common';
 
@@ -37,7 +37,7 @@ import { AudioEventsService } from './services/audio-events.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
   
   // ========================================
   // CONSTRUCTEUR
@@ -52,6 +52,10 @@ export class AppComponent implements OnDestroy {
   // PROPRIÉTÉS GLOBALES
   // ========================================
   title = 'Cyber_Resume';
+  
+  // Détection mobile
+  isMobile: boolean = false;
+  showMobileMessage: boolean = false;
 
   // ========================================
   // PROPRIÉTÉS DU MENU PRINCIPAL
@@ -275,8 +279,47 @@ while (challenge) {
   }
 
   // ========================================
+  // MÉTHODES DE DÉTECTION MOBILE
+  // ========================================
+  /**
+   * Méthode pour détecter si l'appareil est mobile
+   */
+  private detectMobile(): void {
+    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+    
+    // Détection plus précise des appareils mobiles
+    const isMobileDevice = /android|webos|iphone|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+    const isTablet = /ipad|tablet/i.test(userAgent);
+    
+    // Vérifier si c'est un vrai téléphone (pas tablette) ET en mode portrait
+    const isPhonePortrait = isMobileDevice && !isTablet && window.innerWidth <= 480 && window.innerHeight > window.innerWidth;
+    
+    // Ou si c'est un écran très petit (largeur <= 480px) en mode portrait
+    const isSmallPortrait = window.innerWidth <= 480 && window.innerHeight > window.innerWidth;
+    
+    this.isMobile = isPhonePortrait || isSmallPortrait;
+    this.showMobileMessage = this.isMobile;
+  }
+
+  /**
+   * Listener pour détecter les changements de taille d'écran
+   */
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void {
+    this.detectMobile();
+  }
+
+  // ========================================
   // LIFECYCLE
   // ========================================
+  /**
+   * Méthode appelée lors de l'initialisation du composant
+   * Détecte si l'appareil est mobile
+   */
+  ngOnInit(): void {
+    this.detectMobile();
+  }
+
   /**
    * Méthode appelée lors de la destruction du composant
    * Arrête le monitoring de la mémoire pour éviter les fuites

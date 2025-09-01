@@ -63,8 +63,8 @@ main {
   position: absolute;
   width: 32%;
   // min-width: 500px;
-  bottom: 35%;
-  left: 60%;
+  bottom: 30%;
+  left: 18%;
 }
 #infoBulle {
   width: 17%; //Taille de l'info bulle en fonction de la taille de l'écran
@@ -92,11 +92,18 @@ main {
 //   // height: 13.5vh;
 // }
 
-#personalInfo { //Experience
+  #experience { //Experience
+    width: 20%; //On affecte la largeur dans le composant
+    position: absolute;
+    bottom: 8%;
+    right: 5%;
+  }
+
+#formation { //Formation
   width: 20%; //On affecte la largeur dans le composant
   position: absolute;
-  top: 8%;
-  right: 5%;
+  top: 15%;
+  left: 20%;
 }
 
 #menu {
@@ -120,8 +127,8 @@ main {
 
 #competances {
   position: absolute;
-  bottom: 5vh;
-  left: 15vw;
+  top: 15%;
+  right: 8%;
   // top: 50%;
   // left: 50%;
   width: 25%;
@@ -135,4 +142,145 @@ main {
   height: auto;
   // max-width: 1200px;
   // max-height: 800px;
+}
+
+// ========================================
+// STYLES POUR LE MESSAGE MOBILE
+// ========================================
+.mobile-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #2b2e1a 50%, #030300 100%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  
+  // Animation d'apparition
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.mobile-warning-content {
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid var(--primary-color);
+  border-radius: 10px;
+  padding: 40px 30px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 
+    0 0 20px var(--primary-color),
+    inset 0 0 20px var(--primary-color);
+  
+  // Animation de pulsation pour la bordure
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 20px var(--primary-color),
+;
+  }
+  50% {
+    box-shadow: 
+      0 0 30px var(--primary-color);
+  }
+}
+
+.warning-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-10px);
+  }
+}
+
+.warning-title {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin: 0 0 20px 0;
+  text-shadow: 0 0 10px var(--primary-color);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.warning-message {
+  color: #ffffff;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 30px 0;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.warning-footer {
+  border-top: 1px solid var(--primary-color);
+  padding-top: 20px;
+}
+
+.cyber-text {
+  color: var(--primary-color);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-shadow: 0 0 5px var(--primary-color);
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0.3;
+  }
+}
+
+// Masquer le contenu principal sur mobile
+.mobile-hidden {
+  display: none;
+}
+
+// Responsive pour les très petits écrans
+@media (max-width: 480px) {
+  .mobile-warning-content {
+    padding: 30px 20px;
+    margin: 10px;
+  }
+  
+  .warning-title {
+    font-size: 1.2rem;
+  }
+  
+  .warning-message {
+    font-size: 0.9rem;
+  }
+  
+  .cyber-text {
+    font-size: 0.8rem;
+  }
 }

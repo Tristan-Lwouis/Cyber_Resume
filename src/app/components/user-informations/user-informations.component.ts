@@ -58,7 +58,7 @@ export class UserInformationsComponent implements OnInit, OnDestroy {
 
   private decodeContactInfo() {
     // Méthode d'obfuscation
-    const key = 'cyber2024';
+    const key = 'Cyber2077';
     const encodedPhone = this.rot13('06.81.12.60.81');
     const encodedEmail = this.rot13('regniertristan@gmail.com');
     
@@ -73,16 +73,6 @@ export class UserInformationsComponent implements OnInit, OnDestroy {
       const shifted = charCode + 13;
       const max = char <= 'Z' ? 90 : 122;
       return String.fromCharCode(shifted <= max ? shifted : shifted - 26);
-    });
-  }
-
-  // Méthode pour copier les informations dans le presse-papiers
-  copyToClipboard(text: string, type: 'phone' | 'email') {
-    navigator.clipboard.writeText(text).then(() => {
-      console.log(`${type} copié dans le presse-papiers`);
-      // Vous pouvez ajouter une notification ici
-    }).catch(err => {
-      console.error('Erreur lors de la copie:', err);
     });
   }
 }

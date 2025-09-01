@@ -29,7 +29,7 @@ svg {
         // justify-content: center;
 
     /*Test*/
-        background-color: rgba(255, 0, 0, 0.4);
+        // background-color: rgba(255, 0, 0, 0.4);
 }
 
 #onglet{
@@ -58,7 +58,6 @@ svg {
 
 .contact-info {
   // cursor: pointer;
-  transition: all 0.3s ease;
   color: var(--background-color); // Utilise la couleur de fond pour les informations de contact
   
   &:hover {
@@ -66,9 +65,6 @@ svg {
     text-decoration: underline;
   }
   
-  &:active {
-    transform: scale(0.95);
-  }
 }
 
 #QrDeco2{
