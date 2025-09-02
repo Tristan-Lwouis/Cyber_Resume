@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MemoryMonitorService {
+export class MemoryMonitorService implements OnDestroy {
   private memoryCheckInterval: any;
   private memoryHistory: number[] = [];
   private maxHistoryLength = 50;
@@ -87,5 +87,16 @@ export class MemoryMonitorService {
       clearInterval(this.memoryCheckInterval);
       this.memoryCheckInterval = null;
     }
+  }
+
+  /**
+   * Implémentation de OnDestroy pour nettoyer automatiquement les ressources
+   */
+  ngOnDestroy(): void {
+    console.log('🧹 MemoryMonitorService - Nettoyage automatique des ressources');
+    this.stopMonitoring();
+    
+    // Nettoyer l'historique de mémoire
+    this.memoryHistory = [];
   }
 }

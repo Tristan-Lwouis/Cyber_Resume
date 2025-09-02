@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AvatarMemoryMonitorService {
+export class AvatarMemoryMonitorService implements OnDestroy {
   private avatarInstances: Map<string, any> = new Map();
   private monitoringInterval: any;
   private isMonitoring = false;
@@ -144,6 +144,17 @@ export class AvatarMemoryMonitorService {
       this.monitoringInterval = null;
       this.isMonitoring = false;
     }
+  }
+
+  /**
+   * Implémentation de OnDestroy pour nettoyer automatiquement les ressources
+   */
+  ngOnDestroy(): void {
+    console.log('🧹 AvatarMemoryMonitorService - Nettoyage automatique des ressources');
+    this.stopMonitoring();
+    
+    // Nettoyer toutes les instances enregistrées
+    this.avatarInstances.clear();
   }
 
   /**

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export type AudioEventType = 'open' | 'close';
@@ -6,7 +6,7 @@ export type AudioEventType = 'open' | 'close';
 @Injectable({
   providedIn: 'root'
 })
-export class AudioEventsService {
+export class AudioEventsService implements OnDestroy {
   private audioEventSubject = new Subject<AudioEventType>();
 
   // Observable pour écouter les événements audio
@@ -35,5 +35,15 @@ export class AudioEventsService {
     } else {
       this.playCloseSound();
     }
+  }
+
+  /**
+   * Implémentation de OnDestroy pour nettoyer automatiquement les ressources
+   */
+  ngOnDestroy(): void {
+    console.log('🧹 AudioEventsService - Nettoyage automatique des ressources');
+    
+    // Compléter le Subject pour libérer les abonnés
+    this.audioEventSubject.complete();
   }
 }
