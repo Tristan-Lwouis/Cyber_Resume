@@ -1,8 +1,18 @@
 
 .svg-container {
   aspect-ratio: 600 / 693;
+  position: relative;
   // filter: drop-shadow(4px 4px 4px var(--secondary-color));
   /* Appliquer le filtre au conteneur parent pour une meilleure compatibilité */
+}
+
+/* Ligne qui va du SVG vers le centre du viewport */
+.viewport-line {
+  position: absolute;
+  height: 5px;
+  background-color: black;
+  z-index: -1;
+  pointer-events: none;
 }
 
 
@@ -58,3 +68,4 @@
   /*Test*/
   // background-color: var(--link-color);
 }
+

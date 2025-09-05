@@ -20,6 +20,9 @@
     <h3 class="barCode">OpenToWorkOpenToWorkOpenToWorkOpento</h3>
     <h2>C0NC3PTEUR DEVELOPP3EUR D'APPLICAT1ONS</h2>
   </header>
+  <!-- Composant pour afficher toutes les lignes de viewport -->
+  <app-viewport-line></app-viewport-line>
+
   <!-- COMPOSANTS -->
   <app-deco></app-deco>
   <app-avatar 
@@ -33,8 +36,8 @@
   <app-info-bulle id="infoBulle" [avatarClicked]="avatarClickedState" [portfolioOpen]="showPortfolio"></app-info-bulle>
   <app-rolling-script id="rollingScript1" [code]="monCode" [typingSpeed]="10" width="12vw" height="13.5vw"></app-rolling-script>
   <!-- <app-rolling-script id="rollingScript2" [code]="monCode" [typingSpeed]="10" width="13vw" height="60vh"></app-rolling-script> -->
-  <app-personal-info id="experience" tabTitle="EXPER1ENCE" *ngIf="showExperience"></app-personal-info>
-  <app-personal-info id="formation" tabTitle="FORMATIONS" *ngIf="showFormation"></app-personal-info>
+  <app-personal-info id="experience" tabTitle="EXPER1ENCE" componentId="experience" lineColor="black" *ngIf="showExperience"></app-personal-info>
+  <app-personal-info id="formation" tabTitle="FORMATIONS" componentId="formation" lineColor="black" *ngIf="showFormation"></app-personal-info>
   <app-cursor #cursorComponent></app-cursor>
   <app-menu id="menu" [menuStates]="menuStates" (menuToggle)="onMenuToggle($event)"></app-menu>
   <app-competances id="competances" *ngIf="showCompetences"></app-competances>

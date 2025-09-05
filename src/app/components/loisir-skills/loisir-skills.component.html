@@ -1,4 +1,7 @@
-<section class="svg-container" cdkDrag>
+<section class="svg-container" cdkDrag 
+         (cdkDragMoved)="onDragMoved($event)"
+         appViewportLine 
+         [componentId]="componentId">
 
   <!-- TAB SELECTOR AND HANDLE -->
   <div class="bandeau-onglet clickable">

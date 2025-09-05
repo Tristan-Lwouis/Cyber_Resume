@@ -64,7 +64,7 @@ main {
   width: 32%;
   // min-width: 500px;
   bottom: 30%;
-  left: 18%;
+  right: 5%;
 }
 #infoBulle {
   width: 17%; //Taille de l'info bulle en fonction de la taille de l'écran
@@ -92,17 +92,17 @@ main {
 //   // height: 13.5vh;
 // }
 
-  #experience { //Experience
-    width: 20%; //On affecte la largeur dans le composant
-    position: absolute;
-    bottom: 8%;
-    right: 5%;
-  }
+#experience { //Experience
+  width: 20%; //On affecte la largeur dans le composant
+  position: absolute;
+  top: 13%;
+  right: 8%;
+}
 
 #formation { //Formation
   width: 20%; //On affecte la largeur dans le composant
   position: absolute;
-  top: 15%;
+  bottom: 10%;
   left: 20%;
 }
 
@@ -127,8 +127,8 @@ main {
 
 #competances {
   position: absolute;
-  top: 15%;
-  right: 8%;
+  top: 16%;
+  left: 15%;
   // top: 50%;
   // left: 50%;
   width: 25%;
@@ -284,3 +284,4 @@ main {
     font-size: 0.8rem;
   }
 }
+

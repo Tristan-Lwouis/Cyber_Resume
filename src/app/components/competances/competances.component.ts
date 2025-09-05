@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DragDropModule } from '@angular/cdk/drag-drop'; //Drag and Drop
+import { DragDropModule, CdkDragMove } from '@angular/cdk/drag-drop'; //Drag and Drop
 import { AudioEventsService } from '../../services/audio-events.service';
+import { ViewportLineDirective } from '../../directives/viewport-line.directive';
 
 // Interface pour définir la structure d'un langage
 interface Language {
@@ -14,7 +15,7 @@ interface Language {
 
 @Component({
   selector: 'app-competances',
-  imports: [CommonModule, DragDropModule],
+  imports: [CommonModule, DragDropModule, ViewportLineDirective],
   templateUrl: './competances.component.html',
   styleUrl: './competances.component.scss'
 })
@@ -79,6 +80,8 @@ export class CompetancesComponent {
   // Propriété pour la hauteur du path SVG
   pathHeight: number = 330;
 
+  @ViewChild(ViewportLineDirective) viewportLineDirective!: ViewportLineDirective;
+
   constructor(private audioEventsService: AudioEventsService) {
     // Initialiser les états pour chaque langage
     this.languages.forEach(lang => {
@@ -140,5 +143,15 @@ export class CompetancesComponent {
   // Méthode pour optimiser les performances de la boucle *ngFor
   trackByLanguage(index: number, language: Language): string {
     return language.id;
+  }
+
+  /**
+   * Méthode appelée lors du déplacement du composant
+   * Utilise la directive pour mettre à jour la ligne
+   */
+  onDragMoved(event: CdkDragMove): void {
+    if (this.viewportLineDirective) {
+      this.viewportLineDirective.onDragMoved(event);
+    }
   }
 }

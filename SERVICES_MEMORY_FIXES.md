@@ -127,3 +127,4 @@ Toutes les modifications sont rétrocompatibles :
 2. **Nettoyage systématique** : Toutes les ressources sont nettoyées dans `ngOnDestroy()`
 3. **Logs de débogage** : Messages informatifs pour le suivi du nettoyage
 4. **Prévention des fuites** : Arrêt automatique des processus périodiques
+

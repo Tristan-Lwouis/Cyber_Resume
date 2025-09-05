@@ -1,4 +1,8 @@
-<section class="svg-container" cdkDrag>
+<section class="svg-container" cdkDrag 
+         (cdkDragMoved)="onDragMoved($event)"
+         appViewportLine 
+         componentId="competances"
+         lineColor="black">
     <div id="Handle" class="clickable" cdkDragHandle>
         <span></span>
     </div>

@@ -16,6 +16,7 @@ import { CompetancesComponent } from './components/competances/competances.compo
 import { PortfolioComponent } from './components/portfolio/portfolio.component';
 import { MemoryMonitorService } from './services/memory-monitor.service';
 import { AudioEventsService } from './services/audio-events.service';
+import { ViewportLineComponent } from './components/viewport-line/viewport-line.component';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +33,8 @@ import { AudioEventsService } from './services/audio-events.service';
     MenuComponent,
     UserInformationsComponent,
     CompetancesComponent,
-    PortfolioComponent
+    PortfolioComponent,
+    ViewportLineComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -74,6 +76,8 @@ export class AppComponent implements OnInit, OnDestroy {
   showAvatar: boolean = true;
   wasAvatarHidden: boolean = false;
   avatarClickedState: boolean = false;
+
+
 
   // ========================================
   // PROPRIÉTÉS DU ROLLING SCRIPT
@@ -327,4 +331,6 @@ while (challenge) {
   ngOnDestroy(): void {
     this.memoryMonitor.stopMonitoring();
   }
+
+
 }
