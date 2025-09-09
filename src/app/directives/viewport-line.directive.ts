@@ -10,6 +10,13 @@ export class ViewportLineDirective implements OnInit, OnDestroy {
   @Input() componentId: string = '';
   @Input() lineColor: string = 'black';
   @Input() isActive: boolean = true;
+  /**
+   * Pourcentage de la largeur de l'écran pour calculer la distance du point intermédiaire de la ligne.
+   * Cette valeur détermine à quelle distance du composant le point intermédiaire sera placé.
+   * Par défaut : 12% de la largeur de l'écran.
+   * Exemple : distancePercentage = 15 signifie que le point intermédiaire sera à 15% de window.innerWidth du composant.
+   */
+  @Input() distancePercentage: number = 12;
 
   private lastPosition = { x: 0, y: 0 };
   private isDragging = false;
@@ -65,7 +72,7 @@ export class ViewportLineDirective implements OnInit, OnDestroy {
     startX: number,
     startY: number,
     direction: number,
-    distance: number = 2 * window.innerWidth / 100): { x: number, y: number } {
+    distance: number = this.distancePercentage * window.innerWidth / 100): { x: number, y: number } {
     const radians = (direction * Math.PI) / 180;
     return {
       x: startX + Math.cos(radians) * distance,
@@ -93,7 +100,7 @@ export class ViewportLineDirective implements OnInit, OnDestroy {
     const optimalDirection = this.calculateOptimalDirection(startX, startY, endX, endY);
     
     // Calculer le point intermédiaire à 15% de la largeur de l'écran dans cette direction
-    const intermediatePoint = this.calculateIntermediatePoint(startX, startY, optimalDirection, 12 * window.innerWidth / 100);
+    const intermediatePoint = this.calculateIntermediatePoint(startX, startY, optimalDirection, this.distancePercentage * window.innerWidth / 100);
     
     // Calculer la longueur totale
     const deltaX = endX - startX;
@@ -144,7 +151,7 @@ export class ViewportLineDirective implements OnInit, OnDestroy {
     const optimalDirection = this.calculateOptimalDirection(startX, startY, endX, endY);
     
     // Calculer le point intermédiaire à 15% de la largeur de l'écran dans cette direction
-    const intermediatePoint = this.calculateIntermediatePoint(startX, startY, optimalDirection, 12 * window.innerWidth / 100);
+    const intermediatePoint = this.calculateIntermediatePoint(startX, startY, optimalDirection, this.distancePercentage * window.innerWidth / 100);
     
     // Calculer la longueur totale
     const deltaX = endX - startX;

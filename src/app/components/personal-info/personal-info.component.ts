@@ -13,6 +13,13 @@ import { ViewportLineDirective } from '../../directives/viewport-line.directive'
 export class PersonalInfoComponent implements OnInit {
   @Input() tabTitle: string = 'EXPER1ENCE';
   @Input() componentId: string = 'experience'; // ID unique du composant
+  /**
+   * Pourcentage de la largeur de l'écran pour calculer la distance du point intermédiaire de la ligne.
+   * Cette valeur détermine à quelle distance du composant le point intermédiaire sera placé.
+   * Par défaut : 12% de la largeur de l'écran.
+   * Exemple : distancePercentage = 15 signifie que le point intermédiaire sera à 15% de window.innerWidth du composant.
+   */
+  @Input() distancePercentage: number = 12;
   @Input() content: string = `
     <h2>2025 → &lt;/now&gt; Formation LDNR :</h2>
     <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</span>

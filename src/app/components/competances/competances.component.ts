@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DragDropModule, CdkDragMove } from '@angular/cdk/drag-drop'; //Drag and Drop
 import { AudioEventsService } from '../../services/audio-events.service';
 import { ViewportLineDirective } from '../../directives/viewport-line.directive';
+import { Input } from '@angular/core';
 
 // Interface pour définir la structure d'un langage
 interface Language {
@@ -20,6 +21,14 @@ interface Language {
   styleUrl: './competances.component.scss'
 })
 export class CompetancesComponent {
+  /**
+   * Pourcentage de la largeur de l'écran pour calculer la distance du point intermédiaire de la ligne.
+   * Cette valeur détermine à quelle distance du composant le point intermédiaire sera placé.
+   * Par défaut : 12% de la largeur de l'écran.
+   * Exemple : distancePercentage = 15 signifie que le point intermédiaire sera à 15% de window.innerWidth du composant.
+   */
+  @Input() distancePercentage: number = 12;
+  
   // Données des langages - facilement modifiables et extensibles
   languages: Language[] = [
     { //JAVASCRIPT

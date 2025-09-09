@@ -17,6 +17,13 @@ export class LoisirSkillsComponent {
     @Input() titleClass: string = '';
     @Input() skillsZIndex: number = 1;
     @Input() loisirsZIndex: number = 2;
+    /**
+     * Pourcentage de la largeur de l'écran pour calculer la distance du point intermédiaire de la ligne.
+     * Cette valeur détermine à quelle distance du composant le point intermédiaire sera placé.
+     * Par défaut : 12% de la largeur de l'écran.
+     * Exemple : distancePercentage = 15 signifie que le point intermédiaire sera à 15% de window.innerWidth du composant.
+     */
+    @Input() distancePercentage: number = 12;
     
     // ID unique pour la directive viewport-line
     componentId: string = 'loisir-skills';
