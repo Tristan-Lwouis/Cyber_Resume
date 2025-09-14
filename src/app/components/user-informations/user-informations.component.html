@@ -6,12 +6,14 @@
         <foreignObject x="6" y="6" width="450" height="500">
             <div id="onglet" >
                 <span>USER-INFO</span>
-                <span>X</span>
+                <span class="clickable">X</span>
             </div>
         </foreignObject>
         <foreignObject x="8" y="40" width="450" height="450">
             <div class="user-informations">
-                <img id="QrDeco2" src="assets/media/icons/QR-Code.png" alt="Qr-code">
+                <a href="https://linktr.ee/tristan.regnier" target="_blank" class="qr-link">
+                    <img id="QrDeco2" src="assets/media/icons/QR-Code.png" alt="Qr-code" class="clickable-qr">
+                </a>
                 <span class="contact-info">{{ phoneNumber }}</span>
                 <span class="contact-info">{{ email }}</span>
                 <span>lvl 25</span>

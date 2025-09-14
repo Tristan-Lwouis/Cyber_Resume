@@ -74,4 +74,17 @@ svg {
     right: 22px;
 }
 
+.clickable-qr {
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    
+    &:hover {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+    
+    &:active {
+        transform: scale(0.95);
+    }
+}
+
 

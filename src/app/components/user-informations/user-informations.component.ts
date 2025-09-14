@@ -75,4 +75,5 @@ export class UserInformationsComponent implements OnInit, OnDestroy {
       return String.fromCharCode(shifted <= max ? shifted : shifted - 26);
     });
   }
+
 }

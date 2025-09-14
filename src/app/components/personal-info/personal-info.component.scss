@@ -14,12 +14,19 @@
   z-index: -1;
   pointer-events: none;
 }
-
-
-.text-container{
+  .text-container{
     height: 100%;
     overflow-y: scroll;
     padding : 0 2%;
+    
+    // Styles pour les balises strong avec spécificité renforcée
+    ::ng-deep strong {
+        color: var(--primary-color) !important;        // Police jaune
+        background-color: var(--background-color) !important; // Surlignage noir
+        padding: 0px 3px !important;
+        font-weight: normal !important;                // Enlever le gras
+        // border-radius: 3px !important;
+    }
 }
 
 .scrollable {
