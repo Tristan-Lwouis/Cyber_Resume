@@ -3,6 +3,10 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { MemoryMonitorService } from './services/memory-monitor.service';
+import { AudioEventsService } from './services/audio-events.service';
+import { AvatarMemoryMonitorService } from './services/avatar-memory-monitor.service';
+import { ViewportLineService } from './services/viewport-line.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -10,6 +14,10 @@ export const appConfig: ApplicationConfig = {
       eventCoalescing: true
     }), 
     provideRouter(routes), 
-    provideClientHydration(withEventReplay())
+    provideClientHydration(withEventReplay()),
+    MemoryMonitorService,
+    AudioEventsService,
+    AvatarMemoryMonitorService,
+    ViewportLineService
   ]
 };

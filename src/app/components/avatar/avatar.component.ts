@@ -276,7 +276,7 @@ export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
         // Gestion des animations
         if (gltf.animations && gltf.animations.length > 0) {
           this.mixer = new THREE.AnimationMixer(this.model!);
-          gltf.animations.forEach((clip: THREE.AnimationClip) => {
+          gltf.animations.forEach((clip: any) => {
             this.mixer!.clipAction(clip).play();
           });
         }
