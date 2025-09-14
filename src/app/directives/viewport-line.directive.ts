@@ -99,7 +99,7 @@ export class ViewportLineDirective implements OnInit, OnDestroy {
     // Calculer la direction optimale
     const optimalDirection = this.calculateOptimalDirection(startX, startY, endX, endY);
     
-    // Calculer le point intermédiaire à 15% de la largeur de l'écran dans cette direction
+    // Calculer le point intermédiaire à la distance définie par distancePercentage
     const intermediatePoint = this.calculateIntermediatePoint(startX, startY, optimalDirection, this.distancePercentage * window.innerWidth / 100);
     
     // Calculer la longueur totale
@@ -150,7 +150,7 @@ export class ViewportLineDirective implements OnInit, OnDestroy {
     // Calculer la direction optimale
     const optimalDirection = this.calculateOptimalDirection(startX, startY, endX, endY);
     
-    // Calculer le point intermédiaire à 15% de la largeur de l'écran dans cette direction
+    // Calculer le point intermédiaire à la distance définie par distancePercentage
     const intermediatePoint = this.calculateIntermediatePoint(startX, startY, optimalDirection, this.distancePercentage * window.innerWidth / 100);
     
     // Calculer la longueur totale

@@ -11,6 +11,7 @@ export interface ViewportLineData {
   angle: number;        // Angle de rotation (plus utilisé, gardé pour compatibilité)
   isActive: boolean;    // Si la ligne est active
   color?: string;       // Couleur optionnelle de la ligne
+  lineWidth?: number;   // Épaisseur de la ligne (par défaut: 5)
   intermediateX?: number; // Position X du point intermédiaire
   intermediateY?: number; // Position Y du point intermédiaire
 }

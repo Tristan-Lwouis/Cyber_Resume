@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DragDropModule, CdkDragMove } from '@angular/cdk/drag-drop'; //Drag and Drop
 import { AudioEventsService } from '../../services/audio-events.service';
@@ -34,7 +34,7 @@ export class CompetancesComponent {
     { //JAVASCRIPT
       id: 'javascript',
       name: 'JAVASCRIPT',
-      icon: '/assets/media/icons/LANG_logo-javascript.svg',
+      icon: 'assets/media/icons/LANG_logo-javascript.svg',
       progressWidth: 60, // 85% de largeur
       skills: [
         'Programmation modulaire',
@@ -47,7 +47,7 @@ export class CompetancesComponent {
     { //HTML
       id: 'html',
       name: 'HTML',
-      icon: '/assets/media/icons/LANG_html-5.svg',
+      icon: 'assets/media/icons/LANG_html-5.svg',
       progressWidth: 90, // 90% de largeur
       skills: [
         'Structure sémantique',
@@ -58,7 +58,7 @@ export class CompetancesComponent {
     { //CSS
       id: 'css',
       name: 'CSS',
-      icon: '/assets/media/icons/LANG_css.svg',
+      icon: 'assets/media/icons/LANG_css.svg',
       progressWidth: 75, // 75% de largeur
       skills: [
         'Layout Flexbox/Grid',
@@ -70,7 +70,7 @@ export class CompetancesComponent {
     { //PYTHON
       id: 'python',
       name: 'PYTHON',
-      icon: '/assets/media/icons/LANG_python.svg',
+      icon: 'assets/media/icons/LANG_python.svg',
       progressWidth: 70,
       skills: [
         'Programmation orientée objet',
@@ -90,6 +90,9 @@ export class CompetancesComponent {
   pathHeight: number = 330;
 
   @ViewChild(ViewportLineDirective) viewportLineDirective!: ViewportLineDirective;
+  
+  // EventEmitter pour communiquer avec le composant parent
+  @Output() closeComponent = new EventEmitter<void>();
 
   constructor(private audioEventsService: AudioEventsService) {
     // Initialiser les états pour chaque langage
@@ -162,5 +165,13 @@ export class CompetancesComponent {
     if (this.viewportLineDirective) {
       this.viewportLineDirective.onDragMoved(event);
     }
+  }
+
+  /**
+   * Méthode appelée quand l'utilisateur clique sur le bouton "X"
+   * Émet un événement pour fermer le composant
+   */
+  onCloseClick(): void {
+    this.closeComponent.emit();
   }
 }

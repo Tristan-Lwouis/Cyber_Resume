@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, HostListener, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, HostListener, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 import { DragDropModule, CdkDragMove } from '@angular/cdk/drag-drop'; //Drag and Drop
 import { ViewportLineDirective } from '../../directives/viewport-line.directive';
@@ -38,6 +38,9 @@ export class PersonalInfoComponent implements OnInit {
   `;
 
   @ViewChild(ViewportLineDirective) viewportLineDirective!: ViewportLineDirective;
+  
+  // EventEmitter pour communiquer avec le composant parent
+  @Output() closeComponent = new EventEmitter<void>();
 
   constructor(
     private elementRef: ElementRef
@@ -65,5 +68,13 @@ export class PersonalInfoComponent implements OnInit {
       this.viewportLineDirective.setLineColor(this.getLineColor());
       this.viewportLineDirective.onDragMoved(event);
     }
+  }
+
+  /**
+   * Méthode appelée quand l'utilisateur clique sur le bouton "X"
+   * Émet un événement pour fermer le composant
+   */
+  onCloseClick(): void {
+    this.closeComponent.emit();
   }
 }

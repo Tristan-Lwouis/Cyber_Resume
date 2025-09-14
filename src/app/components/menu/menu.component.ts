@@ -13,7 +13,7 @@ export class MenuComponent implements OnDestroy {
   // État de chaque menu reçu depuis le composant parent
   // Gestion depuis app.component.ts
   // Structure: [Experience, Formation, Competences, Skills, Loisirs, Portfolio]
-  @Input() menuStates: boolean[] = [true, true, true, false, false, false]; 
+  @Input() menuStates: boolean[] = [false, false, false, false, false, false]; 
   
   // Taille du stroke (contour)
   strokeWidth: number = 7;

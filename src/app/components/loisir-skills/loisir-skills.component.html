@@ -8,12 +8,12 @@
   <div class="bandeau-onglet clickable">
     <div id="selectorTab1" (click)="showFirstTab()">
       <span>LO1SIRS</span>
-      <span>X</span>
+      <span class="close-button" (click)="onCloseClick($event)">X</span>
     </div>
     <!-- Tab two -->
     <div id="selectorTab2" (click)="showSecondTab()">
       <span>SK1LLS</span>
-      <span>X</span>
+      <span class="close-button" (click)="onCloseClick($event)">X</span>
     </div>
     <!-- Handle -->
     <div id="Handle" cdkDragHandle>

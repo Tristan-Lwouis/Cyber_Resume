@@ -29,6 +29,7 @@ export class LoisirSkillsComponent {
     componentId: string = 'loisir-skills';
     
     @Output() tabToggle = new EventEmitter<{tab: 'skills' | 'loisirs', isActive: boolean}>();
+    @Output() closeComponent = new EventEmitter<void>();
 
     @ViewChild(ViewportLineDirective) viewportLineDirective!: ViewportLineDirective;
 
@@ -64,5 +65,17 @@ export class LoisirSkillsComponent {
       this.viewportLineDirective.setLineColor(this.getLineColor());
       this.viewportLineDirective.onDragMoved(event);
     }
+  }
+
+  /**
+   * Méthode appelée quand l'utilisateur clique sur le bouton "X"
+   * Émet un événement pour fermer le composant et empêche la propagation
+   */
+  onCloseClick(event: Event): void {
+    // Empêcher la propagation de l'événement pour éviter de déclencher le changement d'onglet
+    event.stopPropagation();
+    
+    // Émettre l'événement de fermeture
+    this.closeComponent.emit();
   }
 }

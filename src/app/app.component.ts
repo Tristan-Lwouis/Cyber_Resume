@@ -64,7 +64,7 @@ export class AppComponent implements OnInit, OnDestroy {
   // ========================================
   // État centralisé de tous les menus [Experience, Formation, Competences, Skills, Loisirs, Portfolio]
   // Indices: 0=Experience, 1=Formation, 2=Competences, 3=Skills, 4=Loisirs, 5=Portfolio
-  menuStates: boolean[] = [true, true, true, false, false, false];
+  menuStates: boolean[] = [false, false, false, false, false, false];
   
   // Gestion du z-index pour l'effet d'onglet entre Skills et Loisirs
   skillsZIndex: number = 2;
@@ -207,7 +207,8 @@ while (challenge) {
   // ========================================
   /**
    * Méthode pour gérer le toggle du Portfolio
-   * Active/désactive le portfolio en masquant l'avatar et l'info-bulle, et gère l'état des autres onglets
+   * Active/désactive le portfolio en masquant l'avatar et l'info-bulle
+   * Les autres composants restent fermés quand le portfolio se ferme
    */
   private handlePortfolioToggle(isActive: boolean): void {
     if (isActive) {
@@ -222,11 +223,8 @@ while (challenge) {
       this.showAvatar = false; // Masquer l'avatar
       this.avatarClickedState = false; // Masquer l'info-bulle
     } else {
-      // Désactiver Portfolio et réactiver les onglets par défaut
+      // Désactiver Portfolio uniquement, les autres composants restent fermés
       this.menuStates[5] = false; // Portfolio
-      this.menuStates[0] = true; // Réactiver Experience par défaut
-      this.menuStates[1] = true; // Réactiver Formation par défaut
-      this.menuStates[2] = true; // Réactiver Competences par défaut
       
       // Réinitialiser le flag AVANT de réafficher l'avatar pour permettre l'animation
       this.wasAvatarHidden = false;
@@ -247,6 +245,51 @@ while (challenge) {
     this.handlePortfolioToggle(false);
     
     // Forcer la mise à jour du menu en créant une nouvelle référence
+    this.menuStates = [...this.menuStates];
+  }
+
+  // ========================================
+  // MÉTHODES DE FERMETURE DES COMPOSANTS
+  // ========================================
+  /**
+   * Méthode appelée quand l'utilisateur clique sur le bouton "X" d'un composant
+   * Ferme le composant spécifié et joue le son de fermeture
+   */
+  onComponentClose(componentIndex: number): void {
+    // Jouer le son de fermeture
+    this.audioEventsService.playCloseSound();
+    
+    // Fermer le composant spécifié
+    if (componentIndex >= 0 && componentIndex < this.menuStates.length) {
+      this.menuStates[componentIndex] = false;
+      
+      // Forcer la mise à jour du menu en créant une nouvelle référence
+      this.menuStates = [...this.menuStates];
+    }
+  }
+
+  /**
+   * Méthodes spécifiques pour chaque composant
+   */
+  onExperienceClose(): void {
+    this.onComponentClose(0); // Index 0 = Experience
+  }
+
+  onFormationClose(): void {
+    this.onComponentClose(1); // Index 1 = Formation
+  }
+
+  onCompetencesClose(): void {
+    this.onComponentClose(2); // Index 2 = Competences
+  }
+
+  onSkillsLoisirsClose(): void {
+    // Pour Skills/Loisirs, fermer les deux onglets (index 3 et 4)
+    this.menuStates[3] = false; // Skills
+    this.menuStates[4] = false; // Loisirs
+    this.audioEventsService.playCloseSound();
+    
+    // Forcer la mise à jour du menu
     this.menuStates = [...this.menuStates];
   }
 
