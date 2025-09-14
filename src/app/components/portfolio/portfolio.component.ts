@@ -150,4 +150,16 @@ export class PortfolioComponent {
   onCloseClick(): void {
     this.closePortfolio.emit();
   }
+
+  /**
+   * Méthode pour gérer le clic sur le bouton "See more"
+   * Ouvre le lien du projet dans un nouvel onglet
+   */
+  onSeeMoreClick(item: PortfolioItem): void {
+    if (item.seeMoreLink && item.seeMoreLink !== '#') {
+      window.open(item.seeMoreLink, '_blank', 'noopener,noreferrer');
+    } else {
+      console.log('Lien non disponible pour le projet:', item.title);
+    }
+  }
 }

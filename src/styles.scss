@@ -1,5 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 
+/* ===== POLICES PERSONNALISÉES ===== */
+@font-face {
+  font-family: 'CyberAlert';
+  src: url('./app/assets/font/Cyber-Alert.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* Optimisation du chargement */
+}
+
 /* ===== VARIABLES CSS ===== */
 // Il faut que la secondary color soit la même que la primary color mais avec une opacité de 0.5 dynamiquement
 :root {
@@ -8,6 +17,7 @@
   --background-color: rgb(0, 0, 0);
   --text-color: rgb(51, 51, 51);
   --link-color: rgb(33, 150, 243);
+  --cyber-font: 'CyberAlert', 'JetBrains Mono', monospace;
 }
 /* ===== FIN VARIABLES CSS ===== */
 
