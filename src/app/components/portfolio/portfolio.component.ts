@@ -41,29 +41,29 @@ export class PortfolioComponent {
       id: 'nocte-grafika',
       title: '// Nocte Grafika',
       imagePath: 'assets/media/images/nocte-grafika.png',
-      description: 'Nocte Grafika est mon espace créatif personnel, un portfolio où je rassemble mes travaux de design graphique et visuel.J’ai créé ce site pour partager mes projets, mes expérimentations et ma vision du graphisme.Il reflète à la fois mon style, mon univers et ma volonté de donner vie à des identités fortes et percutantes.',
+      description: 'Nocte Grafika est mon espace créatif personnel, une sorte d’atelier numérique où je rassemble tout ce que je conçois en design graphique et visuel. J’y ai laissé libre cours à mes idées pour lui donner un design parfois un peu osé, à l’image de ma façon de créer. J’ai voulu créer ce site comme mon carnet perso : on y trouve aussi bien mes projets aboutis que mes expérimentations, mes essais, mes envies. C’est un lieu où je peux montrer non seulement le résultat final, mais aussi le chemin parcouru, les idées testées, parfois abandonnées, parfois transformées.',
       technologies: [{ label: 'Angular' }],
       language: { label: 'Francais' },
       difficulty: { label: 'Medium effort' },
       date: { label: 'Aout 2025' },
-      seeMoreLink: '#'
+      seeMoreLink: 'https://github.com/Tristan-Lwouis/Nocte-Grafika'
     },
     {
       id: 'cyber-resume',
       title: '// Cyber Resume',
       imagePath: 'assets/media/images/cyber-resume.png',
-      description: 'Un site web portfolio moderne avec un design cyberpunk et des animations fluides. Développé avec Angular et TypeScript, ce projet démontre mes compétences en développement front-end et en design d\'interface utilisateur.',
+      description: 'Un site web portfolio moderne avec un design cyberpunk et des animations fluides. Développé avec Angular et TypeScript, Je me suis laissé carte blanche sur ce projet pour développer mes compétences en front-end et en design d\'interface utilisateur.',
       technologies: [{ label: 'Angular' }, { label: 'TypeScript' }],
       language: { label: 'Francais' },
       difficulty: { label: 'High effort' },
       date: { label: 'Aout 2025' },
-      seeMoreLink: '#'
+      seeMoreLink: 'https://github.com/Tristan-Lwouis/Cyber_Resume'
     },
     {
       id: 'sphere-survie',
       title: '// Sphere Survie',
       imagePath: 'assets/media/images/Sphere-Survie.png',
-      description: 'Application de gestion de tâches avec fonctionnalités avancées : catégorisation, priorités, rappels et synchronisation cloud. Interface moderne avec drag-and-drop et filtres intelligents.',
+      description: 'Blog sur l\'autonomie et la resilience. Application de gestion de stock [VBA] avec fonctionnalités avancées : catégorisation, priorités, rappels, filtres intelligents.',
       technologies: [{ label: 'WIX' }, { label: 'HTML' }, { label: 'CSS' }, { label : 'Javascript' }],
       language: { label: 'Francais' },
       difficulty: { label: 'Medium effort' },
@@ -74,7 +74,7 @@ export class PortfolioComponent {
       id: 'protac2a-ecommerce-app',
       title: '// PROTAC-2A E-commerce App',
       imagePath: 'assets/media/images/protac2a.png',
-      description: 'Application e-commerce complète avec gestion des produits, panier d\'achat et système de paiement. Création avec un CMS et un back-office.',
+      description: 'Application e-commerce de surplus militaire complète avec gestion des produits, panier d\'achat et système de paiement. Création avec un CMS. Gestion des commandes, des clients et du stocks. Gestion du SEO et des réseaux sociaux.',
       technologies: [{ label: 'WIX' }, { label: 'HTML' }, { label: 'CSS' }],
       language: { label: 'Francais' },
       difficulty: { label: 'Low effort' },
