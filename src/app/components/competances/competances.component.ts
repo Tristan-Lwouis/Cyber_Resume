@@ -31,6 +31,19 @@ export class CompetancesComponent {
   
   // Données des langages - facilement modifiables et extensibles
   languages: Language[] = [
+    { //ANGULAR + TS
+      id: 'angular-typescript',
+      name: 'ANGULAR + TYPESCRIPT',
+      icon: 'assets/media/icons/LANG_Angular.svg',
+      progressWidth: 70, // 70% de largeur
+      skills: [
+        'Composants et modules',
+        'Data binding et directives',
+        'Services et dépendances',
+        'RxJS et Observables',
+        'Routing et navigation'
+      ]
+    },
     { //JAVASCRIPT
       id: 'javascript',
       name: 'JAVASCRIPT',
@@ -44,29 +57,55 @@ export class CompetancesComponent {
         'Frameworks modernes'
       ]
     },
-    { //HTML
-      id: 'html',
-      name: 'HTML',
-      icon: 'assets/media/icons/LANG_html-5.svg',
-      progressWidth: 90, // 90% de largeur
+    { //JAVA
+      id: 'java',
+      name: 'JAVA SE',
+      icon: 'assets/media/icons/LANG_logo-java-coffee-cup.svg',
+      progressWidth: 65,
       skills: [
-        'Structure sémantique',
-        'Accessibilité web',
-        'Formulaires et validation'
+        'Programmation orientée objet',
+        'Gestion des collections',
+        'Exceptions et gestion d’erreurs',
+        'Interfaces et classes abstraites',
+        'Multithreading'
       ]
     },
-    { //CSS
-      id: 'css',
-      name: 'CSS',
-      icon: 'assets/media/icons/LANG_css.svg',
-      progressWidth: 75, // 75% de largeur
+    { //J2EE
+      id: 'j2ee',
+      name: 'J2EE - Jakarta',
+      icon: 'assets/media/icons/LANG_logo-java-coffee-cup.svg',
+      progressWidth: 55,
       skills: [
-        'Layout Flexbox/Grid',
-        'Animations et transitions',
-        'Responsive design',
-        'Préprocesseurs (Sass)'
+        'Servlets et JSP',
+        'JDBC et gestion des bases de données',
+        'EJB (Enterprise Java Beans)',
+        'Développement d’applications web',
+        'Déploiement sur serveurs Tomcat/Glassfish'
       ]
     },
+    // { //HTML
+    //   id: 'html',
+    //   name: 'HTML',
+    //   icon: 'assets/media/icons/LANG_html-5.svg',
+    //   progressWidth: 90, // 90% de largeur
+    //   skills: [
+    //     'Structure sémantique',
+    //     'Accessibilité web',
+    //     'Formulaires et validation'
+    //   ]
+    // },
+    // { //CSS
+    //   id: 'css',
+    //   name: 'CSS',
+    //   icon: 'assets/media/icons/LANG_css.svg',
+    //   progressWidth: 75, // 75% de largeur
+    //   skills: [
+    //     'Layout Flexbox/Grid',
+    //     'Animations et transitions',
+    //     'Responsive design',
+    //     'Préprocesseurs (Sass)'
+    //   ]
+    // },
     { //PYTHON
       id: 'python',
       name: 'PYTHON',
@@ -77,7 +116,72 @@ export class CompetancesComponent {
         'Analyse de données',
         'Automatisation'
       ]
-    }
+    },
+    { //ANDROID
+      id: 'android',
+      name: 'ANDROID',
+      icon: 'assets/media/icons/LANG_android-os.svg',
+      progressWidth: 55,
+      skills: [
+        'Activités et fragments',
+        'Cycle de vie des applications',
+        'Layouts et UI',
+        'Gestion des permissions',
+        'Appels API et stockage local'
+      ]
+    },
+    { //UML
+      id: 'uml',
+      name: 'UML',
+      icon: 'assets/media/icons/LANG_UML.svg',
+      progressWidth: 65,
+      skills: [
+        'Diagrammes de classes',
+        'Diagrammes de séquence',
+        'Cas d’utilisation',
+        'Modélisation objet',
+        'Analyse fonctionnelle'
+      ]
+    },
+    { //C++
+      id: 'cpp',
+      name: 'C++',
+      icon: 'assets/media/icons/LANG_C++.svg',
+      progressWidth: 45,
+      skills: [
+        'Gestion de la mémoire',
+        'Programmation orientée objet',
+        'Templates et génériques',
+        'Structures de données',
+        'Programmation bas niveau'
+      ]
+    },
+    { //C
+      id: 'c',
+      name: 'C',
+      icon: 'assets/media/icons/LANG_C.svg',
+      progressWidth: 50,
+      skills: [
+        'Pointeurs et mémoire',
+        'Structures et tableaux',
+        'Gestion des fichiers',
+        'Compilation et Makefile',
+        'Programmation système'
+      ]
+    },
+    { //GIT
+      id: 'git',
+      name: 'GIT',
+      icon: 'assets/media/icons/LANG_git.svg',
+      progressWidth: 70,
+      skills: [
+        'Gestion de versions',
+        'Branches et merges',
+        'Rebase et cherry-pick',
+        'Gestion des conflits',
+        'Collaboration via GitHub/GitLab'
+      ]
+    },
   ];
 
   // Objet pour stocker la rotation de chaque flèche
