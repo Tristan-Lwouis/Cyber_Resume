@@ -1,8 +1,10 @@
 <section class="svg-container" cdkDrag 
          (cdkDragMoved)="onDragMoved($event)"
+         (click)="onWindowClick()"
          appViewportLine 
          [componentId]="componentId"
-         [distancePercentage]="distancePercentage">
+         [distancePercentage]="distancePercentage"
+         [style.z-index]="windowZIndex">
 
   <!-- TAB SELECTOR AND HANDLE -->
   <div class="bandeau-onglet clickable">

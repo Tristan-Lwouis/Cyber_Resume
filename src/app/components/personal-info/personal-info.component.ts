@@ -1,7 +1,9 @@
-import { Component, Input, OnInit, HostListener, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, HostListener, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 import { DragDropModule, CdkDragMove } from '@angular/cdk/drag-drop'; //Drag and Drop
 import { ViewportLineDirective } from '../../directives/viewport-line.directive';
+import { WindowManagerService } from '../../services/window-manager.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -10,7 +12,7 @@ import { ViewportLineDirective } from '../../directives/viewport-line.directive'
   templateUrl: './personal-info.component.html',
   styleUrl: './personal-info.component.scss'
 })
-export class PersonalInfoComponent implements OnInit {
+export class PersonalInfoComponent implements OnInit, OnDestroy {
   @Input() tabTitle: string = 'EXPER1ENCE';
   @Input() componentId: string = 'experience'; // ID unique du composant
   /**
@@ -27,12 +29,35 @@ export class PersonalInfoComponent implements OnInit {
   // EventEmitter pour communiquer avec le composant parent
   @Output() closeComponent = new EventEmitter<void>();
 
+  // Propriétés pour la gestion des fenêtres
+  private subscription: Subscription = new Subscription();
+  public windowZIndex: number = 1000;
+
   constructor(
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private windowManagerService: WindowManagerService
   ) {}
 
   ngOnInit(): void {
-    // La directive gère automatiquement l'initialisation
+    // Enregistrer la fenêtre dans le gestionnaire
+    this.windowZIndex = this.windowManagerService.registerWindow(this.componentId);
+    
+    // S'abonner aux changements de fenêtre active
+    this.subscription.add(
+      this.windowManagerService.getActiveWindowObservable().subscribe(activeWindowId => {
+        if (activeWindowId === this.componentId) {
+          this.windowZIndex = this.windowManagerService.getWindowZIndex(this.componentId);
+        }
+      })
+    );
+  }
+
+  /**
+   * Nettoie les ressources lors de la destruction du composant
+   */
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+    this.windowManagerService.unregisterWindow(this.componentId);
   }
 
   /**
@@ -61,5 +86,13 @@ export class PersonalInfoComponent implements OnInit {
    */
   onCloseClick(): void {
     this.closeComponent.emit();
+  }
+
+  /**
+   * Méthode appelée quand l'utilisateur clique sur la fenêtre
+   * Fait passer la fenêtre au premier plan
+   */
+  onWindowClick(): void {
+    this.windowZIndex = this.windowManagerService.bringToFront(this.componentId);
   }
 }

@@ -1,9 +1,11 @@
 <section class="svg-container" cdkDrag 
          (cdkDragMoved)="onDragMoved($event)"
+         (click)="onWindowClick()"
          appViewportLine 
          componentId="competances"
          lineColor="black"
-         [distancePercentage]="distancePercentage">
+         [distancePercentage]="distancePercentage"
+         [style.z-index]="windowZIndex">
     <div id="Handle" class="clickable" cdkDragHandle>
         <span></span>
     </div>

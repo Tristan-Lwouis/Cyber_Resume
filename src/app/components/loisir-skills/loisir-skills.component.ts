@@ -1,8 +1,10 @@
 
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common'; // OBLIGATOIRE pour ngStyle
 import { DragDropModule, CdkDragMove } from '@angular/cdk/drag-drop'; //Drag and Drop
 import { ViewportLineDirective } from '../../directives/viewport-line.directive';
+import { WindowManagerService } from '../../services/window-manager.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-loisir-skills',
@@ -12,7 +14,7 @@ import { ViewportLineDirective } from '../../directives/viewport-line.directive'
   styleUrl: './loisir-skills.component.scss'
 })
 
-export class LoisirSkillsComponent {
+export class LoisirSkillsComponent implements OnInit, OnDestroy {
     @Input() title: string = '';
     @Input() titleClass: string = '';
     @Input() skillsZIndex: number = 1;
@@ -33,7 +35,39 @@ export class LoisirSkillsComponent {
 
     @ViewChild(ViewportLineDirective) viewportLineDirective!: ViewportLineDirective;
 
-    constructor(private elementRef: ElementRef) {}
+    // Propriétés pour la gestion des fenêtres
+    private subscription: Subscription = new Subscription();
+    public windowZIndex: number = 1000;
+
+    constructor(
+      private elementRef: ElementRef,
+      private windowManagerService: WindowManagerService
+    ) {}
+
+  /**
+   * Initialise le composant et enregistre la fenêtre dans le gestionnaire
+   */
+  ngOnInit(): void {
+    // Enregistrer la fenêtre dans le gestionnaire
+    this.windowZIndex = this.windowManagerService.registerWindow(this.componentId);
+    
+    // S'abonner aux changements de fenêtre active
+    this.subscription.add(
+      this.windowManagerService.getActiveWindowObservable().subscribe(activeWindowId => {
+        if (activeWindowId === this.componentId) {
+          this.windowZIndex = this.windowManagerService.getWindowZIndex(this.componentId);
+        }
+      })
+    );
+  }
+
+  /**
+   * Nettoie les ressources lors de la destruction du composant
+   */
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+    this.windowManagerService.unregisterWindow(this.componentId);
+  }
 
   showFirstTab() {
     // Émettre l'événement pour activer/désactiver l'onglet Loisirs
@@ -77,5 +111,13 @@ export class LoisirSkillsComponent {
     
     // Émettre l'événement de fermeture
     this.closeComponent.emit();
+  }
+
+  /**
+   * Méthode appelée quand l'utilisateur clique sur la fenêtre
+   * Fait passer la fenêtre au premier plan
+   */
+  onWindowClick(): void {
+    this.windowZIndex = this.windowManagerService.bringToFront(this.componentId);
   }
 }

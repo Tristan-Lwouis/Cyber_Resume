@@ -1,9 +1,11 @@
-import { Component, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DragDropModule, CdkDragMove } from '@angular/cdk/drag-drop'; //Drag and Drop
 import { AudioEventsService } from '../../services/audio-events.service';
 import { ViewportLineDirective } from '../../directives/viewport-line.directive';
+import { WindowManagerService } from '../../services/window-manager.service';
 import { Input } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 // Interface pour définir la structure d'un langage
 interface Language {
@@ -20,7 +22,7 @@ interface Language {
   templateUrl: './competances.component.html',
   styleUrl: './competances.component.scss'
 })
-export class CompetancesComponent {
+export class CompetancesComponent implements OnInit, OnDestroy {
   /**
    * Pourcentage de la largeur de l'écran pour calculer la distance du point intermédiaire de la ligne.
    * Cette valeur détermine à quelle distance du composant le point intermédiaire sera placé.
@@ -198,12 +200,45 @@ export class CompetancesComponent {
   // EventEmitter pour communiquer avec le composant parent
   @Output() closeComponent = new EventEmitter<void>();
 
-  constructor(private audioEventsService: AudioEventsService) {
+  // Propriétés pour la gestion des fenêtres
+  private readonly windowId = 'competances-window';
+  private subscription: Subscription = new Subscription();
+  public windowZIndex: number = 1000;
+
+  constructor(
+    private audioEventsService: AudioEventsService,
+    private windowManagerService: WindowManagerService
+  ) {
     // Initialiser les états pour chaque langage
     this.languages.forEach(lang => {
       this.arrowRotation[lang.id] = 0;
       this.open[lang.id] = false;
     });
+  }
+
+  /**
+   * Initialise le composant et enregistre la fenêtre dans le gestionnaire
+   */
+  ngOnInit(): void {
+    // Enregistrer la fenêtre dans le gestionnaire
+    this.windowZIndex = this.windowManagerService.registerWindow(this.windowId);
+    
+    // S'abonner aux changements de fenêtre active
+    this.subscription.add(
+      this.windowManagerService.getActiveWindowObservable().subscribe(activeWindowId => {
+        if (activeWindowId === this.windowId) {
+          this.windowZIndex = this.windowManagerService.getWindowZIndex(this.windowId);
+        }
+      })
+    );
+  }
+
+  /**
+   * Nettoie les ressources lors de la destruction du composant
+   */
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+    this.windowManagerService.unregisterWindow(this.windowId);
   }
 
   // Méthode appelée quand on clique sur la flèche
@@ -277,5 +312,13 @@ export class CompetancesComponent {
    */
   onCloseClick(): void {
     this.closeComponent.emit();
+  }
+
+  /**
+   * Méthode appelée quand l'utilisateur clique sur la fenêtre
+   * Fait passer la fenêtre au premier plan
+   */
+  onWindowClick(): void {
+    this.windowZIndex = this.windowManagerService.bringToFront(this.windowId);
   }
 }

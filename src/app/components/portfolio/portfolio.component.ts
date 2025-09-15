@@ -1,5 +1,7 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { WindowManagerService } from '../../services/window-manager.service';
+import { Subscription } from 'rxjs';
 
 // Interface pour définir la structure d'un projet portfolio
 interface PortfolioItem {
@@ -28,12 +30,17 @@ interface PortfolioItem {
   templateUrl: './portfolio.component.html',
   styleUrl: './portfolio.component.scss'
 })
-export class PortfolioComponent {
+export class PortfolioComponent implements OnInit, OnDestroy {
   // Événement pour fermer le portfolio
   @Output() closePortfolio = new EventEmitter<void>();
   
   // Ligne ajoutée au hasard - propriété pour la couleur du thème
   themeColor: string = '#00ff88';
+
+  // Propriétés pour la gestion des fenêtres
+  private readonly windowId = 'portfolio-window';
+  private subscription: Subscription = new Subscription();
+  public windowZIndex: number = 1000;
   
   // Tableau des projets portfolio
   portfolioItems: PortfolioItem[] = [
@@ -106,6 +113,33 @@ export class PortfolioComponent {
 
   ];
 
+  constructor(private windowManagerService: WindowManagerService) {}
+
+  /**
+   * Initialise le composant et enregistre la fenêtre dans le gestionnaire
+   */
+  ngOnInit(): void {
+    // Enregistrer la fenêtre dans le gestionnaire
+    this.windowZIndex = this.windowManagerService.registerWindow(this.windowId);
+    
+    // S'abonner aux changements de fenêtre active
+    this.subscription.add(
+      this.windowManagerService.getActiveWindowObservable().subscribe(activeWindowId => {
+        if (activeWindowId === this.windowId) {
+          this.windowZIndex = this.windowManagerService.getWindowZIndex(this.windowId);
+        }
+      })
+    );
+  }
+
+  /**
+   * Nettoie les ressources lors de la destruction du composant
+   */
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+    this.windowManagerService.unregisterWindow(this.windowId);
+  }
+
   // Méthode pour ajouter un nouveau projet
   addPortfolioItem(item: PortfolioItem): void {
     this.portfolioItems.push(item);
@@ -161,5 +195,13 @@ export class PortfolioComponent {
     } else {
       console.log('Lien non disponible pour le projet:', item.title);
     }
+  }
+
+  /**
+   * Méthode appelée quand l'utilisateur clique sur la fenêtre
+   * Fait passer la fenêtre au premier plan
+   */
+  onWindowClick(): void {
+    this.windowZIndex = this.windowManagerService.bringToFront(this.windowId);
   }
 }
