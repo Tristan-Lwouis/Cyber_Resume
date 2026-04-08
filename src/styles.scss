@@ -6,7 +6,7 @@
   src: url('./app/assets/font/Cyber-Alert.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
-  font-display: swap; /* Optimisation du chargement */
+  font-display: block; /* Masquer le texte en attendant la police */
 }
 
 /* ===== VARIABLES CSS ===== */

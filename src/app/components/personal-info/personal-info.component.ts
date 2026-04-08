@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, HostListener, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, HostListener, ElementRef, ViewChild, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 import { DragDropModule, CdkDragMove } from '@angular/cdk/drag-drop'; //Drag and Drop
 import { ViewportLineDirective } from '../../directives/viewport-line.directive';
@@ -10,7 +10,8 @@ import { Subscription } from 'rxjs';
   selector: 'app-personal-info',
   imports: [CommonModule, DragDropModule, ViewportLineDirective],
   templateUrl: './personal-info.component.html',
-  styleUrl: './personal-info.component.scss'
+  styleUrl: './personal-info.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PersonalInfoComponent implements OnInit, OnDestroy {
   @Input() tabTitle: string = 'EXPER1ENCE';
@@ -35,7 +36,8 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
 
   constructor(
     private elementRef: ElementRef,
-    private windowManagerService: WindowManagerService
+    private windowManagerService: WindowManagerService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -47,6 +49,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
       this.windowManagerService.getActiveWindowObservable().subscribe(activeWindowId => {
         if (activeWindowId === this.componentId) {
           this.windowZIndex = this.windowManagerService.getWindowZIndex(this.componentId);
+          this.cdr.markForCheck();
         }
       })
     );
@@ -94,5 +97,6 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
    */
   onWindowClick(): void {
     this.windowZIndex = this.windowManagerService.bringToFront(this.componentId);
+    this.cdr.markForCheck();
   }
 }

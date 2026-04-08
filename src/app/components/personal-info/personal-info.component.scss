@@ -34,6 +34,30 @@
         // border-radius: 3px !important;
     }
 
+    ::ng-deep .content-block {
+      border: 2px solid var(--background-color);
+      border-left: 4px solid var(--background-color);
+      border-top: 4px solid var(--background-color);
+      padding: 15px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05); /* Assombrit légèrement au survol */
+        transform: translateX(5px);
+      }
+      
+      h2 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        color: var(--background-color);
+      }
+      
+      p {
+        margin-bottom: 0;
+      }
+    }
+
 
 }
 
@@ -76,7 +100,7 @@
     height :7%;
 
   /*Font*/
-  font-size: 1vw;
+  font-size: clamp(14px, 1vw, 22px);
   font-weight: 600;
   user-select: none; /* empêche la sélection du texte */
 

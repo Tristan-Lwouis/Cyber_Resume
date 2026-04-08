@@ -1,10 +1,10 @@
-<div class="custom-cursor" [ngStyle]="{'left.px': x, 'top.px': y}">
-  <div class="cross" [ngClass]="{'clicked': isClicked}">
+<div class="custom-cursor" #cursorRoot>
+  <div class="cross" #cross>
     <div class="line top"></div>
     <div class="line right"></div>
     <div class="line bottom"></div>
     <div class="line left"></div>
-    <span class="coords">{{ x }}, {{ y }}</span>
+    <span class="coords" #coords>0, 0</span>
   </div>
-  <div class="pointer-circle" [ngClass]="{'visible': isPointer}"></div>
+  <div class="pointer-circle" #pointerCircle></div>
 </div>

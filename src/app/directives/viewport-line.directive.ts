@@ -27,7 +27,6 @@ export class ViewportLineDirective implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    console.log('ViewportLineDirective ngOnInit - componentId:', this.componentId, 'isActive:', this.isActive);
     if (this.componentId && this.isActive) {
       this.calculateAndUpdateLine();
     }

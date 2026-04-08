@@ -8,7 +8,9 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  NgZone,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import * as THREE from 'three';
 import { Subscription } from 'rxjs';
@@ -22,7 +24,8 @@ let GREETING_ALREADY_PLAYED = false;
 @Component({
   selector: 'app-avatar',
   templateUrl: './avatar.component.html',
-  styleUrl: './avatar.component.scss'
+  styleUrl: './avatar.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
   @ViewChild('avatarCanvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -66,11 +69,14 @@ export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
   private pixelRatio: number; // Cache le pixel ratio pour éviter les recalculs
   private instanceId: string; // Identifiant unique pour le monitoring
   private fallbackProgress = 0; // Pourcentage approximatif si la taille totale est inconnue
+  private clock = new THREE.Clock(); // Horloge pour le temps d'animation réel
+  private frameCount = 0; // Compteur de frames pour le throttling des ombres
 
   constructor(
     private avatarMemoryMonitor: AvatarMemoryMonitorService,
     private loadingProgress: LoadingProgressService,
-    private avatarAnimationService: AvatarAnimationService
+    private avatarAnimationService: AvatarAnimationService,
+    private ngZone: NgZone
   ) {
     // Limite le pixel ratio à 2 pour éviter de flinguer le GPU sur les écrans 4K
     this.pixelRatio = Math.min(window.devicePixelRatio, 2);
@@ -89,7 +95,9 @@ export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
     
     await this.initThree();
     await this.loadModel();
-    this.animate();
+    this.ngZone.runOutsideAngular(() => {
+      this.animate();
+    });
     this.setupClickDetection();
 
     // Gestion du resize
@@ -113,7 +121,9 @@ export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
         canvas.style.display = 'block';
         // Si la boucle d'animation a été stoppée, on la relance
         if (this.animationId === null && this.renderer && this.scene && this.camera) {
-          this.animate();
+          this.ngZone.runOutsideAngular(() => {
+            this.animate();
+          });
         }
       } else {
         canvas.style.display = 'none';
@@ -294,12 +304,15 @@ export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
       canvas, 
       antialias: true, 
       alpha: true,
-      powerPreference: 'high-performance' // Optimisation GPU
+      powerPreference: 'high-performance', // Optimisation GPU
+      precision: 'highp',
+      stencil: false // Économise le buffer stencil si non utilisé
     });
     this.renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
     this.renderer.setPixelRatio(this.pixelRatio);
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.shadowMap.autoUpdate = false; // On gère manuellement pour gagner des FPS
 
     // Lumières
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
@@ -308,10 +321,15 @@ export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
     const sunLight = new THREE.DirectionalLight(0xfff6c6, 7);
     sunLight.position.set(8, 10, 5);
     sunLight.castShadow = true;
-    sunLight.shadow.mapSize.width = 2048;
-    sunLight.shadow.mapSize.height = 2048;
+    sunLight.shadow.mapSize.width = 512;
+    sunLight.shadow.mapSize.height = 512;
     sunLight.shadow.camera.near = 0.5;
-    sunLight.shadow.camera.far = 50;
+    sunLight.shadow.camera.far = 30; // Réduit pour concentrer la résolution
+    // Ajuster la zone d'ombre à l'avatar
+    sunLight.shadow.camera.left = -5;
+    sunLight.shadow.camera.right = 5;
+    sunLight.shadow.camera.top = 5;
+    sunLight.shadow.camera.bottom = -5;
     this.scene.add(sunLight);
 
     // Sol pour les ombres
@@ -583,9 +601,15 @@ export class AvatarComponent implements AfterViewInit, OnDestroy, OnChanges {
     }
     
     if (this.mixer) {
-      // Pas de deltaTime réel ici, mais un pas fixe pour simplifier
-      this.mixer.update(1 / 90); // 60 normal 120 2x plus lent
-      // this.mixer.update(1 / 120); // 
+      // Utilisation du temps réel écoulé
+      const delta = this.clock.getDelta();
+      this.mixer.update(Math.min(delta, 0.1));
+    }
+
+    // Mise à jour des ombres seulement 1 frame sur 2 pour doubler l'efficacité du shadow mapping
+    this.frameCount++;
+    if (this.frameCount % 2 === 0) {
+      this.renderer.shadowMap.needsUpdate = true;
     }
     
     this.renderer.render(this.scene, this.camera);

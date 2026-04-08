@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ViewportLineService, ViewportLineData } from '../../services/viewport-line.service';
 import { Subscription } from 'rxjs';
@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
   selector: 'app-viewport-line',
   standalone: true,
   imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <!-- Lignes dynamiques du service -->
     <svg class="viewport-lines-container">
@@ -67,13 +68,11 @@ export class ViewportLineComponent implements OnInit, OnDestroy {
   activeLinesSimple: ViewportLineData[] = [];
   private subscription: Subscription = new Subscription();
 
-  constructor(private viewportLineService: ViewportLineService) {}
+  constructor(private viewportLineService: ViewportLineService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    console.log('ViewportLineComponent ngOnInit');
     this.subscription.add(
       this.viewportLineService.lines$.subscribe(linesMap => {
-        console.log('ViewportLineComponent - received linesMap:', linesMap);
         this.activeLines = Array.from(linesMap.values()).filter(line => line.isActive);
         
         // Séparer les lignes avec et sans points intermédiaires
@@ -83,10 +82,7 @@ export class ViewportLineComponent implements OnInit, OnDestroy {
         this.activeLinesSimple = this.activeLines.filter(line => 
           line.intermediateX === undefined || line.intermediateY === undefined
         );
-        
-        console.log('ViewportLineComponent - activeLines:', this.activeLines);
-        console.log('ViewportLineComponent - activeLinesWithIntermediate:', this.activeLinesWithIntermediate);
-        console.log('ViewportLineComponent - activeLinesSimple:', this.activeLinesSimple);
+        this.cdr.markForCheck();
       })
     );
   }

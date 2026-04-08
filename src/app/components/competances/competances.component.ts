@@ -1,4 +1,4 @@
-import { Component, ViewChild, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DragDropModule, CdkDragMove } from '@angular/cdk/drag-drop'; //Drag and Drop
 import { AudioEventsService } from '../../services/audio-events.service';
@@ -6,21 +6,14 @@ import { ViewportLineDirective } from '../../directives/viewport-line.directive'
 import { WindowManagerService } from '../../services/window-manager.service';
 import { Input } from '@angular/core';
 import { Subscription } from 'rxjs';
-
-// Interface pour définir la structure d'un langage
-interface Language {
-  id: string;
-  name: string;
-  icon: string;
-  progressWidth: number; // Largeur de la barre de progression (0-100)
-  skills: string[]; // Liste des compétences
-}
+import { Language, COMPETENCES_DATA } from '../../data/competences.data';
 
 @Component({
   selector: 'app-competances',
   imports: [CommonModule, DragDropModule, ViewportLineDirective],
   templateUrl: './competances.component.html',
-  styleUrl: './competances.component.scss'
+  styleUrl: './competances.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CompetancesComponent implements OnInit, OnDestroy {
   /**
@@ -30,176 +23,9 @@ export class CompetancesComponent implements OnInit, OnDestroy {
    * Exemple : distancePercentage = 15 signifie que le point intermédiaire sera à 15% de window.innerWidth du composant.
    */
   @Input() distancePercentage: number = 12;
-  
-  // Données des langages - facilement modifiables et extensibles
-  languages: Language[] = [
-    { //ANGULAR + TS
-      id: 'angular-typescript',
-      name: 'ANGULAR',
-      icon: 'assets/media/icons/LANG_Angular.svg',
-      progressWidth: 70, // 70% de largeur
-      skills: [
-        'Composants et modules',
-        'Data binding et directives',
-        'Services et dépendances',
-        'RxJS et Observables',
-        'Routing et navigation'
-      ]
-    },
-    { //JAVASCRIPT
-      id: 'javascript',
-      name: 'JAVASCRIPT + TYPESCRIPT',
-      icon: 'assets/media/icons/LANG_logo-javascript.svg',
-      progressWidth: 60, // 85% de largeur
-      skills: [
-        'Programmation modulaire',
-        'Gestion des structures',
-        'Programmation asynchrone',
-        'Manipulation du DOM',
-        'Frameworks modernes'
-      ]
-    },
-    { //JAVA
-      id: 'java',
-      name: 'JAVA SE',
-      icon: 'assets/media/icons/LANG_logo-java-coffee-cup.svg',
-      progressWidth: 65,
-      skills: [
-        'Programmation orientée objet',
-        'Gestion des collections',
-        'Exceptions et gestion d’erreurs',
-        'Interfaces et classes abstraites',
-        'Multithreading'
-      ]
-    },
-    { // SPRING BOOT
-      id: 'springboot',
-      name: 'SPRING BOOT',
-      icon: 'assets/media/icons/LANG_logo-spring-boot.svg',
-      // icon: 'assets/media/icons/LANG_spring-boot.svg',
-      progressWidth: 70,
-      skills: [
-        'Création de controllers REST & MVC',
-        'Architecture en couches (Controller / Service / Repository)',
-        'JPA / Hibernate & mapping relationnel',
-        'Intégration Thymeleaf (views dynamiques)',
-        'Connexion à une base MariaDB',
-        'Gestion des entités et relations complexes',
-      ]
-    },    
-    { //J2EE
-      id: 'j2ee',
-      name: 'J2EE - Jakarta',
-      icon: 'assets/media/icons/LANG_logo-java-coffee-cup.svg',
-      progressWidth: 55,
-      skills: [
-        'Servlets et JSP',
-        'JDBC et gestion des bases de données',
-        'EJB (Enterprise Java Beans)',
-        'Développement d’applications web',
-        'Déploiement sur serveurs Tomcat/Glassfish'
-      ]
-    },
-    // { //HTML
-    //   id: 'html',
-    //   name: 'HTML',
-    //   icon: 'assets/media/icons/LANG_html-5.svg',
-    //   progressWidth: 90, // 90% de largeur
-    //   skills: [
-    //     'Structure sémantique',
-    //     'Accessibilité web',
-    //     'Formulaires et validation'
-    //   ]
-    // },
-    // { //CSS
-    //   id: 'css',
-    //   name: 'CSS',
-    //   icon: 'assets/media/icons/LANG_css.svg',
-    //   progressWidth: 75, // 75% de largeur
-    //   skills: [
-    //     'Layout Flexbox/Grid',
-    //     'Animations et transitions',
-    //     'Responsive design',
-    //     'Préprocesseurs (Sass)'
-    //   ]
-    // },
-    { //PYTHON
-      id: 'python',
-      name: 'PYTHON',
-      icon: 'assets/media/icons/LANG_python.svg',
-      progressWidth: 70,
-      skills: [
-        'Programmation orientée objet',
-        'Analyse de données',
-        'Automatisation'
-      ]
-    },
-    { //ANDROID
-      id: 'android',
-      name: 'ANDROID',
-      icon: 'assets/media/icons/LANG_android-os.svg',
-      progressWidth: 55,
-      skills: [
-        'Activités et fragments',
-        'Cycle de vie des applications',
-        'Layouts et UI',
-        'Gestion des permissions',
-        'Appels API et stockage local'
-      ]
-    },
-    { //UML
-      id: 'uml',
-      name: 'UML',
-      icon: 'assets/media/icons/LANG_UML.svg',
-      progressWidth: 65,
-      skills: [
-        'Diagrammes de classes',
-        'Diagrammes de séquence',
-        'Cas d’utilisation',
-        'Modélisation objet',
-        'Analyse fonctionnelle'
-      ]
-    },
-    { //C++
-      id: 'cpp',
-      name: 'C++',
-      icon: 'assets/media/icons/LANG_C++.svg',
-      progressWidth: 45,
-      skills: [
-        'Gestion de la mémoire',
-        'Programmation orientée objet',
-        'Templates et génériques',
-        'Structures de données',
-        'Programmation bas niveau'
-      ]
-    },
-    { //C
-      id: 'c',
-      name: 'C',
-      icon: 'assets/media/icons/LANG_C.svg',
-      progressWidth: 50,
-      skills: [
-        'Pointeurs et mémoire',
-        'Structures et tableaux',
-        'Gestion des fichiers',
-        'Compilation et Makefile',
-        'Programmation système'
-      ]
-    },
-    { //GIT
-      id: 'git',
-      name: 'GIT',
-      icon: 'assets/media/icons/LANG_git.svg',
-      progressWidth: 70,
-      skills: [
-        'Gestion de versions',
-        'Branches et merges',
-        'Rebase et cherry-pick',
-        'Gestion des conflits',
-        'Collaboration via GitHub/GitLab'
-      ]
-    },
-  ];
+
+  // Données des langages - chargées depuis le fichier de configuration
+  languages: Language[] = COMPETENCES_DATA;
 
   // Objet pour stocker la rotation de chaque flèche
   arrowRotation: { [key: string]: number } = {};
@@ -222,7 +48,8 @@ export class CompetancesComponent implements OnInit, OnDestroy {
 
   constructor(
     private audioEventsService: AudioEventsService,
-    private windowManagerService: WindowManagerService
+    private windowManagerService: WindowManagerService,
+    private cdr: ChangeDetectorRef
   ) {
     // Initialiser les états pour chaque langage
     this.languages.forEach(lang => {
@@ -243,6 +70,7 @@ export class CompetancesComponent implements OnInit, OnDestroy {
       this.windowManagerService.getActiveWindowObservable().subscribe(activeWindowId => {
         if (activeWindowId === this.windowId) {
           this.windowZIndex = this.windowManagerService.getWindowZIndex(this.windowId);
+          this.cdr.markForCheck();
         }
       })
     );
@@ -267,12 +95,10 @@ export class CompetancesComponent implements OnInit, OnDestroy {
       this.open[language] = false;
       // Jouer le son de fermeture
       this.audioEventsService.playCloseSound();
-      // console.log("close")
     } else {
       this.open[language] = true;
       // Jouer le son d'ouverture
       this.audioEventsService.playOpenSound();
-      // console.log("open")
     }
     
     // Calculer la hauteur en fonction de l'état de toutes les flèches
@@ -335,5 +161,6 @@ export class CompetancesComponent implements OnInit, OnDestroy {
    */
   onWindowClick(): void {
     this.windowZIndex = this.windowManagerService.bringToFront(this.windowId);
+    this.cdr.markForCheck();
   }
 }

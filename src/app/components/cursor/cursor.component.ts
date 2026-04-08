@@ -1,4 +1,4 @@
-import { Component, HostListener, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AudioEventsService } from '../../services/audio-events.service';
 import { Subscription } from 'rxjs';
@@ -12,17 +12,21 @@ import { Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CursorComponent implements OnInit, OnDestroy {
-  x = 0;
-  y = 0;
-  isClicked = false;
-  isPointer = false;
-  
+  @ViewChild('cursorRoot', { static: true }) cursorRoot!: ElementRef<HTMLDivElement>;
+  @ViewChild('cross', { static: true }) cross!: ElementRef<HTMLDivElement>;
+  @ViewChild('coords', { static: true }) coords!: ElementRef<HTMLSpanElement>;
+  @ViewChild('pointerCircle', { static: true }) pointerCircle!: ElementRef<HTMLDivElement>;
+
   // Propriétés audio
   private openSound: HTMLAudioElement;
   private closeSound: HTMLAudioElement;
   private audioSubscription?: Subscription;
 
-  constructor(private audioEventsService: AudioEventsService) {
+  private mouseMoveListener!: (e: MouseEvent) => void;
+  private mouseDownListener!: () => void;
+  private mouseUpListener!: () => void;
+
+  constructor(private audioEventsService: AudioEventsService, private ngZone: NgZone) {
     // Initialiser les éléments audio
     this.openSound = new Audio('assets/media/soundFX/open.mp3');
     this.closeSound = new Audio('assets/media/soundFX/close.mp3');
@@ -32,61 +36,25 @@ export class CursorComponent implements OnInit, OnDestroy {
     this.closeSound.load();
   }
 
-  @HostListener('document:mousemove', ['$event'])
-  onMouseMove(event: MouseEvent) {
-    this.x = event.clientX;
-    this.y = event.clientY;
-    
-    // Détecter les éléments cliquables sans dépendre de cursor: pointer
-    const target = event.target as HTMLElement;
-    this.isPointer = this.isClickableElement(target);
-  }
-
-  @HostListener('document:mousedown')
-  onMouseDown() {
-    this.isClicked = true;
-  }
-
-  @HostListener('document:mouseup')
-  onMouseUp() {
-    this.isClicked = false;
-  }
+  // Event listeners enlevés du décorateur pour les attacher manuellement en dehors de la zone Angular
 
   private isClickableElement(element: HTMLElement): boolean {
-    // Vérifier si l'élément ou ses parents sont cliquables
-    let currentElement: HTMLElement | null = element;
+    if (!element || !element.closest) return false;
     
-    while (currentElement) {
-      // Vérifier les balises cliquables
-      if (['A', 'BUTTON', 'INPUT', 'TEXTAREA', 'SELECT', 'LABEL'].includes(currentElement.tagName)) {
+    // Utiliser API native du navigateur (extrêmement performant) au lieu de boucler manuellement
+    const clickableSelector = 'a, button, input, textarea, select, label, [role="button"], [tabindex], [onclick], .clickable, .menuItem, .contact-info, #contact, #linkedin';
+    
+    if (element.closest(clickableSelector)) {
+      return true;
+    }
+    
+    // Vérification de repli (uniquement pour les styles inline, sans utiliser getComputedStyle qui détruit les perfs)
+    let curr: HTMLElement | null = element;
+    while (curr) {
+      if (curr.style && (curr.style.cursor === 'pointer' || curr.style.cursor === 'hand')) {
         return true;
       }
-      
-      // Vérifier les attributs qui indiquent un élément cliquable
-      if (currentElement.onclick || 
-          currentElement.getAttribute('onclick') ||
-          // currentElement.getAttribute('click') ||
-          currentElement.getAttribute('role') === 'button' ||
-          currentElement.getAttribute('tabindex') !== null ||
-          currentElement.classList.contains('clickable') ||
-          currentElement.classList.contains('menuItem') ||
-          currentElement.classList.contains('contact-info') ||
-          currentElement.id === 'contact' ||
-          currentElement.id === 'linkedin') {
-        return true;
-      }
-      
-      // Vérifier les styles CSS qui pourraient indiquer un élément cliquable
-      const computedStyle = window.getComputedStyle(currentElement);
-      if (computedStyle.pointerEvents === 'auto' && 
-          (computedStyle.cursor === 'pointer' || 
-           computedStyle.cursor === 'hand' ||
-           currentElement.style.cursor === 'pointer')) {
-        return true;
-      }
-      
-      // Passer au parent
-      currentElement = currentElement.parentElement;
+      curr = curr.parentElement;
     }
     
     return false;
@@ -132,10 +100,65 @@ export class CursorComponent implements OnInit, OnDestroy {
         this.playCloseSound();
       }
     });
+
+    let rAFScheduled = false;
+    let latestEvent: MouseEvent | null = null;
+
+    this.mouseMoveListener = (event: MouseEvent) => {
+      latestEvent = event;
+      if (!rAFScheduled) {
+        rAFScheduled = true;
+        requestAnimationFrame(() => {
+          if (!latestEvent) return;
+          const e = latestEvent;
+          
+          // Met à jour la position directement sur le DOM
+          if (this.cursorRoot) {
+            this.cursorRoot.nativeElement.style.left = e.clientX + 'px';
+            this.cursorRoot.nativeElement.style.top = e.clientY + 'px';
+          }
+          if (this.coords) {
+            this.coords.nativeElement.textContent = `${e.clientX}, ${e.clientY}`;
+          }
+          
+          const target = e.target as HTMLElement;
+          const isPointer = this.isClickableElement(target);
+          if (this.pointerCircle) {
+            if (isPointer) {
+              this.pointerCircle.nativeElement.classList.add('visible');
+            } else {
+              this.pointerCircle.nativeElement.classList.remove('visible');
+            }
+          }
+          rAFScheduled = false;
+        });
+      }
+    };
+
+    this.mouseDownListener = () => {
+      if (this.cross) {
+        this.cross.nativeElement.classList.add('clicked');
+      }
+    };
+
+    this.mouseUpListener = () => {
+      if (this.cross) {
+        this.cross.nativeElement.classList.remove('clicked');
+      }
+    };
+
+    this.ngZone.runOutsideAngular(() => {
+      document.addEventListener('mousemove', this.mouseMoveListener);
+      document.addEventListener('mousedown', this.mouseDownListener);
+      document.addEventListener('mouseup', this.mouseUpListener);
+    });
   }
 
   ngOnDestroy(): void {
     // Se désabonner pour éviter les fuites mémoire
     this.audioSubscription?.unsubscribe();
+    document.removeEventListener('mousemove', this.mouseMoveListener);
+    document.removeEventListener('mousedown', this.mouseDownListener);
+    document.removeEventListener('mouseup', this.mouseUpListener);
   }
 }

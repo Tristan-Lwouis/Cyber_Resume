@@ -1,18 +1,19 @@
-import { Component, OnInit, OnDestroy, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-info-bulle',
   imports: [CommonModule],
   templateUrl: './info-bulle.component.html',
-  styleUrl: './info-bulle.component.scss'
+  styleUrl: './info-bulle.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoBulleComponent implements OnInit, OnDestroy, OnChanges {
   @Input() avatarClicked: boolean = false;
   @Input() portfolioOpen: boolean = false; // Nouvelle propriété pour détecter si le portfolio est ouvert
   
   displayedText = '';
-  fullText = "Bonjour, moi c'est Tristan, je suis en pleine reconversion professionnelle. Je me lance dans ce qui me passionne depuis toujours : l'informatique ! Je suis extrêmement motivé pour apprendre et développer mes compétences dans ce domaine. Mon objectif est de devenir concepteur developpeur d'applications.";
+  fullText = "Bonjour ! Moi c'est Tristan, je suis en quête d'un poste de Développeur Full-Stack. J'ai déjà un solide bagage en informatique et en graphisme, avec plusieurs projets (perso & pro) déjà en ligne. Je ne cherche pas juste à coder, mais à concevoir des outils fonctionnels, modernes et innovants. Je serais ravi d'échanger avec vous.";
   currentIndex = 0;
   isTyping = false;
   isVisible = true;
@@ -20,6 +21,8 @@ export class InfoBulleComponent implements OnInit, OnDestroy, OnChanges {
   private typingInterval: any;
   private hideTimer: any;
   private fadeTimer: any;
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     // Ne démarrer le typing que si le portfolio n'est pas ouvert
@@ -46,7 +49,6 @@ export class InfoBulleComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     // Détecter les changements de la propriété avatarClicked
     if (changes['avatarClicked'] && !changes['avatarClicked'].firstChange) {
-      console.log('Avatar cliqué détecté - Relance de la boucle info-bulle');
       this.resetAndStartTyping();
     }
     
@@ -78,10 +80,12 @@ export class InfoBulleComponent implements OnInit, OnDestroy, OnChanges {
       if (this.currentIndex < this.fullText.length) {
         this.displayedText += this.fullText[this.currentIndex];
         this.currentIndex++;
+        this.cdr.markForCheck();
       } else {
         this.isTyping = false;
         clearInterval(this.typingInterval);
-        // Démarrer le timer pour faire disparaître le composant après 15 secondes
+        this.cdr.markForCheck();
+        // Démarrer le timer pour faire disparaître le composant après 5 secondes
         this.hideTimer = setTimeout(() => {
           this.fadeOut();
         }, 5000); // temps de disparition de l'info bulle
@@ -91,9 +95,11 @@ export class InfoBulleComponent implements OnInit, OnDestroy, OnChanges {
 
   fadeOut() {
     this.isFadingOut = true;
+    this.cdr.markForCheck();
     // Attendre que la transition CSS se termine avant de masquer complètement
     this.fadeTimer = setTimeout(() => {
       this.isVisible = false;
+      this.cdr.markForCheck();
     }, 300); // Durée de la transition CSS
   }
 
@@ -135,5 +141,6 @@ export class InfoBulleComponent implements OnInit, OnDestroy, OnChanges {
     this.isFadingOut = false;
     this.displayedText = '';
     this.currentIndex = 0;
+    this.cdr.markForCheck();
   }
 }

@@ -65,15 +65,18 @@ main {
   position: absolute;
   width: 32%;
   // min-width: 500px;
+  max-width: 650px;
   bottom: 30%;
   right: 5%;
 }
 #infoBulle {
   width: 17%; //Taille de l'info bulle en fonction de la taille de l'écran
   min-width: 200px;
+  max-width: 350px;
   position: absolute;
   top: 22%;
-  left: 31%;
+  left: auto;
+  right: calc(50% + 50px);
 }
 #rollingScript1 {
   // width: 30%; //On affecte la largeur dans le composant
@@ -86,6 +89,7 @@ main {
 
 #experience { //Experience
   width: 20%; //On affecte la largeur dans le composant
+  max-width: 450px;
   position: absolute;
   top: 6%;
   right: 6%;
@@ -93,6 +97,7 @@ main {
 
 #formation { //Formation
   width: 20%; //On affecte la largeur dans le composant
+  max-width: 450px;
   position: absolute;
   bottom: 5%;
   left: 18%;
@@ -104,6 +109,8 @@ main {
   left: 1.5%;
   width: 9%;
   min-width: 150px;
+  max-width: 200px;
+  max-height: 50vh;
   // background-color: rgba(210, 105, 30, 0.801);
 }
 
@@ -125,16 +132,17 @@ main {
   // top: 50%;
   // left: 50%;
   width: 25%;
+  max-width: 550px;
   // min-width: 300px;
   // max-width: 400px;
 }
 
 #portfolio {
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100vw;
-  height: auto;
-  // max-width: 1200px;
-  max-height: 87vh;
+  height: 100vh;
   z-index: 10;
 }
 

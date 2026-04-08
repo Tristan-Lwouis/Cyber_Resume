@@ -1,18 +1,19 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { AvatarAnimationService } from '../../services/avatar-animation.service';
 
 @Component({
   selector: 'app-user-informations',
   imports: [],
   templateUrl: './user-informations.component.html',
-  styleUrl: './user-informations.component.scss'
+  styleUrl: './user-informations.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserInformationsComponent implements OnInit, OnDestroy {
   phoneNumber: string = '';
   email: string = '';
   private colorChangeObserver: MutationObserver | null = null;
 
-  constructor(private avatarAnimationService: AvatarAnimationService) {}
+  constructor(private avatarAnimationService: AvatarAnimationService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.decodeContactInfo();
@@ -45,8 +46,7 @@ export class UserInformationsComponent implements OnInit, OnDestroy {
 
   private onColorChange() {
     // Méthode appelée quand les couleurs changent
-    // Ici on peut ajouter une logique spécifique si nécessaire
-    console.log('Couleurs mises à jour dans user-informations');
+    this.cdr.markForCheck();
   }
 
   // Méthode pour obtenir la couleur primaire actuelle

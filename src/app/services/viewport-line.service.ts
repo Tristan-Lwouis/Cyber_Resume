@@ -24,11 +24,9 @@ export class ViewportLineService {
   public lines$ = this.linesSubject.asObservable();
 
   updateLine(componentId: string, data: Omit<ViewportLineData, 'id'>): void {
-    console.log('ViewportLineService updateLine - componentId:', componentId, 'data:', data);
     const currentLines = new Map(this.linesSubject.value);
     currentLines.set(componentId, { ...data, id: componentId });
     this.linesSubject.next(currentLines);
-    console.log('ViewportLineService - total lines:', currentLines.size);
   }
 
   toggleLine(componentId: string, isActive: boolean): void {

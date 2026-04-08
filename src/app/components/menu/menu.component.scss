@@ -48,6 +48,7 @@ svg {
     transition: transform 0.2s ease;
     width: 100%;
     height: auto;
+    max-height: 8vh;
     will-change: transform;
     
     &:hover {
