@@ -4,48 +4,81 @@
     height: 100%;
     // background-color: rgba(255, 0, 0, 0.295);
 
-    svg {
+    svg.carte {
+        position: relative;
         width: 100%;
-        height: 100%;
+        height: auto;
         display: block;
-        
+
         path {
             transition: all 0.3s ease; // Animation fluide pour tous les changements
         }
     }
+
+    // Le 2eme SVG se superpose au premier
+    svg.carte:nth-of-type(2) {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
 }
 
-#onglet {
+.bandeau-onglet {
+    // border: 1px solid red;
+    position: absolute;
+    top: 0;
+    left: 0%;
+    width: 100%;
+    height: 40px;
+    z-index: 3;
 
-    /*FLEXBOX*/
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    font-size: clamp(14px, 1vw, 22px);
+    font-weight: 600;
+    user-select: none;
+}
+
+#selectorTab1 {
+    // border: 1px solid blue;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-
-    /*Position*/
-    position: relative;
-    top: 8%;
-    padding: 0.5% 3%;
-    width: 36%;
-    height: 7%;
-
-    /*Font*/
-    font-size: 1.1em;
-    font-weight: 600;
-    user-select: none;
-    /* empêche la sélection du texte */
-
-    /*Test*/
-    // background-color: rgba(137, 43, 226, 0.649);
+    width:40%;
+    padding: 0% 3%;
+    transition: opacity 0.3s ease;
 }
 
+#selectorTab2 {
+    // border: 1px solid green;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 36%;
+    padding-left: 5%;
+    padding-right: 3%;
+    // padding: 0% 3%;
+    transition: opacity 0.3s ease;
+}
+
+// .inactive-tab {
+//     opacity: 0.5;
+//     cursor: pointer;
+
+//     &:hover {
+//         opacity: 0.8;
+//     }
+// }
+
 #Handle {
-    position: absolute;
-    top: 2%;
-    left: 40%;
-    width: 55%;
-    height: 6%;
+
+    // border: 1px solid rgb(31, 221, 14);
+    flex-grow: 1;
+    height: 100%;
+    width: 25%;
     color: var(--primary-color);
 
     /*Font*/
@@ -58,9 +91,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
-    /*Test*/
-    // background-color: rgba(16, 171, 255, 0.602);
 }
 
 #text-container {
@@ -72,7 +102,7 @@
 // Zone des langages avec scrollbar
 .languages-container {
     height: 100%;
-    overflow-y: auto;    
+    overflow-y: auto;
     scrollbar-color: var(--background-color) var(--primary-color);
 }
 
@@ -85,22 +115,27 @@ svg foreignObject {
     // scrollbar-width: thin;
 
     overflow-y: auto;
+
     // Scrollbar personnalisée pour le foreignObject
     &::-webkit-scrollbar {
         width: 10px;
     }
+
     &::-webkit-scrollbar-track {
         background: var(--background-color);
         border-radius: 4px;
     }
+
     &::-webkit-scrollbar-thumb {
         background: var(--primary-color);
         border-radius: 4px;
         transition: background 0.3s ease;
     }
+
     &::-webkit-scrollbar-thumb:hover {
         background: var(--background-color);
     }
+
     // Pour Firefox
     scrollbar-width: thin;
     scrollbar-color: var(--primary-color) var(--background-color);
@@ -114,7 +149,9 @@ svg foreignObject {
 
     img {
         width: 10%;
-        margin : 2% 3%; 
+        aspect-ratio: 1 / 1;
+        object-fit: contain;
+        margin: 2% 3%;
         user-select: none;
     }
 
@@ -141,8 +178,13 @@ svg foreignObject {
 
     .arrow {
         width: 3.5%;
-        margin : 2% 3%; 
+        margin: 2% 3%;
         transition: transform 0.3s ease; // Animation fluide de 0.3 secondes
+    }
+
+    // Fix bug: inline SVGs get clipped outside initial foreignObject viewport when scrolling
+    >svg {
+        transform: translateZ(0);
     }
 }
 
@@ -155,7 +197,7 @@ svg foreignObject {
     opacity: 0; // Transparent par défaut
 
     ul {
-        list-style-type:"-> ";
+        list-style-type: "-> ";
         padding: 0;
         margin: 0;
     }
@@ -165,4 +207,4 @@ svg foreignObject {
         opacity: 1; // Complètement visible
         padding: 0 20%; // Ajoute un peu de padding pour l'espacement
     }
-  }
+}

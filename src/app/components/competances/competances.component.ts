@@ -6,7 +6,7 @@ import { ViewportLineDirective } from '../../directives/viewport-line.directive'
 import { WindowManagerService } from '../../services/window-manager.service';
 import { Input } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Language, COMPETENCES_DATA } from '../../data/competences.data';
+import { Language, COMPETENCES_DATA, SECONDARY_COMPETENCES_DATA } from '../../data/competences.data';
 
 @Component({
   selector: 'app-competances',
@@ -24,8 +24,17 @@ export class CompetancesComponent implements OnInit, OnDestroy {
    */
   @Input() distancePercentage: number = 12;
 
-  // Données des langages - chargées depuis le fichier de configuration
-  languages: Language[] = COMPETENCES_DATA;
+  // Z-indexes pour les SVGs
+  devZIndex: number = 2;
+  toolsZIndex: number = 1;
+
+  // Onglet actif
+  activeTab: 'dev' | 'tools' = 'dev';
+
+  // Getter pour récupérer les langages en fonction de l'onglet actif
+  get currentLanguages(): Language[] {
+    return this.activeTab === 'dev' ? COMPETENCES_DATA : SECONDARY_COMPETENCES_DATA;
+  }
 
   // Objet pour stocker la rotation de chaque flèche
   arrowRotation: { [key: string]: number } = {};
@@ -34,7 +43,7 @@ export class CompetancesComponent implements OnInit, OnDestroy {
   open: { [key: string]: boolean } = {};
   
   // Propriété pour la hauteur du path SVG
-  pathHeight: number = 330;
+  pathHeight: number = 370;
 
   @ViewChild(ViewportLineDirective) viewportLineDirective!: ViewportLineDirective;
   
@@ -52,10 +61,41 @@ export class CompetancesComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef
   ) {
     // Initialiser les états pour chaque langage
-    this.languages.forEach(lang => {
-      this.arrowRotation[lang.id] = 0;
-      this.open[lang.id] = false;
+    this.initLanguageStates();
+  }
+
+  // Initialise l'état open/rotation pour tous les langages possibles
+  initLanguageStates() {
+    [...COMPETENCES_DATA, ...SECONDARY_COMPETENCES_DATA].forEach(lang => {
+      if (this.arrowRotation[lang.id] === undefined) {
+        this.arrowRotation[lang.id] = 0;
+        this.open[lang.id] = false;
+      }
     });
+  }
+
+  // Change l'onglet actif
+  setTab(tab: 'dev' | 'tools') {
+    if (this.activeTab !== tab) {
+      this.activeTab = tab;
+      
+      if (tab === 'dev') {
+        this.devZIndex = 2;
+        this.toolsZIndex = 1;
+      } else {
+        this.devZIndex = 1;
+        this.toolsZIndex = 2;
+      }
+
+      // Optionnel : fermer toutes les listes
+      Object.keys(this.open).forEach(key => {
+        this.open[key] = false;
+        this.arrowRotation[key] = 0;
+      });
+      
+      this.updatePathHeight();
+      this.cdr.markForCheck();
+    }
   }
 
   /**
@@ -109,12 +149,25 @@ export class CompetancesComponent implements OnInit, OnDestroy {
   updatePathHeight() {
     // Si au moins une flèche est ouverte, garder la hauteur à 600 sinon 330
     const hasAnyOpen = Object.values(this.open).some(isOpen => isOpen);
-    this.pathHeight = hasAnyOpen ? 600 : 330;
+    this.pathHeight = hasAnyOpen ? 760 : 370;
   }
 
+  // <svg width="599" height="692" viewBox="0 0 599 692" fill="none" xmlns="http://www.w3.org/2000/svg">
+  //   <path d="M2.5 689.5V2.5H228.5L264 44.5H596.5V689.5H2.5Z" fill="#EDE52B" stroke="black" stroke-width="5"/>
+  // </svg>
+
   // Méthode pour générer le path SVG avec la hauteur dynamique
-  getPathD(): string {
-    return `M12.0713 ${this.pathHeight}V3H214.521L261.938 40.7647H578V${this.pathHeight}H12.0713Z`;
+  getDevPathD(): string {
+    return `M2.5 ${this.pathHeight}V2.5H228.5L264 44.5H596.5V${this.pathHeight}H2.5Z`;
+  }
+
+  getToolsPathD(): string {
+    return `M596.5 ${this.pathHeight}H2.5V44.5002H211.5L249 2.50015L448.5 2.5L506 44.5L596.5 44.5002V${this.pathHeight}Z`;
+  }
+
+  // ViewBox dynamique qui s'adapte à la hauteur ! (avec 10px de marge pour le tracé)
+  getViewBox(): string {
+    return `0 0 599 ${this.pathHeight + 10}`;
   }
 
   // Méthode pour calculer la largeur de la barre de progression
@@ -123,13 +176,11 @@ export class CompetancesComponent implements OnInit, OnDestroy {
   }
 
   // Méthode pour calculer la hauteur du foreignObject des langages
-  getLanguagesContainerHeight(): string {
-    // Vérifier si au moins une flèche est ouverte
-    const hasAnyOpen = Object.values(this.open).some(isOpen => isOpen);
-    
-    // Si aucune flèche n'est ouverte, hauteur = 43%
-    // Sinon, hauteur = 87% pour laisser de la place aux descriptions
-    return hasAnyOpen ? '87%' : '43%';
+  getLanguagesContainerHeight(): number {
+    // Vu que la ViewBox est dynamique, on peut repasser en valeur absolue 
+    // qui s'adapte parfaitement à l'intérieur du SVG. 
+    // Le haut du foreignObject est à y="60", donc on soustrait une marge (ex: 80 ou 90).
+    return this.pathHeight - 70;
   }
 
   // Méthode pour optimiser les performances de la boucle *ngFor
