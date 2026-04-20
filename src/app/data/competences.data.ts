@@ -102,7 +102,7 @@ export const COMPETENCES_DATA: Language[] = [
   { // HTML / CSS
     id: 'html-css',
     name: 'HTML / CSS',
-    icon: 'assets/media/icons/LANG_html-css.svg',
+    icon: 'assets/media/icons/LANG_html.svg',
     progressWidth: 85,
     skills: [
       'Intégration responsive et sémantique',
@@ -205,6 +205,19 @@ export const SECONDARY_COMPETENCES_DATA: Language[] = [
       'Parcours utilisateur'
     ]
   },
+  { // LINUX / WSL / VM
+    id: 'linux-environment',
+    name: 'LINUX / WSL / VM',
+    icon: 'assets/media/icons/LANG_linux.svg',
+    progressWidth: 75,
+    skills: [
+      'Utilisation quotidienne de Debian',
+      'Gestion de paquets et environnement système',
+      'WSL2 pour le développement',
+      'Commandes shell et scripts basiques',
+      'Virtualisation et gestion de machines virtuelles'
+    ]
+  },
   { // PHOTOSHOP
     id: 'photoshop',
     name: 'PHOTOSHOP',
@@ -263,19 +276,6 @@ export const SECONDARY_COMPETENCES_DATA: Language[] = [
       'Conception de pièces et assemblages',
       'Visualisation technique et volumique',
       'Approche orientée conception et ingénierie'
-    ]
-  },
-  { // LINUX / WSL / VM
-    id: 'linux-environment',
-    name: 'LINUX / WSL / VM',
-    icon: 'assets/media/icons/LANG_linux.svg',
-    progressWidth: 75,
-    skills: [
-      'Utilisation quotidienne de Debian',
-      'Gestion de paquets et environnement système',
-      'WSL2 pour le développement',
-      'Commandes shell et scripts basiques',
-      'Virtualisation et gestion de machines virtuelles'
     ]
   }
 ];

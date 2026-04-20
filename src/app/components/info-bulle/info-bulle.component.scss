@@ -25,27 +25,16 @@
 .infoBulleSvg, svg{
     position: relative;
     width: 100%;
-    // width: 300px; /* Largeur fixe pour l'exemple */
-    // height: 200px; /* Hauteur fixe */
 }
 
 .InfoBulle{
-    /*Flexbox*/
     display: flex;
     flex-direction: column;
-    // margin: 0;
-    // align-items: flex-start;
-    
-    /*Text*/
     font-size: 0.92em;
-
-    /*Test*/
-    // background-color: rgb(218, 219, 160);
 }
 
 p{
     margin: 0;
-    // margin-bottom: px;
 }
 
 #barCode{

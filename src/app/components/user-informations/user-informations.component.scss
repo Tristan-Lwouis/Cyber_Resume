@@ -18,7 +18,7 @@ svg {
     .barCode{
         font-family: "Libre Barcode 39";
         font-size: 2.5em;
-        margin-top: 5%;
+        margin-top: 3%;
         color: var(--background-color); // Utilise la couleur de fond pour le code-barres
     }
 
@@ -57,14 +57,13 @@ svg {
 }
 
 .contact-info {
-  // cursor: pointer;
-  color: var(--background-color); // Utilise la couleur de fond pour les informations de contact
+  display: block; 
+  text-decoration: none;
+  color: var(--background-color);
   
   &:hover {
-    // color: #007bff;
     text-decoration: underline;
   }
-  
 }
 
 #QrDeco2{
@@ -84,6 +83,46 @@ svg {
     
     &:active {
         transform: scale(0.95);
+    }
+}
+
+.map-trigger {
+    margin-top: 2%;
+    padding: 5px 15px;
+    width: fit-content;
+    // border: 3px solid ;
+    background: var(--background-color);
+    color: var(--primary-color);
+    // font-family: var(--cyber-font);
+    font-size: 0.9em;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    clip-path: polygon(0 0, 100% 0, 100% 50%, 90% 100%, 0 100%);
+    transition: all 0.2s cubic-bezier(0.23, 1, 0.320, 1);
+    user-select: none;
+    position: relative;
+
+    span {
+        margin: 0 !important;
+    }
+}
+
+@keyframes pulse-border {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.15);
+        transform: scale(1.05);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        transform: scale(1);
     }
 }
 

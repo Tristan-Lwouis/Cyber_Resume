@@ -14,11 +14,16 @@
                 <a href="https://linktr.ee/tristan.regnier" target="_blank" class="qr-link">
                     <img id="QrDeco2" src="assets/media/icons/QR-Code.png" alt="Qr-code" class="clickable-qr">
                 </a>
-                <span class="contact-info clickable" role="button" tabindex="0" (click)="onClickAnimation('call')">{{ phoneNumber }}</span>
-                <span class="contact-info clickable" role="button" tabindex="0" (click)="onClickAnimation('call')">{{ email }}</span>
+                <a [href]="'tel:' + phoneNumber" class="contact-info clickable" (click)="onClickAnimation('call')">{{ phoneNumber }}</a>
+                <a [href]="'mailto:' + email" class="contact-info clickable" (click)="onClickAnimation('call')">{{ email }}</a>
                 <span>lvl 26</span>
+
                 <span>permis B</span>
-                <span>Toulouse+</span>
+                
+                <div class="map-trigger clickable" (click)="triggerMap()">
+                    <span>Toulouse</span>
+                </div>
+
                 <span class="barCode">HelloThere</span>
             </div>
         </foreignObject>

@@ -7,5 +7,4 @@ import { Component } from '@angular/core';
   styleUrl: './deco.component.scss'
 })
 export class DecoComponent {
-
 }

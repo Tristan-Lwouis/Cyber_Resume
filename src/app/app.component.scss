@@ -22,15 +22,39 @@ main {
 }
 
 .mainHeader {
-  /*Position*/
+  /* Positionnement sans transform pour éviter de casser le mix-blend-mode (contexte d'empilement) */
   position: absolute;
-  left: 50%;
-  transform: translate(-50%,0);
+  top: 1%;
+  left: 0;
+  width: 100%;
+  padding-top: 1vh;
   text-align: center;
-  /*Flexbox*/
+  pointer-events: none; // Pour ne pas bloquer les clics sur les éléments en dessous
+  
+  /* Flexbox pour l'alignement vertical */
   display: flex;
   flex-direction: column;
-  /*General titre*/
+  align-items: center;
+
+  .title-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1vw;
+  }
+
+  .heartbeat {
+    height: 4.5vh;
+    width: auto;
+    filter: invert(1);
+    mix-blend-mode: multiply; 
+    pointer-events: none;
+
+    &.left {
+      transform: scaleX(-1); // Effet miroir
+    }
+  }
+
   h1,h2,h3 {
     margin: 0;
     padding: 0;
@@ -38,11 +62,12 @@ main {
   }
 
   h1{
-    margin-top: 1vh;
+    // margin-top: 1vh;
     font-family: 'CyberAlert';
     font-size: 2.1vw;
     letter-spacing:1.5vw;
     font-weight:900;
+    white-space: nowrap;
   }
   
   h3{
@@ -286,4 +311,3 @@ main {
     font-size: 0.8rem;
   }
 }
-

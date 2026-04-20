@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { AvatarAnimationService } from '../../services/avatar-animation.service';
 
 @Component({
@@ -9,6 +9,7 @@ import { AvatarAnimationService } from '../../services/avatar-animation.service'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserInformationsComponent implements OnInit, OnDestroy {
+  @Output() openMap = new EventEmitter<void>();
   phoneNumber: string = '';
   email: string = '';
   private colorChangeObserver: MutationObserver | null = null;
@@ -86,4 +87,12 @@ export class UserInformationsComponent implements OnInit, OnDestroy {
     this.avatarAnimationService.requestAnimation(animationName);
   }
 
+  /**
+   * Émet l'événement pour ouvrir la carte
+   */
+  triggerMap(): void {
+    this.openMap.emit();
+  }
+
 }
+

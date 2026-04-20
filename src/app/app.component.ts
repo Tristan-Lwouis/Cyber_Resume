@@ -17,10 +17,12 @@ import { MenuComponent } from './components/menu/menu.component';
 import { UserInformationsComponent } from './components/user-informations/user-informations.component';
 import { CompetancesComponent } from './components/competances/competances.component';
 import { PortfolioComponent } from './components/portfolio/portfolio.component';
+import { MapModalComponent } from './components/map-modal/map-modal.component';
 import { MemoryMonitorService } from './services/memory-monitor.service';
 import { AudioEventsService } from './services/audio-events.service';
 import { ViewportLineComponent } from './components/viewport-line/viewport-line.component';
 import { SimpleLoadingComponent } from "./loading-page/simple-loading.component";
+
 
 @Component({
   selector: 'app-root',
@@ -38,9 +40,11 @@ import { SimpleLoadingComponent } from "./loading-page/simple-loading.component"
     UserInformationsComponent,
     CompetancesComponent,
     PortfolioComponent,
+    MapModalComponent,
     ViewportLineComponent,
     SimpleLoadingComponent
   ],
+
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -64,12 +68,16 @@ export class AppComponent implements OnInit, OnDestroy {
   isMobile: boolean = false;
   showMobileMessage: boolean = false;
 
+  // État de la modale de carte
+  showMapModal: boolean = false;
+
+
   // ========================================
   // PROPRIÉTÉS DU MENU PRINCIPAL
   // ========================================
   // État centralisé de tous les menus [Experience, Formation, Competences, Skills, Loisirs, Portfolio]
-  // Indices: 0=Experience, 1=Formation, 2=Competences, 3=Skills, 4=Loisirs, 5=Portfolio
-  menuStates: boolean[] = [false, false, false, false, false, false];
+  // Indices: 0=Experience, 1=Formation, 2=Competences, 3=Skills, 4=Loisirs, 5=Portfolio, 6=Deplacement
+  menuStates: boolean[] = [false, false, false, false, false, false, false];
   
   // Gestion du z-index pour l'effet d'onglet entre Skills et Loisirs
   skillsZIndex: number = 2;
@@ -157,6 +165,10 @@ while (challenge) {
       if (event.index === 5) {
         this.handlePortfolioToggle(event.isActive);
       }
+      // Logique spéciale pour Déplacement (index 6)
+      else if (event.index === 6) {
+        this.onMapToggle();
+      }
       // Logique spéciale pour Skills (index 3) et Loisirs (index 4)
       else if (event.index === 3 || event.index === 4) {
         this.handleSkillsLoisirsToggle(event.index, event.isActive);
@@ -164,6 +176,8 @@ while (challenge) {
         // Comportement normal pour les autres onglets
         this.menuStates[event.index] = event.isActive;
       }
+      // Forcer la mise à jour pour OnPush
+      this.menuStates = [...this.menuStates];
     }
   }
 
@@ -386,5 +400,26 @@ while (challenge) {
     this.memoryMonitor.stopMonitoring();
   }
 
+  /**
+   * Bascule l'affichage de la modale de carte
+   */
+  onMapToggle(): void {
+    this.showMapModal = !this.showMapModal;
+    this.menuStates[6] = this.showMapModal;
+    this.menuStates = [...this.menuStates]; // Créer une nouvelle référence pour ChangeDetection
+    this.audioEventsService.playToggleSound(this.showMapModal);
+    this.cdr.markForCheck();
+  }
 
+  /**
+   * Ferme la modale de carte
+   */
+  onMapClose(): void {
+    this.showMapModal = false;
+    this.menuStates[6] = false;
+    this.menuStates = [...this.menuStates]; // Créer une nouvelle référence pour ChangeDetection
+    this.audioEventsService.playCloseSound();
+    this.cdr.markForCheck();
+  }
 }
+

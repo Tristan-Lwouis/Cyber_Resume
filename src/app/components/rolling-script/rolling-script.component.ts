@@ -29,16 +29,22 @@ export class RollingScriptComponent implements AfterViewInit, OnDestroy {
 
   lines: string[] = [''];
   private charIndex: number = 0;
-  private iterationCount: number = 0;
   private intervalId: any;
+  private readonly maxLines: number = 60; // Limite pour éviter de saturer le DOM
 
   constructor(private ngZone: NgZone, private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit(): void {
-    this.startTyping();
+    if (this.code) {
+      this.startTyping();
+    }
   }
 
   ngOnDestroy(): void {
+    this.stopTyping();
+  }
+
+  private stopTyping() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
       this.intervalId = null;
@@ -46,42 +52,54 @@ export class RollingScriptComponent implements AfterViewInit, OnDestroy {
   }
 
   private startTyping() {
+    this.stopTyping();
+    
     this.ngZone.runOutsideAngular(() => {
       this.intervalId = setInterval(() => {
+        if (!this.code) return;
+
         const currentChar = this.code[this.charIndex++];
 
         if (currentChar === '\n') {
           this.lines.push('');
+          
+          // Plafonnement des lignes pour les performances
+          if (this.lines.length > this.maxLines) {
+            this.lines.shift();
+          }
         } else {
           this.lines[this.lines.length - 1] += currentChar;
         }
 
-        // On demande à Angular de rafraîchir UNIQUEMENT ce composant
-        this.cdr.detectChanges();
-
-        this.scrollToBottom();
-
+        // Détection de la fin du texte pour boucler
         if (this.charIndex >= this.code.length) {
           this.charIndex = 0;
-          this.iterationCount++;
-
-          if (this.iterationCount >= 15) {
-            this.resetAll();
-            this.cdr.detectChanges();
+          // Assurer une nouvelle ligne au début du prochain cycle si besoin
+          if (this.lines[this.lines.length - 1] !== '') {
+            this.lines.push('');
           }
         }
+
+        this.cdr.detectChanges();
+        this.scrollToBottom();
+
       }, this.typingSpeed);
     });
   }
 
   private scrollToBottom() {
-    const el = this.codeContainer.nativeElement;
-    el.scrollTop = el.scrollHeight;
+    if (this.codeContainer) {
+      const el = this.codeContainer.nativeElement;
+      // Utilisation de requestAnimationFrame pour s'assurer que le DOM est à jour
+      requestAnimationFrame(() => {
+        el.scrollTop = el.scrollHeight;
+      });
+    }
   }
 
   private resetAll() {
     this.lines = [''];
     this.charIndex = 0;
-    this.iterationCount = 0;
   }
+
 }

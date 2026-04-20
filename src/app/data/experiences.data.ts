@@ -1,12 +1,11 @@
 export const EXPERIENCE_CONTENT: string = `
     <div class="content-block">
-    <h2>Fev 2026 - Mar 2026 · Concepteur Développeur d’Applications (stagiaire)</h2>
+    <h2>Fev 2026 - Mar 2026 · Stage Barthe-ENR</h2>
       <p>
-        Formation au métier de concepteur développeur full-stack avec la réalisation de nombreux projets tutorés. 
-        Approfondissement des <strong>principes de la Programmation Orientée Objet</strong> (Java, C++, C#) et mise en pratique 
-        sur des projets Back-End (API, bases de données, sécurité) et Front-End (Angular, React). 
-        Utilisation des <strong>méthodes AGILE</strong> pour gérer le cycle de vie des projets, avec des sprints, 
-        revues de code et travail collaboratif.
+        Conception et développement d’une <strong>application métier interne</strong> à architcture modulaire, destinée à centraliser plusieurs outils existants du groupe. 
+        Participation à l’analyse des besoins utilisateurs, à la création d’interfaces modernes et au développement de fonctionnalités stratégiques liées à la gestion des <strong>indisponibilités de centrales hydroélectriques</strong>. 
+        Mise en place d’une architecture sécurisée avec <strong>authentification OIDC / JWT</strong>, travail sur l’ergonomie, la performance et l’évolutivité de la solution. 
+        Expérience concrète en environnement professionnel sur un projet à forts enjeux opérationnels.
       </p>
     </div>
 

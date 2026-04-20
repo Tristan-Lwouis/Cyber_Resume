@@ -78,6 +78,8 @@ export class CompetancesComponent implements OnInit, OnDestroy {
   setTab(tab: 'dev' | 'tools') {
     if (this.activeTab !== tab) {
       this.activeTab = tab;
+
+      this.audioEventsService.playOpenSound();
       
       if (tab === 'dev') {
         this.devZIndex = 2;

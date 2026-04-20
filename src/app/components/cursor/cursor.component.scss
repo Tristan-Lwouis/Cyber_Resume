@@ -11,7 +11,8 @@ input, textarea, select, button, a, [role="button"], [tabindex] {
 .custom-cursor {
   position: fixed;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 1000001;
+
   left: 0;
   top: 0;
 }

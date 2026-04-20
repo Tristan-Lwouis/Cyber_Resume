@@ -51,7 +51,7 @@ Inspirée d’un **bureau virtuel**, l’application propose des **fenêtres dé
 
 ```bash
 # 1. Cloner le projet
-git clone https://github.com/<ton-pseudo>/cyber_resume.git
+git clone https://github.com/Tristan-Lwouis/cyber_resume.git
 
 # 2. Se placer dans le dossier
 cd cyber_resume
@@ -60,12 +60,11 @@ cd cyber_resume
 npm install
 
 # 4. Lancer le serveur local
-ng serve --serve-path=/cyber_resume/
+ng serve
 
-# 5. Ouvrir dans ton navigateur
-http://localhost:4200/cyber_resume/
+# 5. Ouvrir le navigateur a cette adresse
+http://localhost:4200/
 
 ```
 
 ![spacer](./src/app/assets/media/images/Spacer1.png)
-
